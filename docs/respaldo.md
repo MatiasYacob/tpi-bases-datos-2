@@ -101,8 +101,6 @@ Con una tarea diaria exitosa, el RPO objetivo seria de hasta unas
 24 horas. Aumentaria ante fallos o ejecuciones omitidas.
 
 ## Pendientes
-- Retencion de las cinco fechas completas mas recientes.
-- Reemplazo seguro de la copia del dia.
 - Prueba de fallo de conexion.
 - Programacion diaria y verificacion en macOS.
 - Respaldo remoto de Atlas con configuracion protegida.
@@ -118,3 +116,27 @@ Con una tarea diaria exitosa, el RPO objetivo seria de hasta unas
 
 El respaldo funciona independientemente de Express y del frontend.
 Las credenciales reales deben mantenerse fuera del repositorio.
+
+## Actualizacion de pruebas locales: 18 de octubre de 2026
+- Reemplazo con --forzar: nueva copia validada antes de sustituir
+  la anterior. Resultado correcto y codigo de salida 0.
+- Ejecucion normal con copia existente: omision y codigo 0.
+- Retencion: probada en un directorio temporal separado con seis
+  copias de fechas simuladas y una copia nueva del dia.
+  Se conservaron las cinco fechas completas mas recientes.
+  La carpeta incompleta y el archivo notas.txt quedaron intactos.
+- Interrupcion manual: codigo 130. Las huellas SHA-256 confirmaron
+  que todos los archivos anteriores permanecieron iguales.
+- Configuracion invalida: fallo automatico con codigo 1.
+  Las huellas SHA-256 confirmaron que los archivos anteriores
+  permanecieron iguales.
+- La prueba de fallo de conexion de red sigue pendiente:
+  el intento se interrumpio manualmente y no cuenta como prueba
+  de terminacion automatica ante fallo de red.
+
+Uso adicional:
+    ./scripts/backup.sh --forzar
+
+La retencion se ejecuta despues de publicar una copia nueva.
+Las fechas simuladas se utilizaron solo para probar la retencion;
+no representan respaldos realizados en dias anteriores.
