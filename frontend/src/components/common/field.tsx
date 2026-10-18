@@ -9,6 +9,7 @@ export function Field({
   required = true,
   type = "text",
   placeholder,
+  error,
 }: {
   id: string;
   label: string;
@@ -17,18 +18,26 @@ export function Field({
   required?: boolean;
   type?: string;
   placeholder?: string;
+  error?: string;
 }) {
   return (
     <div className="field">
       <Label htmlFor={id}>{label}</Label>
       <Input
         id={id}
+        aria-invalid={!!error}
+        aria-describedby={error ? id + "-error" : undefined}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         required={required}
         type={type}
         placeholder={placeholder}
       />
+      {error && (
+        <span id={id + "-error"} className="form-error">
+          {error}
+        </span>
+      )}
     </div>
   );
 }

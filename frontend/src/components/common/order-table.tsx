@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { money, type Order } from "@/mocks/data";
+import { money, type Order } from "@/lib/models";
 import { EmptyRow } from "./empty-row";
 import { StatusBadge } from "./status-badge";
 

@@ -47,7 +47,7 @@ export function AppShell({
         <div className="sidebar-foot">
           BASES DE DATOS II
           <br />
-          Prototipo interactivo
+          Gestión de tienda
         </div>
       </aside>
       <main className="main-content">
@@ -65,7 +65,7 @@ export function AppShell({
             <span>Universidad / TPI Bases de Datos 2</span>
           </div>
           <span className="demo-pill">
-            <span className="live-dot" /> Modo demostración · Mocks
+            <span className="live-dot" /> Datos guardados en la tienda
           </span>
         </div>
         {children}

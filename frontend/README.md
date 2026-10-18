@@ -1,60 +1,54 @@
 # Frontend · TPI Tienda
+React, TypeScript y Vite conectados a la API Express. Los cambios se guardan en
+MongoDB Atlas a traves del backend y permanecen al recargar.
 
-Prototipo de tienda desarrollado con React, TypeScript, Vite, Tailwind CSS y shadcn/ui a partir del mockup HTML del equipo. Funciona con datos ficticios en memoria; al recargar, vuelve al estado inicial. La integración con la API Express está pendiente.
-
-## Requisitos
-
-| Herramienta | Para qué se usa |
-| --- | --- |
-| [Node.js](https://nodejs.org/en/download) | Ejecutar Vite. Se necesita una versión compatible: **20.19+ o 22.12+**, según la [guía de Vite](https://vite.dev/guide/). |
-| npm | Instalar las dependencias y ejecutar los comandos del proyecto. Viene con la instalación habitual de Node.js; no hace falta instalar Vite globalmente. |
-| IDE o editor | Recomendado para modificar código: Visual Studio Code u otro editor con soporte para TypeScript. No es necesario para levantar el servidor. |
-| Navegador web | Abrir la aplicación localmente. |
-
-Comprobá que Node.js y npm estén disponibles en la terminal:
-
-```powershell
-node --version
-npm --version
-```
-
-## Levantar el servidor de desarrollo
-
-Desde la **raíz del repositorio**, ejecutá:
-
-```powershell
-cd frontend
-npm ci
-npm run dev
-```
-
-`npm ci` instala las versiones registradas en `package-lock.json`. Cuando Vite indique que está listo, abrí **http://localhost:5173/**. Si ese puerto está ocupado, usá la dirección `Local` que Vite muestre en la terminal. Mantené la terminal abierta mientras uses la aplicación y detené el servidor con `Ctrl+C`.
-
-El prototipo usa mocks en memoria: **no necesita levantar el backend ni configurar `.env`**. Los datos vuelven al estado inicial al recargar la página.
-
-Para comprobar la compilación de producción, ejecutá `npm run build` desde `frontend/`. El comando `npm run preview` permite ver localmente esa compilación.
+## Ejecutar
+Node utilizado: 24.13.1. Desde frontend:
+1. npm ci
+2. Copy-Item .env.example .env (si no existe)
+3. Configurar VITE_API_URL=http://localhost:3000/api
+4. npm run dev
+Abrir http://localhost:5173. El backend debe estar iniciado en el puerto 3000
+con FRONTEND_ORIGIN=http://localhost:5173. Ver ../backend/README.md.
+VITE_API_URL es publica: nunca guardar URI ni credenciales MongoDB en frontend.
 
 ## Estructura
+- src/api/client.ts: fetch, timeout y errores HTTP/red; recorre paginas del backend.
+- src/api/use-api-store.ts: carga de datos, escrituras y refresco desde la API.
+- src/lib/models.ts y selectors.ts: tipos, moneda y calculos de presentacion.
+- src/pages: vistas; src/components: formularios y piezas reutilizables.
+- src/mocks: fixtures originales conservados; no se usan en la app conectada.
 
-| Ruta | Responsabilidad |
-| --- | --- |
-| `src/app.tsx` | Composición de secciones y estado de navegación |
-| `src/pages/` | Pantallas de resumen, clientes, productos, pedidos y reportes |
-| `src/components/ui/` | Componentes generados por shadcn/ui |
-| `src/components/common/` | Piezas visuales reutilizables |
-| `src/components/forms/` | Formularios de entidades y pedidos |
-| `src/components/orders/` | Detalle histórico del pedido |
-| `src/mocks/` | Datos de demostración y reglas de negocio del mock |
-| `src/lib/constants/` | Categorías, estados, navegación y paginación |
+## Comportamiento
+Busqueda, filtros y paginacion de listados se mantienen en el navegador para este
+TPI. Se descargan todas las paginas del backend en lotes de 100, sin truncar
+a los primeros 100 registros. Adecuado al volumen pequeno del ejercicio; para
+volumen grande migrar cada pantalla a consultas paginadas remotas.
+El reporte si envia filtros de fecha al servidor: desde inclusivo y hasta
+medianoche del dia siguiente (exclusivo), convertidos de hora local a ISO UTC.
 
-La [guía de uso](USO.md) incluye un diagrama de secuencia y un flujo de pantallas. La [guía de estilos](DESIGN.md) registra colores, tipografía y patrones. Las [reglas de trabajo](AGENTS.md) establecen convenciones para los siguientes cambios.
+Altas, ediciones, bajas logicas y estados esperan confirmacion del servidor.
+Los errores mantienen el formulario abierto y muestran el campo cuando existe.
+El total del pedido guardado viene del backend, nunca del calculo visual.
+Un fallo al refrescar despues de guardar muestra Reintentar carga sin repetir
+la escritura. Si se pierde la respuesta de un POST, consultar antes de repetir:
+el servidor aun no tiene claves de idempotencia.
 
-## Alcance del prototipo
+## Validacion
+npm run build: TypeScript y compilacion de produccion.
+Pruebas manuales: alta persistente al recargar, email duplicado, pedido,
+transiciones de estado, reporte y baja logica de datos ficticios.
+No hay cambio al contrato ni acceso directo del navegador a Atlas.
 
-- Listados, filtros y paginación de clientes, productos y pedidos.
-- Altas y edición de clientes y productos, con baja lógica.
-- Creación de pedidos, detalle con datos históricos y cambios válidos de estado.
-- Reporte de ventas por categoría con filtro de fechas.
-- Validaciones básicas y mensajes de éxito/error en los formularios.
-
-Los identificadores mock tienen formato de 24 caracteres hexadecimales para ser compatibles con el contrato de la API. La implementación actual no realiza solicitudes HTTP. `VITE_API_URL` está preparada en `.env.example` para la integración posterior.
+## Resultado real de integracion - 18/10/2026
+- npm run build aprobado (TypeScript estricto + Vite).
+- Navegador: alta de cliente y persistencia al recargar.
+- Email duplicado: error 409 del backend, campos conservados y email marcado.
+- Producto: alta con 123,45 ARS y edicion a 234,56 ARS, luego baja logica.
+- Pedido: alta con total servidor de 80000 centavos; pendiente -> confirmado
+  -> completado. Reporte subio de 340000 a 420000 centavos.
+- Backend detenido: error de conexion sin mostrar ceros como si fueran datos.
+  Reiniciado: Reintentar carga recupero los datos correctamente.
+- Datos ficticios de verificacion dados de baja logica, sin borrado fisico.
+  Activos finales del seed: 2 clientes, 8 productos y 5 pedidos.
+- Credenciales solo en backend/.env; frontend/.env contiene solo URL publica.

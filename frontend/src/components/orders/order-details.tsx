@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { errorMessage } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,7 +15,7 @@ import {
   nextStatuses,
   statusLabel,
 } from "@/lib/constants/catalog";
-import { money, type Order, type OrderStatus } from "@/mocks/data";
+import { money, type Order, type OrderStatus } from "@/lib/models";
 
 export function OrderDetails({
   order,
@@ -23,14 +25,31 @@ export function OrderDetails({
 }: {
   order: Order | null;
   onClose: () => void;
-  onStatusChange: (id: string, status: OrderStatus) => void;
+  onStatusChange: (id: string, status: OrderStatus) => Promise<void>;
   onDeactivate: (id: string) => void;
 }) {
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+  async function change(id: string, status: OrderStatus) {
+    if (pending) return;
+    setPending(true);
+    setError("");
+    try {
+      await onStatusChange(id, status);
+    } catch (err) {
+      setError(errorMessage(err));
+    } finally {
+      setPending(false);
+    }
+  }
   return (
     <Dialog
       open={order !== null}
       onOpenChange={(open) => {
-        if (!open) onClose();
+        if (!open && !pending) {
+          setError("");
+          onClose();
+        }
       }}
     >
       <DialogContent className="form-dialog">
@@ -66,22 +85,39 @@ export function OrderDetails({
                 Estado actual: <StatusBadge status={order.estado} />
               </div>
             </div>
+            {error && (
+              <p role="alert" className="form-error">
+                {error}
+              </p>
+            )}
             <DialogFooter>
-              <Button variant="outline" onClick={onClose}>
+              <Button
+                variant="outline"
+                disabled={pending}
+                onClick={() => {
+                  setError("");
+                  onClose();
+                }}
+              >
                 Cerrar
               </Button>
               {nextStatuses[order.estado].map((next) => (
                 <Button
                   key={next}
+                  disabled={pending}
                   variant={next === "cancelado" ? "destructive" : "default"}
-                  onClick={() => onStatusChange(order.id, next)}
+                  onClick={() => void change(order.id, next)}
                 >
                   {next === "cancelado"
                     ? "Cancelar pedido"
                     : `Marcar ${statusLabel[next].toLowerCase()}`}
                 </Button>
               ))}
-              <Button variant="ghost" onClick={() => onDeactivate(order.id)}>
+              <Button
+                variant="ghost"
+                disabled={pending}
+                onClick={() => onDeactivate(order.id)}
+              >
                 Dar de baja
               </Button>
             </DialogFooter>

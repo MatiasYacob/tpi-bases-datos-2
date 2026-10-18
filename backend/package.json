@@ -1,0 +1,26 @@
+{
+  "name": "tpi-tienda-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:init": "node src/scripts/init-db.js",
+    "seed": "node src/scripts/seed.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongodb": "^6.20.0",
+    "dotenv": "^17.2.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.0",
+    "mongodb-memory-server": "^10.2.0"
+  }
+}
