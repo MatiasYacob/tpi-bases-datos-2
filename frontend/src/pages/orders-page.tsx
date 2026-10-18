@@ -12,8 +12,8 @@ import { OrderForm } from "@/components/forms/order-form";
 import { OrderDetails } from "@/components/orders/order-details";
 import { usePagination } from "@/hooks/usePagination";
 import { statusLabel } from "@/lib/constants/catalog";
-import type { OrderStatus } from "@/mocks/data";
-import type { MockStore } from "@/mocks/useMockStore";
+import { money, type OrderStatus } from "@/lib/models";
+import type { ApiStore } from "@/api/use-api-store";
 
 export function OrdersPage({
   customers,
@@ -23,10 +23,10 @@ export function OrdersPage({
   changeStatus,
   deactivate,
 }: {
-  customers: MockStore["clientes"];
-  products: MockStore["productos"];
-  orders: MockStore["pedidos"];
-} & Pick<MockStore, "saveOrder" | "changeStatus" | "deactivate">) {
+  customers: ApiStore["clientes"];
+  products: ApiStore["productos"];
+  orders: ApiStore["pedidos"];
+} & Pick<ApiStore, "saveOrder" | "changeStatus" | "deactivate">) {
   const [status, setStatus] = useState<OrderStatus | "">("");
   const [formOpen, setFormOpen] = useState(false);
   const [detailsId, setDetailsId] = useState<string | null>(null);
@@ -78,13 +78,14 @@ export function OrdersPage({
             customers={customers}
             products={products}
             onCancel={() => setFormOpen(false)}
-            onSave={(input) => {
-              const error = saveOrder(input);
-              if (!error) {
+            onSave={async (input) => {
+              const saved = await saveOrder(input);
+              {
                 setFormOpen(false);
-                toast.success("Pedido creado con el total calculado");
+                toast.success(
+                  "Pedido creado. Total: " + money(saved.totalCentavos),
+                );
               }
-              return error;
             }}
           />
         </DialogContent>
@@ -92,8 +93,9 @@ export function OrdersPage({
       <OrderDetails
         order={selected}
         onClose={() => setDetailsId(null)}
-        onStatusChange={(id, next) => {
-          if (changeStatus(id, next)) {
+        onStatusChange={async (id, next) => {
+          await changeStatus(id, next);
+          {
             setDetailsId(null);
             toast.success(`Pedido ${statusLabel[next].toLowerCase()}`);
           }
@@ -108,8 +110,8 @@ export function OrdersPage({
         entity="pedido"
         description="Dejará de aparecer en los listados y reportes activos. Esto es distinto de cancelar el pedido."
         onClose={() => setDeleteId(null)}
-        onConfirm={() => {
-          if (deleteId) deactivate("pedidos", deleteId);
+        onConfirm={async () => {
+          if (deleteId) await deactivate("pedidos", deleteId);
           setDeleteId(null);
           toast.success("Pedido dado de baja");
         }}

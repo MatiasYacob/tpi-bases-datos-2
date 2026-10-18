@@ -18,14 +18,14 @@ import { Pager } from "@/components/common/pager";
 import { PageHeader } from "@/components/common/page-header";
 import { CustomerForm } from "@/components/forms/customer-form";
 import { usePagination } from "@/hooks/usePagination";
-import type { Customer } from "@/mocks/data";
-import type { MockStore } from "@/mocks/useMockStore";
+import type { Customer } from "@/lib/models";
+import type { ApiStore } from "@/api/use-api-store";
 
 export function CustomersPage({
   customers,
   saveCustomer,
   deactivate,
-}: Pick<MockStore, "saveCustomer" | "deactivate"> & { customers: Customer[] }) {
+}: Pick<ApiStore, "saveCustomer" | "deactivate"> & { customers: Customer[] }) {
   const [search, setSearch] = useState("");
   const [editId, setEditId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -126,13 +126,12 @@ export function CustomersPage({
             key={editId || "new"}
             customer={selected}
             onCancel={() => setFormOpen(false)}
-            onSave={(input, id) => {
-              const error = saveCustomer(input, id);
-              if (!error) {
+            onSave={async (input, id) => {
+              await saveCustomer(input, id);
+              {
                 setFormOpen(false);
                 toast.success(id ? "Cliente actualizado" : "Cliente creado");
               }
-              return error;
             }}
           />
         </DialogContent>
@@ -142,8 +141,8 @@ export function CustomersPage({
         entity="cliente"
         description="Dejará de aparecer en los listados activos. Los pedidos existentes conservarán sus datos históricos."
         onClose={() => setDeleteId(null)}
-        onConfirm={() => {
-          if (deleteId) deactivate("clientes", deleteId);
+        onConfirm={async () => {
+          if (deleteId) await deactivate("clientes", deleteId);
           setDeleteId(null);
           toast.success("Cliente dado de baja");
         }}

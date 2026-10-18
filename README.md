@@ -11,10 +11,18 @@ Tienda de prueba con clientes, productos y pedidos en MongoDB Atlas.
 La guía integrada en `docs/guia-integrada.pdf` es el contrato inicial del grupo.
 Todos documentan su parte y deben poder explicar el sistema completo.
 
-## Estado inicial
+## Estado actual
 
-Este repositorio contiene la estructura y la documentación para iniciar el trabajo.
-La aplicación, los scripts y las pruebas todavía no están implementados.
+Backend Express conectado a MongoDB Atlas y frontend React integrado con la API.
+Incluye CRUD con baja logica, pedidos con historial, reporte, validadores,
+indices y seed. Los scripts de respaldo/restauracion siguen pendientes.
+
+- [Ejecutar backend](backend/README.md)
+- [Ejecutar frontend](frontend/README.md)
+- [Estado y pendientes](ESTADO.md)
+
+Cada equipo configura su propio backend/.env y acceso de red a Atlas.
+No se distribuyen credenciales por Git.
 
 ## Trabajo en equipo
 

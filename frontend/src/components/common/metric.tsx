@@ -6,7 +6,7 @@ export function Metric({ label, value }: { label: string; value: string }) {
       <CardContent>
         <span>{label}</span>
         <strong>{value}</strong>
-        <small>Datos de demostración</small>
+        <small>Datos de la tienda</small>
       </CardContent>
     </Card>
   );

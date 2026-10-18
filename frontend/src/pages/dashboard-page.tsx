@@ -1,8 +1,8 @@
 import { Metric } from "@/components/common/metric";
 import { OrderTable } from "@/components/common/order-table";
 import { PageHeader } from "@/components/common/page-header";
-import { money, type Customer, type Product, type Order } from "@/mocks/data";
-import { dashboardSummary } from "@/mocks/selectors";
+import { money, type Customer, type Product, type Order } from "@/lib/models";
+import { dashboardSummary } from "@/lib/selectors";
 
 export function DashboardPage({
   customers,
@@ -53,7 +53,7 @@ export function DashboardPage({
         <p>
           Altas, edición y bajas lógicas de clientes y productos; creación de
           pedidos con instantáneas, transiciones de estado y ventas por
-          categoría. Los cambios permanecen en memoria hasta recargar la página.
+          categoría. Los cambios se guardan y permanecen al recargar la página.
         </p>
       </section>
     </>

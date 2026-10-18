@@ -21,14 +21,14 @@ import { PageHeader } from "@/components/common/page-header";
 import { ProductForm } from "@/components/forms/product-form";
 import { usePagination } from "@/hooks/usePagination";
 import { categoryLabel } from "@/lib/constants/catalog";
-import { money, type Category, type Product } from "@/mocks/data";
-import type { MockStore } from "@/mocks/useMockStore";
+import { money, type Category, type Product } from "@/lib/models";
+import type { ApiStore } from "@/api/use-api-store";
 
 export function ProductsPage({
   products,
   saveProduct,
   deactivate,
-}: Pick<MockStore, "saveProduct" | "deactivate"> & { products: Product[] }) {
+}: Pick<ApiStore, "saveProduct" | "deactivate"> & { products: Product[] }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<Category | "">("");
   const [editId, setEditId] = useState<string | null>(null);
@@ -152,8 +152,8 @@ export function ProductsPage({
             key={editId || "new"}
             product={selected}
             onCancel={() => setFormOpen(false)}
-            onSave={(input, id) => {
-              saveProduct(input, id);
+            onSave={async (input, id) => {
+              await saveProduct(input, id);
               setFormOpen(false);
               toast.success(id ? "Producto actualizado" : "Producto creado");
             }}
@@ -165,8 +165,8 @@ export function ProductsPage({
         entity="producto"
         description="Dejará de aparecer en el catálogo activo. Los pedidos existentes conservarán su precio histórico."
         onClose={() => setDeleteId(null)}
-        onConfirm={() => {
-          if (deleteId) deactivate("productos", deleteId);
+        onConfirm={async () => {
+          if (deleteId) await deactivate("productos", deleteId);
           setDeleteId(null);
           toast.success("Producto dado de baja");
         }}
