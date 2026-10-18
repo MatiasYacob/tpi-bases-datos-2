@@ -140,3 +140,43 @@ Uso adicional:
 La retencion se ejecuta despues de publicar una copia nueva.
 Las fechas simuladas se utilizaron solo para probar la retencion;
 no representan respaldos realizados en dias anteriores.
+
+## Programacion en macOS y punto de pausa
+Se implemento scripts/programar-backup.sh usando launchd.
+La tarea se llama TPI-Tienda-Backup y utiliza rutas absolutas.
+El PATH incluye la ubicacion instalada de mongodump.
+
+macOS bloqueo la ejecucion desde el Escritorio.
+Se preparo una copia de ejecucion en:
+    ~/TPI-Tienda-Backup/scripts/
+
+Esta carpeta contiene backup.sh, programar-backup.sh y la
+configuracion privada. Sus respaldos y logs quedan en:
+    ~/TPI-Tienda-Backup/resguardos_tpi/
+
+El repositorio principal permanece en el Escritorio.
+Los cambios posteriores deben copiarse a la carpeta de ejecucion.
+La configuracion sigue apuntando a MongoDB local, no a Atlas.
+
+Pruebas realizadas:
+- Registro inicial a las 02:00 y respaldo al cargar: codigo 0.
+- Reprogramacion temporal a las 15:26.
+- Ejecucion por horario a las 15:26:05: copia existente omitida.
+- Estado consultado: runs = 2 y last exit code = 0.
+No se ha verificado todavia una ejecucion nocturna ni la
+recuperacion de horarios perdidos durante suspension o apagado.
+
+Pausa:
+La tarea se descargo con launchctl bootout y su archivo se movio
+fuera de LaunchAgents para evitar que se cargue al iniciar sesion.
+Los datos, respaldos y scripts se conservan.
+
+Para reactivar a las 02:00, con MongoDB local disponible:
+    /bin/bash "$HOME/TPI-Tienda-Backup/scripts/programar-backup.sh" 02:00
+
+Pendientes al retomar:
+- Actualizar las secciones anteriores de estado y pendientes.
+- Verificar registro repetido sin duplicados.
+- Completar fallo de conexion de red y pruebas de recuperacion.
+- Completar instalacion reproducible y evidencias.
+- Integrar y probar contra Atlas.
