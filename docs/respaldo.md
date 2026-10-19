@@ -214,3 +214,34 @@ Evidencia prevista:
 
 Esta prueba completa el caso local de conexion fallida.
 Queda pendiente verificar los errores de acceso y red de Atlas.
+
+## Instalacion reproducible en macOS
+El script scripts/instalar-macos.sh instala o actualiza backup.sh,
+restaurar-prueba.sh y programar-backup.sh en:
+    ~/TPI-Tienda-Backup/scripts/
+
+Comando desde el repositorio:
+    ./scripts/instalar-macos.sh
+
+Antes de instalar comprueba la sintaxis de los scripts y que
+la tarea TPI-Tienda-Backup no este cargada.
+Compara los scripts instalados con los originales.
+Conserva la configuracion privada existente. Si no existe,
+copia la configuracion local del proyecto con permisos 600.
+No activa la tarea ni modifica los respaldos existentes.
+
+Cada cambio en los scripts del repositorio requiere volver
+a ejecutar el instalador, con la tarea pausada.
+Los cambios de conexion deben aplicarse expresamente a la
+configuracion de ejecucion: el instalador no la sobrescribe.
+
+Pruebas del 19 de octubre de 2026:
+- Instalacion y comparacion de los tres scripts: codigo 0.
+- Reinstalacion: codigo 0.
+- Configuracion privada: misma huella SHA-256 antes y despues.
+
+El restaurador instalado utiliza los respaldos de la carpeta
+de ejecucion y sigue conectado exclusivamente a MongoDB local.
+
+Evidencia prevista:
+- 13-instalacion-macos.png
