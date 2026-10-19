@@ -258,3 +258,50 @@ del archivo de inicio automatico.
 
 Evidencia prevista:
 - 14-registro-sin-duplicados.png
+
+## Comparacion automatica de conteos: 19 de octubre de 2026
+Se agrego scripts/verificar-conteos.sh.
+Lee conteos-esperados.json de la carpeta fechada y compara
+clientes, productos y pedidos con tpi_tienda_restore_test local.
+
+Comando:
+    ./scripts/verificar-conteos.sh 2026-10-19
+
+Preparacion realizada sin escrituras concurrentes:
+1. Consultar y guardar los conteos del origen antes del respaldo.
+2. Ejecutar el backup con --forzar.
+3. Tras el exito, copiar esos conteos a la carpeta de la copia
+   con el nombre conteos-esperados.json.
+
+Los conteos se registraron manualmente mediante mongosh;
+backup.sh todavia no genera ese archivo automaticamente.
+Un nuevo respaldo forzado sustituye la carpeta y requiere
+volver a registrar los conteos correspondientes.
+Nunca usar conteos actuales para representar una copia antigua
+si los datos cambiaron desde que fue creada.
+
+Pruebas:
+- Valores esperados 1/1/1 contra la base de prueba existente:
+  coincidencia y codigo 0.
+- Valores de ensayo 2/1/1 en carpeta temporal:
+  diferencia detectada en clientes y codigo 1.
+- Estas pruebas solo consultaron datos, sin modificarlos.
+- No se realizo una nueva restauracion del respaldo del dia.
+
+Integracion:
+El restaurador exige el archivo de conteos y llama al verificador
+antes de informar exito. Las copias sin ese archivo se rechazan.
+La sintaxis se comprobo; falta probar el flujo completo actualizado
+en un destino de prueba vacio o reemplazado con autorizacion.
+
+El instalador ahora incluye cuatro scripts.
+La actualizacion termino con codigo 0 y conservo la configuracion.
+Los conteos y respaldos del repositorio no se copian al despliegue;
+cada restauracion requiere su copia y archivo de conteos asociados.
+
+Coincidir en cantidad no demuestra igualdad de contenido.
+Quedan pendientes las validaciones de negocio y la prueba con Atlas.
+
+Evidencias previstas:
+- 15-conteos-coincidentes.png
+- 16-conteos-diferentes.png

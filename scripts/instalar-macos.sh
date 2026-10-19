@@ -17,7 +17,7 @@ if /bin/launchctl print "gui/$(id -u)/TPI-Tienda-Backup" >/dev/null 2>&1; then
   exit 1
 fi
 
-for ARCHIVO in backup.sh restaurar-prueba.sh programar-backup.sh; do
+for ARCHIVO in backup.sh restaurar-prueba.sh programar-backup.sh verificar-conteos.sh; do
   [[ -f "$RAIZ/scripts/$ARCHIVO" ]] || {
     echo "ERROR: falta $ARCHIVO en el proyecto."
     exit 1
@@ -33,7 +33,7 @@ for RUTA in "$DESTINO" "$DESTINO/scripts" "$CONFIG_DESTINO"; do
   fi
 done
 
-for ARCHIVO in backup.sh restaurar-prueba.sh programar-backup.sh; do
+for ARCHIVO in backup.sh restaurar-prueba.sh programar-backup.sh verificar-conteos.sh; do
   if [[ -L "$DESTINO/scripts/$ARCHIVO" ]]; then
     echo "ERROR: el script de destino es un enlace simbolico."
     exit 1
@@ -50,7 +50,7 @@ fi
 mkdir -p "$DESTINO/scripts"
 chmod 700 "$DESTINO" "$DESTINO/scripts"
 
-for ARCHIVO in backup.sh restaurar-prueba.sh programar-backup.sh; do
+for ARCHIVO in backup.sh restaurar-prueba.sh programar-backup.sh verificar-conteos.sh; do
   /usr/bin/install -m 700 "$RAIZ/scripts/$ARCHIVO" \
     "$DESTINO/scripts/$ARCHIVO"
   cmp -s "$RAIZ/scripts/$ARCHIVO" "$DESTINO/scripts/$ARCHIVO"

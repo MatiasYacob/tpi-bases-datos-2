@@ -35,6 +35,12 @@ for coleccion in clientes productos pedidos; do
   fi
 done
 
+if [[ ! -f "$COPIA/conteos-esperados.json" ||
+      ! -f "$RAIZ/scripts/verificar-conteos.sh" ]]; then
+  echo "ERROR: faltan los conteos esperados o el verificador."
+  exit 1
+fi
+
 #============# Proteger el destino #============#
 mongosh "$URI_LOCAL/$DESTINO" --quiet --eval '
   if (db.getCollectionNames().length > 0) {
@@ -70,6 +76,9 @@ mongosh "$URI_LOCAL/$DESTINO" --quiet --eval '
   print("Pedido recuperado:");
   printjson(pedido);
 '
+
+# Comparar conteos antes de informar exito.
+/bin/bash "$RAIZ/scripts/verificar-conteos.sh" "$FECHA"
 
 FIN="$(date +%s)"
 echo "OK: restauracion y consulta local completadas."
