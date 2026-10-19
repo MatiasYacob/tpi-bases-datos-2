@@ -176,7 +176,6 @@ Para reactivar a las 02:00, con MongoDB local disponible:
 
 Pendientes al retomar:
 - Actualizar las secciones anteriores de estado y pendientes.
-- Verificar registro repetido sin duplicados.
 - Completar pruebas de recuperacion y errores de acceso a Atlas.
 - Completar instalacion reproducible y evidencias.
 - Integrar y probar contra Atlas.
@@ -245,3 +244,17 @@ de ejecucion y sigue conectado exclusivamente a MongoDB local.
 
 Evidencia prevista:
 - 13-instalacion-macos.png
+
+## Registro repetido sin duplicados: 19 de octubre de 2026
+Se registro TPI-Tienda-Backup a las 02:00 y se volvio a registrar
+con el mismo nombre y horario.
+Despues del segundo registro, launchctl list mostro una sola tarea.
+La ejecucion al cargar termino con codigo 0 y omitio correctamente
+el respaldo existente del dia.
+
+Al finalizar se descargo la tarea y se movio el plist fuera de
+LaunchAgents. Se verificaron cero tareas cargadas y ausencia
+del archivo de inicio automatico.
+
+Evidencia prevista:
+- 14-registro-sin-duplicados.png
