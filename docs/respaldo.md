@@ -180,3 +180,17 @@ Pendientes al retomar:
 - Completar fallo de conexion de red y pruebas de recuperacion.
 - Completar instalacion reproducible y evidencias.
 - Integrar y probar contra Atlas.
+
+## Pruebas adicionales del 19 de octubre de 2026
+- Ejecucion desde la carpeta de usuario: el script genero el respaldo
+  del 19 de octubre dentro del proyecto y termino con codigo 0.
+  Se comprobo que las rutas no dependen del directorio actual.
+- Bloqueo ocupado simulado: se creo previamente .backup.lock.
+  El script rechazo la ejecucion con codigo 1.
+  Esta prueba no representa dos procesos reales simultaneos.
+- Se retiro el bloqueo de ensayo y se repitio la ejecucion:
+  la copia existente del dia se omitio correctamente con codigo 0.
+
+Evidencias previstas:
+- 10-backup-desde-otra-carpeta.png
+- 11-bloqueo-ocupado.png
