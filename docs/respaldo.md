@@ -101,7 +101,7 @@ Con una tarea diaria exitosa, el RPO objetivo seria de hasta unas
 24 horas. Aumentaria ante fallos o ejecuciones omitidas.
 
 ## Pendientes
-- Prueba de fallo de conexion.
+- Verificar errores de acceso y red de Atlas.
 - Programacion diaria y verificacion en macOS.
 - Respaldo remoto de Atlas con configuracion protegida.
 - Configuracion de permisos de restauracion en Atlas.
@@ -130,9 +130,9 @@ Las credenciales reales deben mantenerse fuera del repositorio.
 - Configuracion invalida: fallo automatico con codigo 1.
   Las huellas SHA-256 confirmaron que los archivos anteriores
   permanecieron iguales.
-- La prueba de fallo de conexion de red sigue pendiente:
-  el intento se interrumpio manualmente y no cuenta como prueba
-  de terminacion automatica ante fallo de red.
+- El primer ensayo de conexion se interrumpio manualmente.
+  La prueba local se completo el 19 de octubre de 2026;
+  consultar el resultado documentado mas adelante.
 
 Uso adicional:
     ./scripts/backup.sh --forzar
@@ -177,7 +177,7 @@ Para reactivar a las 02:00, con MongoDB local disponible:
 Pendientes al retomar:
 - Actualizar las secciones anteriores de estado y pendientes.
 - Verificar registro repetido sin duplicados.
-- Completar fallo de conexion de red y pruebas de recuperacion.
+- Completar pruebas de recuperacion y errores de acceso a Atlas.
 - Completar instalacion reproducible y evidencias.
 - Integrar y probar contra Atlas.
 
@@ -194,3 +194,23 @@ Pendientes al retomar:
 Evidencias previstas:
 - 10-backup-desde-otra-carpeta.png
 - 11-bloqueo-ocupado.png
+
+## Prueba de conexion fallida del 19 de octubre de 2026
+Se ejecuto una copia del script en un directorio temporal separado,
+con una copia del respaldo existente y conexion a 127.0.0.1:1.
+Antes de la prueba se comprobo que ese puerto estaba cerrado.
+
+El intento termino automaticamente en aproximadamente 31 segundos,
+sin intervencion manual. El script y la herramienta devolvieron
+codigo 1. La comparacion SHA-256 antes y despues no encontro
+diferencias: todos los archivos anteriores permanecieron intactos.
+
+El limitador externo de 10 segundos utilizado en el ensayo no fue
+efectivo. No se incorpora al script del proyecto ni se considera
+una garantia de tiempo maximo.
+
+Evidencia prevista:
+- 12-fallo-conexion-sin-perdida.png
+
+Esta prueba completa el caso local de conexion fallida.
+Queda pendiente verificar los errores de acceso y red de Atlas.
