@@ -1,0 +1,3 @@
+# Configuracion de ejemplo para MongoDB local.
+# La configuracion real se guarda en backup.config.yml.
+uri: "mongodb://127.0.0.1:27017"

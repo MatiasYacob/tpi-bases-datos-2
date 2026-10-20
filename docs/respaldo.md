@@ -1,3 +1,307 @@
-# Respaldo y restauración
+# Respaldo y restauracion
 
-Pendiente de implementar y documentar. Seguir guia-integrada.pdf y plantilla-tarea.md.
+## Responsable
+Brenda Florencia Romero.
+Revisor previsto: Matias Yacob.
+
+## Alcance de esta entrega
+Scripts Bash para macOS, probados con MongoDB local.
+El campus admite scripts .sh para Linux/Mac.
+La adaptacion de la guia interna de PowerShell a Bash debe
+comunicarse al grupo antes de integrar.
+
+## Herramientas utilizadas
+- mongosh 2.9.2.
+- mongodump 100.16.1.
+- mongorestore 100.16.1.
+- macOS ARM64.
+
+## Archivos
+- scripts/backup.sh: crea y valida el respaldo.
+- scripts/restaurar-prueba.sh: recupera una copia en una base local aislada.
+- scripts/backup.config.example.yml: plantilla sin secretos.
+- scripts/backup.config.yml: configuracion privada excluida de Git.
+- resguardos_tpi/: copias locales excluidas de Git.
+
+## Preparacion
+Desde la raiz del repositorio, copiar la plantilla:
+    cp -n scripts/backup.config.example.yml scripts/backup.config.yml
+
+Proteger la configuracion y habilitar los scripts:
+    chmod 600 scripts/backup.config.yml
+    chmod +x scripts/backup.sh scripts/restaurar-prueba.sh
+
+La plantilla apunta a MongoDB local en el puerto 27017.
+MongoDB debe estar funcionando.
+No publicar credenciales ni respaldos.
+
+## Respaldo
+Comando:
+    ./scripts/backup.sh
+
+Entrada: configuracion local y base tpi_tienda.
+Salida: resguardos_tpi/AAAA-MM-DD/tpi_tienda/.
+
+El script calcula las rutas desde su ubicacion y evita ejecuciones
+simultaneas mediante un bloqueo.
+Genera una copia temporal con mongodump, comprueba su codigo de salida
+y verifica los BSON y metadatos de clientes, productos y pedidos.
+Despues publica la carpeta fechada con una marca de finalizacion.
+
+Si ya existe una copia validada del dia, la omite.
+Ante un fallo, no reemplaza copias anteriores.
+La presencia de archivos no reemplaza la prueba de restauracion.
+
+mongodump produce un respaldo logico en BSON.
+Durante esta prueba local no se realizaron escrituras concurrentes.
+
+## Restauracion local
+Comando de la prueba realizada:
+    ./scripts/restaurar-prueba.sh 2026-10-18
+
+Entrada: fecha de un respaldo completo.
+Destino fijo: tpi_tienda_restore_test en MongoDB local.
+Mapeo: tpi_tienda.* -> tpi_tienda_restore_test.*
+
+El script valida los archivos y se detiene si el destino tiene
+colecciones. No reemplaza datos existentes ni restaura en tpi_tienda.
+Luego consulta conteos y un pedido activo con items.
+
+Ambos scripts devuelven 0 al finalizar correctamente y un codigo
+distinto de 0 ante error.
+
+## Pruebas realizadas el 18 de octubre de 2026
+Datos ficticios: un cliente, un producto y un pedido completado
+con dos unidades del producto.
+
+- Respaldo manual: copia creada con los archivos esperados.
+- Repeticion del respaldo: copia del dia omitida correctamente.
+- Restauracion: tres documentos recuperados y cero fallos.
+- Conteos: un cliente, un producto y un pedido, iguales al origen.
+- Pedido: conserva cliente, items y totalCentavos de 300000.
+- Destino ocupado: segunda restauracion rechazada sin reemplazar datos.
+
+mongorestore omitio los archivos auxiliares .completo y prelude.json.
+Las tres colecciones se recuperaron correctamente.
+
+## Evidencias
+Capturas guardadas por separado para incorporar a la entrega:
+- 01-datos-locales-antes-del-backup.png
+- 02-backup-local-correcto.png
+- 03-restauracion-local-correcta.png
+
+## RTO y RPO
+Tiempo medido en la prueba local: un segundo desde el inicio de la
+restauracion hasta finalizar las consultas del script.
+La muestra contiene tres documentos. Este tiempo no representa
+el RTO de Atlas ni la recuperacion completa del servicio.
+
+El respaldo actual es manual; no hay un RPO diario garantizado.
+Con una tarea diaria exitosa, el RPO objetivo seria de hasta unas
+24 horas. Aumentaria ante fallos o ejecuciones omitidas.
+
+## Pendientes
+- Verificar errores de acceso y red de Atlas.
+- Programacion diaria y verificacion en macOS.
+- Respaldo remoto de Atlas con configuracion protegida.
+- Configuracion de permisos de restauracion en Atlas.
+- Verificacion de datos reales, bajas logicas y reporte.
+- Medicion de recuperacion con datos del grupo.
+- Incorporacion de capturas y revision cruzada.
+
+## Requisitos para integrar con Atlas
+- Configuracion de conexion y permisos adecuados.
+- IP del equipo autorizada en Network Access.
+- Datos de prueba y conteos originales para verificar la recuperacion.
+
+El respaldo funciona independientemente de Express y del frontend.
+Las credenciales reales deben mantenerse fuera del repositorio.
+
+## Actualizacion de pruebas locales: 18 de octubre de 2026
+- Reemplazo con --forzar: nueva copia validada antes de sustituir
+  la anterior. Resultado correcto y codigo de salida 0.
+- Ejecucion normal con copia existente: omision y codigo 0.
+- Retencion: probada en un directorio temporal separado con seis
+  copias de fechas simuladas y una copia nueva del dia.
+  Se conservaron las cinco fechas completas mas recientes.
+  La carpeta incompleta y el archivo notas.txt quedaron intactos.
+- Interrupcion manual: codigo 130. Las huellas SHA-256 confirmaron
+  que todos los archivos anteriores permanecieron iguales.
+- Configuracion invalida: fallo automatico con codigo 1.
+  Las huellas SHA-256 confirmaron que los archivos anteriores
+  permanecieron iguales.
+- El primer ensayo de conexion se interrumpio manualmente.
+  La prueba local se completo el 19 de octubre de 2026;
+  consultar el resultado documentado mas adelante.
+
+Uso adicional:
+    ./scripts/backup.sh --forzar
+
+La retencion se ejecuta despues de publicar una copia nueva.
+Las fechas simuladas se utilizaron solo para probar la retencion;
+no representan respaldos realizados en dias anteriores.
+
+## Programacion en macOS y punto de pausa
+Se implemento scripts/programar-backup.sh usando launchd.
+La tarea se llama TPI-Tienda-Backup y utiliza rutas absolutas.
+El PATH incluye la ubicacion instalada de mongodump.
+
+macOS bloqueo la ejecucion desde el Escritorio.
+Se preparo una copia de ejecucion en:
+    ~/TPI-Tienda-Backup/scripts/
+
+Esta carpeta contiene backup.sh, programar-backup.sh y la
+configuracion privada. Sus respaldos y logs quedan en:
+    ~/TPI-Tienda-Backup/resguardos_tpi/
+
+El repositorio principal permanece en el Escritorio.
+Los cambios posteriores deben copiarse a la carpeta de ejecucion.
+La configuracion sigue apuntando a MongoDB local, no a Atlas.
+
+Pruebas realizadas:
+- Registro inicial a las 02:00 y respaldo al cargar: codigo 0.
+- Reprogramacion temporal a las 15:26.
+- Ejecucion por horario a las 15:26:05: copia existente omitida.
+- Estado consultado: runs = 2 y last exit code = 0.
+No se ha verificado todavia una ejecucion nocturna ni la
+recuperacion de horarios perdidos durante suspension o apagado.
+
+Pausa:
+La tarea se descargo con launchctl bootout y su archivo se movio
+fuera de LaunchAgents para evitar que se cargue al iniciar sesion.
+Los datos, respaldos y scripts se conservan.
+
+Para reactivar a las 02:00, con MongoDB local disponible:
+    /bin/bash "$HOME/TPI-Tienda-Backup/scripts/programar-backup.sh" 02:00
+
+Pendientes al retomar:
+- Actualizar las secciones anteriores de estado y pendientes.
+- Completar pruebas de recuperacion y errores de acceso a Atlas.
+- Completar instalacion reproducible y evidencias.
+- Integrar y probar contra Atlas.
+
+## Pruebas adicionales del 19 de octubre de 2026
+- Ejecucion desde la carpeta de usuario: el script genero el respaldo
+  del 19 de octubre dentro del proyecto y termino con codigo 0.
+  Se comprobo que las rutas no dependen del directorio actual.
+- Bloqueo ocupado simulado: se creo previamente .backup.lock.
+  El script rechazo la ejecucion con codigo 1.
+  Esta prueba no representa dos procesos reales simultaneos.
+- Se retiro el bloqueo de ensayo y se repitio la ejecucion:
+  la copia existente del dia se omitio correctamente con codigo 0.
+
+Evidencias previstas:
+- 10-backup-desde-otra-carpeta.png
+- 11-bloqueo-ocupado.png
+
+## Prueba de conexion fallida del 19 de octubre de 2026
+Se ejecuto una copia del script en un directorio temporal separado,
+con una copia del respaldo existente y conexion a 127.0.0.1:1.
+Antes de la prueba se comprobo que ese puerto estaba cerrado.
+
+El intento termino automaticamente en aproximadamente 31 segundos,
+sin intervencion manual. El script y la herramienta devolvieron
+codigo 1. La comparacion SHA-256 antes y despues no encontro
+diferencias: todos los archivos anteriores permanecieron intactos.
+
+El limitador externo de 10 segundos utilizado en el ensayo no fue
+efectivo. No se incorpora al script del proyecto ni se considera
+una garantia de tiempo maximo.
+
+Evidencia prevista:
+- 12-fallo-conexion-sin-perdida.png
+
+Esta prueba completa el caso local de conexion fallida.
+Queda pendiente verificar los errores de acceso y red de Atlas.
+
+## Instalacion reproducible en macOS
+El script scripts/instalar-macos.sh instala o actualiza backup.sh,
+restaurar-prueba.sh y programar-backup.sh en:
+    ~/TPI-Tienda-Backup/scripts/
+
+Comando desde el repositorio:
+    ./scripts/instalar-macos.sh
+
+Antes de instalar comprueba la sintaxis de los scripts y que
+la tarea TPI-Tienda-Backup no este cargada.
+Compara los scripts instalados con los originales.
+Conserva la configuracion privada existente. Si no existe,
+copia la configuracion local del proyecto con permisos 600.
+No activa la tarea ni modifica los respaldos existentes.
+
+Cada cambio en los scripts del repositorio requiere volver
+a ejecutar el instalador, con la tarea pausada.
+Los cambios de conexion deben aplicarse expresamente a la
+configuracion de ejecucion: el instalador no la sobrescribe.
+
+Pruebas del 19 de octubre de 2026:
+- Instalacion y comparacion de los tres scripts: codigo 0.
+- Reinstalacion: codigo 0.
+- Configuracion privada: misma huella SHA-256 antes y despues.
+
+El restaurador instalado utiliza los respaldos de la carpeta
+de ejecucion y sigue conectado exclusivamente a MongoDB local.
+
+Evidencia prevista:
+- 13-instalacion-macos.png
+
+## Registro repetido sin duplicados: 19 de octubre de 2026
+Se registro TPI-Tienda-Backup a las 02:00 y se volvio a registrar
+con el mismo nombre y horario.
+Despues del segundo registro, launchctl list mostro una sola tarea.
+La ejecucion al cargar termino con codigo 0 y omitio correctamente
+el respaldo existente del dia.
+
+Al finalizar se descargo la tarea y se movio el plist fuera de
+LaunchAgents. Se verificaron cero tareas cargadas y ausencia
+del archivo de inicio automatico.
+
+Evidencia prevista:
+- 14-registro-sin-duplicados.png
+
+## Comparacion automatica de conteos: 19 de octubre de 2026
+Se agrego scripts/verificar-conteos.sh.
+Lee conteos-esperados.json de la carpeta fechada y compara
+clientes, productos y pedidos con tpi_tienda_restore_test local.
+
+Comando:
+    ./scripts/verificar-conteos.sh 2026-10-19
+
+Preparacion realizada sin escrituras concurrentes:
+1. Consultar y guardar los conteos del origen antes del respaldo.
+2. Ejecutar el backup con --forzar.
+3. Tras el exito, copiar esos conteos a la carpeta de la copia
+   con el nombre conteos-esperados.json.
+
+Los conteos se registraron manualmente mediante mongosh;
+backup.sh todavia no genera ese archivo automaticamente.
+Un nuevo respaldo forzado sustituye la carpeta y requiere
+volver a registrar los conteos correspondientes.
+Nunca usar conteos actuales para representar una copia antigua
+si los datos cambiaron desde que fue creada.
+
+Pruebas:
+- Valores esperados 1/1/1 contra la base de prueba existente:
+  coincidencia y codigo 0.
+- Valores de ensayo 2/1/1 en carpeta temporal:
+  diferencia detectada en clientes y codigo 1.
+- Estas pruebas solo consultaron datos, sin modificarlos.
+- No se realizo una nueva restauracion del respaldo del dia.
+
+Integracion:
+El restaurador exige el archivo de conteos y llama al verificador
+antes de informar exito. Las copias sin ese archivo se rechazan.
+La sintaxis se comprobo; falta probar el flujo completo actualizado
+en un destino de prueba vacio o reemplazado con autorizacion.
+
+El instalador ahora incluye cuatro scripts.
+La actualizacion termino con codigo 0 y conservo la configuracion.
+Los conteos y respaldos del repositorio no se copian al despliegue;
+cada restauracion requiere su copia y archivo de conteos asociados.
+
+Coincidir en cantidad no demuestra igualdad de contenido.
+Quedan pendientes las validaciones de negocio y la prueba con Atlas.
+
+Evidencias previstas:
+- 15-conteos-coincidentes.png
+- 16-conteos-diferentes.png
