@@ -8,4 +8,5 @@ Validacion: npm test con MongoDB temporal; Atlas se verifica por separado.
 Decisiones: driver oficial, baja logica, centavos enteros, historial embebido,
 actualizacion de estado condicionada al estado previo.
 Defensa: explicar embedding/linking, unicidad permanente, calculo del total y unwind.
-Pendiente: conexion real Atlas, evidencia explain, revision de Javier e integracion.
+Atlas y frontend integrados. Evidencia explain local: evidencias/indices/README.md.
+Pendiente: completar ficha de pruebas reales, revision cruzada e informe final.

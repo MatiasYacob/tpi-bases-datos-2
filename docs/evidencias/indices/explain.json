@@ -1,0 +1,1521 @@
+{
+  "generadoUtc": "2026-10-22T13:25:23.442Z",
+  "entorno": "MongoDB temporal local, sin Atlas ni .env",
+  "node": "v24.13.1",
+  "mongodb": "7.0.24",
+  "muestra": {
+    "clientes": 100,
+    "productos": 10000,
+    "pedidos": 20000
+  },
+  "metodo": "Mismos datos y consultas; antes solo _id_; despues initialize(db); sin hint; resultados y orden comparados",
+  "emailDuplicado": "rechazado con codigo 11000",
+  "indices": {
+    "clientes": [
+      {
+        "v": 2,
+        "key": {
+          "_id": 1
+        },
+        "name": "_id_"
+      },
+      {
+        "v": 2,
+        "key": {
+          "email": 1
+        },
+        "name": "email_1",
+        "unique": true
+      }
+    ],
+    "productos": [
+      {
+        "v": 2,
+        "key": {
+          "_id": 1
+        },
+        "name": "_id_"
+      },
+      {
+        "v": 2,
+        "key": {
+          "activo": 1,
+          "categoria": 1,
+          "createdAt": -1,
+          "_id": -1
+        },
+        "name": "activo_1_categoria_1_createdAt_-1__id_-1"
+      }
+    ],
+    "pedidos": [
+      {
+        "v": 2,
+        "key": {
+          "_id": 1
+        },
+        "name": "_id_"
+      },
+      {
+        "v": 2,
+        "key": {
+          "activo": 1,
+          "createdAt": -1,
+          "_id": -1
+        },
+        "name": "activo_1_createdAt_-1__id_-1"
+      },
+      {
+        "v": 2,
+        "key": {
+          "clienteId": 1,
+          "activo": 1,
+          "estado": 1,
+          "createdAt": -1,
+          "_id": -1
+        },
+        "name": "clienteId_1_activo_1_estado_1_createdAt_-1__id_-1"
+      }
+    ]
+  },
+  "casos": [
+    {
+      "nombre": "Productos activos por categoria",
+      "antes": {
+        "consulta": {
+          "coleccion": "productos",
+          "filtro": {
+            "activo": true,
+            "categoria": "tecnologia"
+          },
+          "orden": {
+            "createdAt": -1,
+            "_id": -1
+          },
+          "pagina": 1,
+          "limite": 10
+        },
+        "ids": [
+          "000000000000000000002af7",
+          "000000000000000000002af4",
+          "000000000000000000002af1",
+          "000000000000000000002aeb",
+          "000000000000000000002ae8",
+          "000000000000000000002ae5",
+          "000000000000000000002ae2",
+          "000000000000000000002adf",
+          "000000000000000000002adc",
+          "000000000000000000002ad9"
+        ],
+        "resumen": {
+          "etapas": [
+            "SORT",
+            "COLLSCAN"
+          ],
+          "indices": [],
+          "devueltos": 10,
+          "documentosExaminados": 10000,
+          "clavesExaminadas": 0,
+          "tiempoMs": 14
+        },
+        "queryPlanner": {
+          "namespace": "tpi_evidencia_indices.productos",
+          "indexFilterSet": false,
+          "parsedQuery": {
+            "$and": [
+              {
+                "activo": {
+                  "$eq": true
+                }
+              },
+              {
+                "categoria": {
+                  "$eq": "tecnologia"
+                }
+              }
+            ]
+          },
+          "queryHash": "E1548DF1",
+          "planCacheKey": "E1548DF1",
+          "optimizationTimeMillis": 1,
+          "maxIndexedOrSolutionsReached": false,
+          "maxIndexedAndSolutionsReached": false,
+          "maxScansToExplodeReached": false,
+          "winningPlan": {
+            "stage": "SORT",
+            "sortPattern": {
+              "createdAt": -1,
+              "_id": -1
+            },
+            "memLimit": 104857600,
+            "limitAmount": 10,
+            "type": "simple",
+            "inputStage": {
+              "stage": "COLLSCAN",
+              "filter": {
+                "$and": [
+                  {
+                    "activo": {
+                      "$eq": true
+                    }
+                  },
+                  {
+                    "categoria": {
+                      "$eq": "tecnologia"
+                    }
+                  }
+                ]
+              },
+              "direction": "forward"
+            }
+          },
+          "rejectedPlans": []
+        },
+        "executionStats": {
+          "executionSuccess": true,
+          "nReturned": 10,
+          "executionTimeMillis": 14,
+          "totalKeysExamined": 0,
+          "totalDocsExamined": 10000,
+          "executionStages": {
+            "stage": "SORT",
+            "nReturned": 10,
+            "executionTimeMillisEstimate": 2,
+            "works": 10012,
+            "advanced": 10,
+            "needTime": 10001,
+            "needYield": 0,
+            "saveState": 10,
+            "restoreState": 10,
+            "isEOF": 1,
+            "sortPattern": {
+              "createdAt": -1,
+              "_id": -1
+            },
+            "memLimit": 104857600,
+            "limitAmount": 10,
+            "type": "simple",
+            "totalDataSizeSorted": 2910,
+            "usedDisk": false,
+            "spills": 0,
+            "spilledDataStorageSize": 0,
+            "inputStage": {
+              "stage": "COLLSCAN",
+              "filter": {
+                "$and": [
+                  {
+                    "activo": {
+                      "$eq": true
+                    }
+                  },
+                  {
+                    "categoria": {
+                      "$eq": "tecnologia"
+                    }
+                  }
+                ]
+              },
+              "nReturned": 3000,
+              "executionTimeMillisEstimate": 2,
+              "works": 10001,
+              "advanced": 3000,
+              "needTime": 7000,
+              "needYield": 0,
+              "saveState": 10,
+              "restoreState": 10,
+              "isEOF": 1,
+              "direction": "forward",
+              "docsExamined": 10000
+            }
+          }
+        }
+      },
+      "despues": {
+        "consulta": {
+          "coleccion": "productos",
+          "filtro": {
+            "activo": true,
+            "categoria": "tecnologia"
+          },
+          "orden": {
+            "createdAt": -1,
+            "_id": -1
+          },
+          "pagina": 1,
+          "limite": 10
+        },
+        "ids": [
+          "000000000000000000002af7",
+          "000000000000000000002af4",
+          "000000000000000000002af1",
+          "000000000000000000002aeb",
+          "000000000000000000002ae8",
+          "000000000000000000002ae5",
+          "000000000000000000002ae2",
+          "000000000000000000002adf",
+          "000000000000000000002adc",
+          "000000000000000000002ad9"
+        ],
+        "resumen": {
+          "etapas": [
+            "LIMIT",
+            "FETCH",
+            "IXSCAN"
+          ],
+          "indices": [
+            "activo_1_categoria_1_createdAt_-1__id_-1"
+          ],
+          "devueltos": 10,
+          "documentosExaminados": 10,
+          "clavesExaminadas": 10,
+          "tiempoMs": 2
+        },
+        "queryPlanner": {
+          "namespace": "tpi_evidencia_indices.productos",
+          "indexFilterSet": false,
+          "parsedQuery": {
+            "$and": [
+              {
+                "activo": {
+                  "$eq": true
+                }
+              },
+              {
+                "categoria": {
+                  "$eq": "tecnologia"
+                }
+              }
+            ]
+          },
+          "queryHash": "E1548DF1",
+          "planCacheKey": "EBB88EEA",
+          "optimizationTimeMillis": 0,
+          "maxIndexedOrSolutionsReached": false,
+          "maxIndexedAndSolutionsReached": false,
+          "maxScansToExplodeReached": false,
+          "winningPlan": {
+            "stage": "LIMIT",
+            "limitAmount": 10,
+            "inputStage": {
+              "stage": "FETCH",
+              "inputStage": {
+                "stage": "IXSCAN",
+                "keyPattern": {
+                  "activo": 1,
+                  "categoria": 1,
+                  "createdAt": -1,
+                  "_id": -1
+                },
+                "indexName": "activo_1_categoria_1_createdAt_-1__id_-1",
+                "isMultiKey": false,
+                "multiKeyPaths": {
+                  "activo": [],
+                  "categoria": [],
+                  "createdAt": [],
+                  "_id": []
+                },
+                "isUnique": false,
+                "isSparse": false,
+                "isPartial": false,
+                "indexVersion": 2,
+                "direction": "forward",
+                "indexBounds": {
+                  "activo": [
+                    "[true, true]"
+                  ],
+                  "categoria": [
+                    "[\"tecnologia\", \"tecnologia\"]"
+                  ],
+                  "createdAt": [
+                    "[MaxKey, MinKey]"
+                  ],
+                  "_id": [
+                    "[MaxKey, MinKey]"
+                  ]
+                }
+              }
+            }
+          },
+          "rejectedPlans": []
+        },
+        "executionStats": {
+          "executionSuccess": true,
+          "nReturned": 10,
+          "executionTimeMillis": 2,
+          "totalKeysExamined": 10,
+          "totalDocsExamined": 10,
+          "executionStages": {
+            "stage": "LIMIT",
+            "nReturned": 10,
+            "executionTimeMillisEstimate": 0,
+            "works": 11,
+            "advanced": 10,
+            "needTime": 0,
+            "needYield": 0,
+            "saveState": 0,
+            "restoreState": 0,
+            "isEOF": 1,
+            "limitAmount": 10,
+            "inputStage": {
+              "stage": "FETCH",
+              "nReturned": 10,
+              "executionTimeMillisEstimate": 0,
+              "works": 10,
+              "advanced": 10,
+              "needTime": 0,
+              "needYield": 0,
+              "saveState": 0,
+              "restoreState": 0,
+              "isEOF": 0,
+              "docsExamined": 10,
+              "alreadyHasObj": 0,
+              "inputStage": {
+                "stage": "IXSCAN",
+                "nReturned": 10,
+                "executionTimeMillisEstimate": 0,
+                "works": 10,
+                "advanced": 10,
+                "needTime": 0,
+                "needYield": 0,
+                "saveState": 0,
+                "restoreState": 0,
+                "isEOF": 0,
+                "keyPattern": {
+                  "activo": 1,
+                  "categoria": 1,
+                  "createdAt": -1,
+                  "_id": -1
+                },
+                "indexName": "activo_1_categoria_1_createdAt_-1__id_-1",
+                "isMultiKey": false,
+                "multiKeyPaths": {
+                  "activo": [],
+                  "categoria": [],
+                  "createdAt": [],
+                  "_id": []
+                },
+                "isUnique": false,
+                "isSparse": false,
+                "isPartial": false,
+                "indexVersion": 2,
+                "direction": "forward",
+                "indexBounds": {
+                  "activo": [
+                    "[true, true]"
+                  ],
+                  "categoria": [
+                    "[\"tecnologia\", \"tecnologia\"]"
+                  ],
+                  "createdAt": [
+                    "[MaxKey, MinKey]"
+                  ],
+                  "_id": [
+                    "[MaxKey, MinKey]"
+                  ]
+                },
+                "keysExamined": 10,
+                "seeks": 1,
+                "dupsTested": 0,
+                "dupsDropped": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "nombre": "Pedidos activos generales",
+      "antes": {
+        "consulta": {
+          "coleccion": "pedidos",
+          "filtro": {
+            "activo": true
+          },
+          "orden": {
+            "createdAt": -1,
+            "_id": -1
+          },
+          "pagina": 1,
+          "limite": 10
+        },
+        "ids": [
+          "00000000000000000001d4bf",
+          "00000000000000000001d4bd",
+          "00000000000000000001d4bc",
+          "00000000000000000001d4bb",
+          "00000000000000000001d4ba",
+          "00000000000000000001d4b9",
+          "00000000000000000001d4b8",
+          "00000000000000000001d4b7",
+          "00000000000000000001d4b6",
+          "00000000000000000001d4b5"
+        ],
+        "resumen": {
+          "etapas": [
+            "SORT",
+            "COLLSCAN"
+          ],
+          "indices": [],
+          "devueltos": 10,
+          "documentosExaminados": 20000,
+          "clavesExaminadas": 0,
+          "tiempoMs": 24
+        },
+        "queryPlanner": {
+          "namespace": "tpi_evidencia_indices.pedidos",
+          "indexFilterSet": false,
+          "parsedQuery": {
+            "activo": {
+              "$eq": true
+            }
+          },
+          "queryHash": "B60616A7",
+          "planCacheKey": "B60616A7",
+          "optimizationTimeMillis": 0,
+          "maxIndexedOrSolutionsReached": false,
+          "maxIndexedAndSolutionsReached": false,
+          "maxScansToExplodeReached": false,
+          "winningPlan": {
+            "stage": "SORT",
+            "sortPattern": {
+              "createdAt": -1,
+              "_id": -1
+            },
+            "memLimit": 104857600,
+            "limitAmount": 10,
+            "type": "simple",
+            "inputStage": {
+              "stage": "COLLSCAN",
+              "filter": {
+                "activo": {
+                  "$eq": true
+                }
+              },
+              "direction": "forward"
+            }
+          },
+          "rejectedPlans": []
+        },
+        "executionStats": {
+          "executionSuccess": true,
+          "nReturned": 10,
+          "executionTimeMillis": 24,
+          "totalKeysExamined": 0,
+          "totalDocsExamined": 20000,
+          "executionStages": {
+            "stage": "SORT",
+            "nReturned": 10,
+            "executionTimeMillisEstimate": 4,
+            "works": 20012,
+            "advanced": 10,
+            "needTime": 20001,
+            "needYield": 0,
+            "saveState": 20,
+            "restoreState": 20,
+            "isEOF": 1,
+            "sortPattern": {
+              "createdAt": -1,
+              "_id": -1
+            },
+            "memLimit": 104857600,
+            "limitAmount": 10,
+            "type": "simple",
+            "totalDataSizeSorted": 4989,
+            "usedDisk": false,
+            "spills": 0,
+            "spilledDataStorageSize": 0,
+            "inputStage": {
+              "stage": "COLLSCAN",
+              "filter": {
+                "activo": {
+                  "$eq": true
+                }
+              },
+              "nReturned": 18181,
+              "executionTimeMillisEstimate": 3,
+              "works": 20001,
+              "advanced": 18181,
+              "needTime": 1819,
+              "needYield": 0,
+              "saveState": 20,
+              "restoreState": 20,
+              "isEOF": 1,
+              "direction": "forward",
+              "docsExamined": 20000
+            }
+          }
+        }
+      },
+      "despues": {
+        "consulta": {
+          "coleccion": "pedidos",
+          "filtro": {
+            "activo": true
+          },
+          "orden": {
+            "createdAt": -1,
+            "_id": -1
+          },
+          "pagina": 1,
+          "limite": 10
+        },
+        "ids": [
+          "00000000000000000001d4bf",
+          "00000000000000000001d4bd",
+          "00000000000000000001d4bc",
+          "00000000000000000001d4bb",
+          "00000000000000000001d4ba",
+          "00000000000000000001d4b9",
+          "00000000000000000001d4b8",
+          "00000000000000000001d4b7",
+          "00000000000000000001d4b6",
+          "00000000000000000001d4b5"
+        ],
+        "resumen": {
+          "etapas": [
+            "LIMIT",
+            "FETCH",
+            "IXSCAN"
+          ],
+          "indices": [
+            "activo_1_createdAt_-1__id_-1"
+          ],
+          "devueltos": 10,
+          "documentosExaminados": 10,
+          "clavesExaminadas": 10,
+          "tiempoMs": 1
+        },
+        "queryPlanner": {
+          "namespace": "tpi_evidencia_indices.pedidos",
+          "indexFilterSet": false,
+          "parsedQuery": {
+            "activo": {
+              "$eq": true
+            }
+          },
+          "queryHash": "B60616A7",
+          "planCacheKey": "E6803064",
+          "optimizationTimeMillis": 0,
+          "maxIndexedOrSolutionsReached": false,
+          "maxIndexedAndSolutionsReached": false,
+          "maxScansToExplodeReached": false,
+          "winningPlan": {
+            "stage": "LIMIT",
+            "limitAmount": 10,
+            "inputStage": {
+              "stage": "FETCH",
+              "inputStage": {
+                "stage": "IXSCAN",
+                "keyPattern": {
+                  "activo": 1,
+                  "createdAt": -1,
+                  "_id": -1
+                },
+                "indexName": "activo_1_createdAt_-1__id_-1",
+                "isMultiKey": false,
+                "multiKeyPaths": {
+                  "activo": [],
+                  "createdAt": [],
+                  "_id": []
+                },
+                "isUnique": false,
+                "isSparse": false,
+                "isPartial": false,
+                "indexVersion": 2,
+                "direction": "forward",
+                "indexBounds": {
+                  "activo": [
+                    "[true, true]"
+                  ],
+                  "createdAt": [
+                    "[MaxKey, MinKey]"
+                  ],
+                  "_id": [
+                    "[MaxKey, MinKey]"
+                  ]
+                }
+              }
+            }
+          },
+          "rejectedPlans": []
+        },
+        "executionStats": {
+          "executionSuccess": true,
+          "nReturned": 10,
+          "executionTimeMillis": 1,
+          "totalKeysExamined": 10,
+          "totalDocsExamined": 10,
+          "executionStages": {
+            "stage": "LIMIT",
+            "nReturned": 10,
+            "executionTimeMillisEstimate": 0,
+            "works": 11,
+            "advanced": 10,
+            "needTime": 0,
+            "needYield": 0,
+            "saveState": 0,
+            "restoreState": 0,
+            "isEOF": 1,
+            "limitAmount": 10,
+            "inputStage": {
+              "stage": "FETCH",
+              "nReturned": 10,
+              "executionTimeMillisEstimate": 0,
+              "works": 10,
+              "advanced": 10,
+              "needTime": 0,
+              "needYield": 0,
+              "saveState": 0,
+              "restoreState": 0,
+              "isEOF": 0,
+              "docsExamined": 10,
+              "alreadyHasObj": 0,
+              "inputStage": {
+                "stage": "IXSCAN",
+                "nReturned": 10,
+                "executionTimeMillisEstimate": 0,
+                "works": 10,
+                "advanced": 10,
+                "needTime": 0,
+                "needYield": 0,
+                "saveState": 0,
+                "restoreState": 0,
+                "isEOF": 0,
+                "keyPattern": {
+                  "activo": 1,
+                  "createdAt": -1,
+                  "_id": -1
+                },
+                "indexName": "activo_1_createdAt_-1__id_-1",
+                "isMultiKey": false,
+                "multiKeyPaths": {
+                  "activo": [],
+                  "createdAt": [],
+                  "_id": []
+                },
+                "isUnique": false,
+                "isSparse": false,
+                "isPartial": false,
+                "indexVersion": 2,
+                "direction": "forward",
+                "indexBounds": {
+                  "activo": [
+                    "[true, true]"
+                  ],
+                  "createdAt": [
+                    "[MaxKey, MinKey]"
+                  ],
+                  "_id": [
+                    "[MaxKey, MinKey]"
+                  ]
+                },
+                "keysExamined": 10,
+                "seeks": 1,
+                "dupsTested": 0,
+                "dupsDropped": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "nombre": "Pedidos de un cliente por estado y fecha",
+      "antes": {
+        "consulta": {
+          "coleccion": "pedidos",
+          "filtro": {
+            "activo": true,
+            "createdAt": {
+              "$gte": "2026-01-05T00:00:00.000Z",
+              "$lt": "2026-01-14T00:00:00.000Z"
+            },
+            "clienteId": "000000000000000000000002",
+            "estado": "completado"
+          },
+          "orden": {
+            "createdAt": -1,
+            "_id": -1
+          },
+          "pagina": 1,
+          "limite": 10
+        },
+        "ids": [
+          "00000000000000000001cdb9",
+          "00000000000000000001cc29",
+          "00000000000000000001ca99",
+          "00000000000000000001c909",
+          "00000000000000000001c779",
+          "00000000000000000001c5e9",
+          "00000000000000000001c459",
+          "00000000000000000001c2c9",
+          "00000000000000000001c139",
+          "00000000000000000001bfa9"
+        ],
+        "resumen": {
+          "etapas": [
+            "SORT",
+            "COLLSCAN"
+          ],
+          "indices": [],
+          "devueltos": 10,
+          "documentosExaminados": 20000,
+          "clavesExaminadas": 0,
+          "tiempoMs": 17
+        },
+        "queryPlanner": {
+          "namespace": "tpi_evidencia_indices.pedidos",
+          "indexFilterSet": false,
+          "parsedQuery": {
+            "$and": [
+              {
+                "activo": {
+                  "$eq": true
+                }
+              },
+              {
+                "clienteId": {
+                  "$eq": "000000000000000000000002"
+                }
+              },
+              {
+                "estado": {
+                  "$eq": "completado"
+                }
+              },
+              {
+                "createdAt": {
+                  "$lt": "2026-01-14T00:00:00.000Z"
+                }
+              },
+              {
+                "createdAt": {
+                  "$gte": "2026-01-05T00:00:00.000Z"
+                }
+              }
+            ]
+          },
+          "queryHash": "60935755",
+          "planCacheKey": "60935755",
+          "optimizationTimeMillis": 0,
+          "maxIndexedOrSolutionsReached": false,
+          "maxIndexedAndSolutionsReached": false,
+          "maxScansToExplodeReached": false,
+          "winningPlan": {
+            "stage": "SORT",
+            "sortPattern": {
+              "createdAt": -1,
+              "_id": -1
+            },
+            "memLimit": 104857600,
+            "limitAmount": 10,
+            "type": "simple",
+            "inputStage": {
+              "stage": "COLLSCAN",
+              "filter": {
+                "$and": [
+                  {
+                    "activo": {
+                      "$eq": true
+                    }
+                  },
+                  {
+                    "clienteId": {
+                      "$eq": "000000000000000000000002"
+                    }
+                  },
+                  {
+                    "estado": {
+                      "$eq": "completado"
+                    }
+                  },
+                  {
+                    "createdAt": {
+                      "$lt": "2026-01-14T00:00:00.000Z"
+                    }
+                  },
+                  {
+                    "createdAt": {
+                      "$gte": "2026-01-05T00:00:00.000Z"
+                    }
+                  }
+                ]
+              },
+              "direction": "forward"
+            }
+          },
+          "rejectedPlans": []
+        },
+        "executionStats": {
+          "executionSuccess": true,
+          "nReturned": 10,
+          "executionTimeMillis": 17,
+          "totalKeysExamined": 0,
+          "totalDocsExamined": 20000,
+          "executionStages": {
+            "stage": "SORT",
+            "nReturned": 10,
+            "executionTimeMillisEstimate": 1,
+            "works": 20012,
+            "advanced": 10,
+            "needTime": 20001,
+            "needYield": 0,
+            "saveState": 20,
+            "restoreState": 20,
+            "isEOF": 1,
+            "sortPattern": {
+              "createdAt": -1,
+              "_id": -1
+            },
+            "memLimit": 104857600,
+            "limitAmount": 10,
+            "type": "simple",
+            "totalDataSizeSorted": 4974,
+            "usedDisk": false,
+            "spills": 0,
+            "spilledDataStorageSize": 0,
+            "inputStage": {
+              "stage": "COLLSCAN",
+              "filter": {
+                "$and": [
+                  {
+                    "activo": {
+                      "$eq": true
+                    }
+                  },
+                  {
+                    "clienteId": {
+                      "$eq": "000000000000000000000002"
+                    }
+                  },
+                  {
+                    "estado": {
+                      "$eq": "completado"
+                    }
+                  },
+                  {
+                    "createdAt": {
+                      "$lt": "2026-01-14T00:00:00.000Z"
+                    }
+                  },
+                  {
+                    "createdAt": {
+                      "$gte": "2026-01-05T00:00:00.000Z"
+                    }
+                  }
+                ]
+              },
+              "nReturned": 30,
+              "executionTimeMillisEstimate": 1,
+              "works": 20001,
+              "advanced": 30,
+              "needTime": 19970,
+              "needYield": 0,
+              "saveState": 20,
+              "restoreState": 20,
+              "isEOF": 1,
+              "direction": "forward",
+              "docsExamined": 20000
+            }
+          }
+        }
+      },
+      "despues": {
+        "consulta": {
+          "coleccion": "pedidos",
+          "filtro": {
+            "activo": true,
+            "createdAt": {
+              "$gte": "2026-01-05T00:00:00.000Z",
+              "$lt": "2026-01-14T00:00:00.000Z"
+            },
+            "clienteId": "000000000000000000000002",
+            "estado": "completado"
+          },
+          "orden": {
+            "createdAt": -1,
+            "_id": -1
+          },
+          "pagina": 1,
+          "limite": 10
+        },
+        "ids": [
+          "00000000000000000001cdb9",
+          "00000000000000000001cc29",
+          "00000000000000000001ca99",
+          "00000000000000000001c909",
+          "00000000000000000001c779",
+          "00000000000000000001c5e9",
+          "00000000000000000001c459",
+          "00000000000000000001c2c9",
+          "00000000000000000001c139",
+          "00000000000000000001bfa9"
+        ],
+        "resumen": {
+          "etapas": [
+            "LIMIT",
+            "FETCH",
+            "IXSCAN"
+          ],
+          "indices": [
+            "clienteId_1_activo_1_estado_1_createdAt_-1__id_-1"
+          ],
+          "devueltos": 10,
+          "documentosExaminados": 10,
+          "clavesExaminadas": 10,
+          "tiempoMs": 1
+        },
+        "queryPlanner": {
+          "namespace": "tpi_evidencia_indices.pedidos",
+          "indexFilterSet": false,
+          "parsedQuery": {
+            "$and": [
+              {
+                "activo": {
+                  "$eq": true
+                }
+              },
+              {
+                "clienteId": {
+                  "$eq": "000000000000000000000002"
+                }
+              },
+              {
+                "estado": {
+                  "$eq": "completado"
+                }
+              },
+              {
+                "createdAt": {
+                  "$lt": "2026-01-14T00:00:00.000Z"
+                }
+              },
+              {
+                "createdAt": {
+                  "$gte": "2026-01-05T00:00:00.000Z"
+                }
+              }
+            ]
+          },
+          "queryHash": "60935755",
+          "planCacheKey": "ABF974E9",
+          "optimizationTimeMillis": 1,
+          "maxIndexedOrSolutionsReached": false,
+          "maxIndexedAndSolutionsReached": false,
+          "maxScansToExplodeReached": false,
+          "winningPlan": {
+            "stage": "LIMIT",
+            "limitAmount": 10,
+            "inputStage": {
+              "stage": "FETCH",
+              "inputStage": {
+                "stage": "IXSCAN",
+                "keyPattern": {
+                  "clienteId": 1,
+                  "activo": 1,
+                  "estado": 1,
+                  "createdAt": -1,
+                  "_id": -1
+                },
+                "indexName": "clienteId_1_activo_1_estado_1_createdAt_-1__id_-1",
+                "isMultiKey": false,
+                "multiKeyPaths": {
+                  "clienteId": [],
+                  "activo": [],
+                  "estado": [],
+                  "createdAt": [],
+                  "_id": []
+                },
+                "isUnique": false,
+                "isSparse": false,
+                "isPartial": false,
+                "indexVersion": 2,
+                "direction": "forward",
+                "indexBounds": {
+                  "clienteId": [
+                    "[ObjectId('000000000000000000000002'), ObjectId('000000000000000000000002')]"
+                  ],
+                  "activo": [
+                    "[true, true]"
+                  ],
+                  "estado": [
+                    "[\"completado\", \"completado\"]"
+                  ],
+                  "createdAt": [
+                    "(new Date(1768348800000), new Date(1767571200000)]"
+                  ],
+                  "_id": [
+                    "[MaxKey, MinKey]"
+                  ]
+                }
+              }
+            }
+          },
+          "rejectedPlans": [
+            {
+              "stage": "LIMIT",
+              "limitAmount": 10,
+              "inputStage": {
+                "stage": "FETCH",
+                "filter": {
+                  "$and": [
+                    {
+                      "clienteId": {
+                        "$eq": "000000000000000000000002"
+                      }
+                    },
+                    {
+                      "estado": {
+                        "$eq": "completado"
+                      }
+                    }
+                  ]
+                },
+                "inputStage": {
+                  "stage": "IXSCAN",
+                  "keyPattern": {
+                    "activo": 1,
+                    "createdAt": -1,
+                    "_id": -1
+                  },
+                  "indexName": "activo_1_createdAt_-1__id_-1",
+                  "isMultiKey": false,
+                  "multiKeyPaths": {
+                    "activo": [],
+                    "createdAt": [],
+                    "_id": []
+                  },
+                  "isUnique": false,
+                  "isSparse": false,
+                  "isPartial": false,
+                  "indexVersion": 2,
+                  "direction": "forward",
+                  "indexBounds": {
+                    "activo": [
+                      "[true, true]"
+                    ],
+                    "createdAt": [
+                      "(new Date(1768348800000), new Date(1767571200000)]"
+                    ],
+                    "_id": [
+                      "[MaxKey, MinKey]"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "executionStats": {
+          "executionSuccess": true,
+          "nReturned": 10,
+          "executionTimeMillis": 1,
+          "totalKeysExamined": 10,
+          "totalDocsExamined": 10,
+          "executionStages": {
+            "stage": "LIMIT",
+            "nReturned": 10,
+            "executionTimeMillisEstimate": 0,
+            "works": 11,
+            "advanced": 10,
+            "needTime": 0,
+            "needYield": 0,
+            "saveState": 0,
+            "restoreState": 0,
+            "isEOF": 1,
+            "limitAmount": 10,
+            "inputStage": {
+              "stage": "FETCH",
+              "nReturned": 10,
+              "executionTimeMillisEstimate": 0,
+              "works": 10,
+              "advanced": 10,
+              "needTime": 0,
+              "needYield": 0,
+              "saveState": 0,
+              "restoreState": 0,
+              "isEOF": 0,
+              "docsExamined": 10,
+              "alreadyHasObj": 0,
+              "inputStage": {
+                "stage": "IXSCAN",
+                "nReturned": 10,
+                "executionTimeMillisEstimate": 0,
+                "works": 10,
+                "advanced": 10,
+                "needTime": 0,
+                "needYield": 0,
+                "saveState": 0,
+                "restoreState": 0,
+                "isEOF": 0,
+                "keyPattern": {
+                  "clienteId": 1,
+                  "activo": 1,
+                  "estado": 1,
+                  "createdAt": -1,
+                  "_id": -1
+                },
+                "indexName": "clienteId_1_activo_1_estado_1_createdAt_-1__id_-1",
+                "isMultiKey": false,
+                "multiKeyPaths": {
+                  "clienteId": [],
+                  "activo": [],
+                  "estado": [],
+                  "createdAt": [],
+                  "_id": []
+                },
+                "isUnique": false,
+                "isSparse": false,
+                "isPartial": false,
+                "indexVersion": 2,
+                "direction": "forward",
+                "indexBounds": {
+                  "clienteId": [
+                    "[ObjectId('000000000000000000000002'), ObjectId('000000000000000000000002')]"
+                  ],
+                  "activo": [
+                    "[true, true]"
+                  ],
+                  "estado": [
+                    "[\"completado\", \"completado\"]"
+                  ],
+                  "createdAt": [
+                    "(new Date(1768348800000), new Date(1767571200000)]"
+                  ],
+                  "_id": [
+                    "[MaxKey, MinKey]"
+                  ]
+                },
+                "keysExamined": 10,
+                "seeks": 1,
+                "dupsTested": 0,
+                "dupsDropped": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "nombre": "Control: productos sin filtro de categoria",
+      "antes": {
+        "consulta": {
+          "coleccion": "productos",
+          "filtro": {
+            "activo": true
+          },
+          "orden": {
+            "createdAt": -1,
+            "_id": -1
+          },
+          "pagina": 1,
+          "limite": 10
+        },
+        "ids": [
+          "000000000000000000002af7",
+          "000000000000000000002af6",
+          "000000000000000000002af5",
+          "000000000000000000002af4",
+          "000000000000000000002af3",
+          "000000000000000000002af2",
+          "000000000000000000002af1",
+          "000000000000000000002af0",
+          "000000000000000000002aef",
+          "000000000000000000002aed"
+        ],
+        "resumen": {
+          "etapas": [
+            "SORT",
+            "COLLSCAN"
+          ],
+          "indices": [],
+          "devueltos": 10,
+          "documentosExaminados": 10000,
+          "clavesExaminadas": 0,
+          "tiempoMs": 12
+        },
+        "queryPlanner": {
+          "namespace": "tpi_evidencia_indices.productos",
+          "indexFilterSet": false,
+          "parsedQuery": {
+            "activo": {
+              "$eq": true
+            }
+          },
+          "queryHash": "B60616A7",
+          "planCacheKey": "B60616A7",
+          "optimizationTimeMillis": 0,
+          "maxIndexedOrSolutionsReached": false,
+          "maxIndexedAndSolutionsReached": false,
+          "maxScansToExplodeReached": false,
+          "winningPlan": {
+            "stage": "SORT",
+            "sortPattern": {
+              "createdAt": -1,
+              "_id": -1
+            },
+            "memLimit": 104857600,
+            "limitAmount": 10,
+            "type": "simple",
+            "inputStage": {
+              "stage": "COLLSCAN",
+              "filter": {
+                "activo": {
+                  "$eq": true
+                }
+              },
+              "direction": "forward"
+            }
+          },
+          "rejectedPlans": []
+        },
+        "executionStats": {
+          "executionSuccess": true,
+          "nReturned": 10,
+          "executionTimeMillis": 12,
+          "totalKeysExamined": 0,
+          "totalDocsExamined": 10000,
+          "executionStages": {
+            "stage": "SORT",
+            "nReturned": 10,
+            "executionTimeMillisEstimate": 1,
+            "works": 10012,
+            "advanced": 10,
+            "needTime": 10001,
+            "needYield": 0,
+            "saveState": 10,
+            "restoreState": 10,
+            "isEOF": 1,
+            "sortPattern": {
+              "createdAt": -1,
+              "_id": -1
+            },
+            "memLimit": 104857600,
+            "limitAmount": 10,
+            "type": "simple",
+            "totalDataSizeSorted": 2884,
+            "usedDisk": false,
+            "spills": 0,
+            "spilledDataStorageSize": 0,
+            "inputStage": {
+              "stage": "COLLSCAN",
+              "filter": {
+                "activo": {
+                  "$eq": true
+                }
+              },
+              "nReturned": 9000,
+              "executionTimeMillisEstimate": 0,
+              "works": 10001,
+              "advanced": 9000,
+              "needTime": 1000,
+              "needYield": 0,
+              "saveState": 10,
+              "restoreState": 10,
+              "isEOF": 1,
+              "direction": "forward",
+              "docsExamined": 10000
+            }
+          }
+        }
+      },
+      "despues": {
+        "consulta": {
+          "coleccion": "productos",
+          "filtro": {
+            "activo": true
+          },
+          "orden": {
+            "createdAt": -1,
+            "_id": -1
+          },
+          "pagina": 1,
+          "limite": 10
+        },
+        "ids": [
+          "000000000000000000002af7",
+          "000000000000000000002af6",
+          "000000000000000000002af5",
+          "000000000000000000002af4",
+          "000000000000000000002af3",
+          "000000000000000000002af2",
+          "000000000000000000002af1",
+          "000000000000000000002af0",
+          "000000000000000000002aef",
+          "000000000000000000002aed"
+        ],
+        "resumen": {
+          "etapas": [
+            "FETCH",
+            "SORT",
+            "IXSCAN"
+          ],
+          "indices": [
+            "activo_1_categoria_1_createdAt_-1__id_-1"
+          ],
+          "devueltos": 10,
+          "documentosExaminados": 10,
+          "clavesExaminadas": 9000,
+          "tiempoMs": 15
+        },
+        "queryPlanner": {
+          "namespace": "tpi_evidencia_indices.productos",
+          "indexFilterSet": false,
+          "parsedQuery": {
+            "activo": {
+              "$eq": true
+            }
+          },
+          "queryHash": "B60616A7",
+          "planCacheKey": "130E5D00",
+          "optimizationTimeMillis": 0,
+          "maxIndexedOrSolutionsReached": false,
+          "maxIndexedAndSolutionsReached": false,
+          "maxScansToExplodeReached": false,
+          "winningPlan": {
+            "stage": "FETCH",
+            "inputStage": {
+              "stage": "SORT",
+              "sortPattern": {
+                "createdAt": -1,
+                "_id": -1
+              },
+              "memLimit": 104857600,
+              "limitAmount": 10,
+              "type": "default",
+              "inputStage": {
+                "stage": "IXSCAN",
+                "keyPattern": {
+                  "activo": 1,
+                  "categoria": 1,
+                  "createdAt": -1,
+                  "_id": -1
+                },
+                "indexName": "activo_1_categoria_1_createdAt_-1__id_-1",
+                "isMultiKey": false,
+                "multiKeyPaths": {
+                  "activo": [],
+                  "categoria": [],
+                  "createdAt": [],
+                  "_id": []
+                },
+                "isUnique": false,
+                "isSparse": false,
+                "isPartial": false,
+                "indexVersion": 2,
+                "direction": "forward",
+                "indexBounds": {
+                  "activo": [
+                    "[true, true]"
+                  ],
+                  "categoria": [
+                    "[MinKey, MaxKey]"
+                  ],
+                  "createdAt": [
+                    "[MaxKey, MinKey]"
+                  ],
+                  "_id": [
+                    "[MaxKey, MinKey]"
+                  ]
+                }
+              }
+            }
+          },
+          "rejectedPlans": []
+        },
+        "executionStats": {
+          "executionSuccess": true,
+          "nReturned": 10,
+          "executionTimeMillis": 15,
+          "totalKeysExamined": 9000,
+          "totalDocsExamined": 10,
+          "executionStages": {
+            "stage": "FETCH",
+            "nReturned": 10,
+            "executionTimeMillisEstimate": 1,
+            "works": 9012,
+            "advanced": 10,
+            "needTime": 9001,
+            "needYield": 0,
+            "saveState": 9,
+            "restoreState": 9,
+            "isEOF": 1,
+            "docsExamined": 10,
+            "alreadyHasObj": 0,
+            "inputStage": {
+              "stage": "SORT",
+              "nReturned": 10,
+              "executionTimeMillisEstimate": 1,
+              "works": 9012,
+              "advanced": 10,
+              "needTime": 9001,
+              "needYield": 0,
+              "saveState": 9,
+              "restoreState": 9,
+              "isEOF": 1,
+              "sortPattern": {
+                "createdAt": -1,
+                "_id": -1
+              },
+              "memLimit": 104857600,
+              "limitAmount": 10,
+              "type": "default",
+              "totalDataSizeSorted": 1664,
+              "usedDisk": false,
+              "spills": 0,
+              "spilledDataStorageSize": 0,
+              "inputStage": {
+                "stage": "IXSCAN",
+                "nReturned": 9000,
+                "executionTimeMillisEstimate": 0,
+                "works": 9001,
+                "advanced": 9000,
+                "needTime": 0,
+                "needYield": 0,
+                "saveState": 9,
+                "restoreState": 9,
+                "isEOF": 1,
+                "keyPattern": {
+                  "activo": 1,
+                  "categoria": 1,
+                  "createdAt": -1,
+                  "_id": -1
+                },
+                "indexName": "activo_1_categoria_1_createdAt_-1__id_-1",
+                "isMultiKey": false,
+                "multiKeyPaths": {
+                  "activo": [],
+                  "categoria": [],
+                  "createdAt": [],
+                  "_id": []
+                },
+                "isUnique": false,
+                "isSparse": false,
+                "isPartial": false,
+                "indexVersion": 2,
+                "direction": "forward",
+                "indexBounds": {
+                  "activo": [
+                    "[true, true]"
+                  ],
+                  "categoria": [
+                    "[MinKey, MaxKey]"
+                  ],
+                  "createdAt": [
+                    "[MaxKey, MinKey]"
+                  ],
+                  "_id": [
+                    "[MaxKey, MinKey]"
+                  ]
+                },
+                "keysExamined": 9000,
+                "seeks": 1,
+                "dupsTested": 0,
+                "dupsDropped": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

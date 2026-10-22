@@ -9,5 +9,7 @@ Baja logica mediante activo, deletedAt y updatedAt; email unico permanente.
 Indices: email unico; productos por activo/categoria/createdAt/_id;
 pedidos por activo/createdAt/_id y por clienteId/activo/estado/createdAt/_id.
 Validadores controlan estructura. Backend valida referencias y transiciones.
-Pendiente: provisionar Atlas y medir explain executionStats con consultas reales.
-No se afirma una mejora de rendimiento sin evidencia.
+Atlas provisionado y conexion comprobada el 18/10/2026.
+Evidencia explain ejecutada el 22/10/2026 en MongoDB temporal local, con filtros
+de los endpoints e indices del proyecto: ver evidencias/indices/README.md.
+No se extrapolan tiempos locales a Atlas ni se afirma mejora para todo filtro.
