@@ -43,8 +43,8 @@ el frontend, que debe obtener los ids por GET. Ejecutar seed sobre base inicial;
 si sus referencias ya fueron desactivadas puede fallar sin borrar datos.
 
 ## Limites pendientes
-Validar red, permisos y ejecucion real en Atlas. Medir explain antes/despues de
-indices y guardar evidencia. No se garantiza una instantanea global entre
+Conexion y ejecucion real en Atlas verificadas el 18/10/2026.
+Comparacion explain local reproducible completada el 22/10/2026; no es una medicion de Atlas. No se garantiza una instantanea global entre
 lecturas concurrentes de catalogo y creacion del pedido; para la demostracion
 evitar editar/desactivar referencias mientras se crea un pedido.
 Para backup coherente pausar escrituras y compartir conteos con Brenda.
@@ -54,3 +54,21 @@ Responsable: Matias. Revisor: Javier. No publicar ni integrar sin revision.
 npm test: 4 pruebas de integracion aprobadas contra MongoDB 7.0.24 temporal.
 Sintaxis de todos los modulos correcta. npm install: 0 vulnerabilidades reportadas.
 No se ejecuto contra Atlas ni se midio rendimiento de indices.
+
+## Evidencia de indices
+Desde backend: npm run evidence:indexes.
+Ejecuta MongoDB 7.0.24 temporal con datos sinteticos; no lee .env ni conecta a Atlas.
+Reutiliza filtros del backend e indices de config/schema.js y compara resultados.
+Guarda planes, estadisticas y explicacion en ../docs/evidencias/indices/.
+Requiere dependencias de desarrollo (npm ci sin omitir devDependencies).
+Las comprobaciones del ensayo verifican igualdad de resultados/orden, uso de indices
+y reduccion de documentos examinados en tres consultas concretas.
+Incluye un cuarto caso de control sin categoria que aun necesita ordenar.
+
+## Pruebas de integracion documentadas
+Desde backend: npm run evidence:integration.
+Ejecuta 48 solicitudes HTTP a Express y 4 comprobaciones directas contra MongoDB
+temporal local con validadores e indices. No lee .env ni conecta a Atlas.
+Si todos los casos pasan, genera ../docs/pruebas-integracion.md y
+../docs/evidencias/integracion/http.json con solicitudes y respuestas reales.
+Para concurrencia, errores de JSON y seed repetible: npm test.

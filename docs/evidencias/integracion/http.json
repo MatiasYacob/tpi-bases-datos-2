@@ -1,0 +1,1463 @@
+{
+  "generadoUtc": "2026-10-22T13:33:07.639Z",
+  "node": "v24.13.1",
+  "mongodb": "7.0.24",
+  "entorno": "Express + driver MongoDB + MongoDB temporal local; no Atlas ni navegador",
+  "preparacion": "Colecciones vacias con initialize(db). Fechas fijadas solo en base temporal para limites deterministas.",
+  "peticionesAprobadas": 48,
+  "comprobacionesMongoAprobadas": 4,
+  "solicitudes": [
+    {
+      "caso": "Salud con MongoDB disponible",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/health"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "estado": "ok"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Listado inicialmente vacio",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/clientes"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": [],
+          "paginacion": {
+            "pagina": 1,
+            "limite": 10,
+            "total": 0
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Alta y normalizacion de email",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/clientes",
+        "body": {
+          "nombre": "Ana",
+          "apellido": "Prueba",
+          "email": " ANA@EXAMPLE.COM ",
+          "contacto": {
+            "telefono": "111",
+            "direccion": "Calle ficticia"
+          }
+        }
+      },
+      "esperado": {
+        "status": 201
+      },
+      "obtenido": {
+        "status": 201,
+        "body": {
+          "data": {
+            "nombre": "Ana",
+            "apellido": "Prueba",
+            "email": "ana@example.com",
+            "contacto": {
+              "telefono": "111",
+              "direccion": "Calle ficticia"
+            },
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.388Z",
+            "updatedAt": "2026-10-22T13:33:07.388Z",
+            "deletedAt": null,
+            "id": "6ada109378842e4ec930e230"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Alta sin contacto",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/clientes",
+        "body": {
+          "nombre": "Bruno",
+          "apellido": "Prueba",
+          "email": "bruno@example.com"
+        }
+      },
+      "esperado": {
+        "status": 201
+      },
+      "obtenido": {
+        "status": 201,
+        "body": {
+          "data": {
+            "nombre": "Bruno",
+            "apellido": "Prueba",
+            "email": "bruno@example.com",
+            "contacto": {},
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.396Z",
+            "updatedAt": "2026-10-22T13:33:07.396Z",
+            "deletedAt": null,
+            "id": "6ada109378842e4ec930e231"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Email duplicado normalizado",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/clientes",
+        "body": {
+          "nombre": "Otra",
+          "apellido": "Persona",
+          "email": "ANA@example.com"
+        }
+      },
+      "esperado": {
+        "status": 409
+      },
+      "obtenido": {
+        "status": 409,
+        "body": {
+          "error": {
+            "codigo": "EMAIL_DUPLICADO",
+            "mensaje": "Email ya registrado",
+            "campo": "email"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Edicion de cliente y reemplazo de contacto",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/clientes/6ada109378842e4ec930e230",
+        "body": {
+          "nombre": "Ana editada",
+          "contacto": {
+            "telefono": "222"
+          }
+        }
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e230",
+            "nombre": "Ana editada",
+            "apellido": "Prueba",
+            "email": "ana@example.com",
+            "contacto": {
+              "telefono": "222"
+            },
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.388Z",
+            "updatedAt": "2026-10-22T13:33:07.409Z",
+            "deletedAt": null
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Campo reservado rechazado",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/clientes/6ada109378842e4ec930e230",
+        "body": {
+          "activo": false
+        }
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Campo no permitido",
+            "campo": "body.activo"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Identificador mal formado",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/clientes/no-id"
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Identificador invalido",
+            "campo": "id"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Identificador inexistente",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/clientes/6ada109378842e4ec930e233"
+      },
+      "esperado": {
+        "status": 404
+      },
+      "obtenido": {
+        "status": 404,
+        "body": {
+          "error": {
+            "codigo": "NO_ENCONTRADO",
+            "mensaje": "Recurso no encontrado"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Alta de producto en centavos",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/productos",
+        "body": {
+          "nombre": "Mouse",
+          "categoria": "tecnologia",
+          "precioCentavos": 150000
+        }
+      },
+      "esperado": {
+        "status": 201
+      },
+      "obtenido": {
+        "status": 201,
+        "body": {
+          "data": {
+            "nombre": "Mouse",
+            "categoria": "tecnologia",
+            "precioCentavos": 150000,
+            "descripcion": "",
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.429Z",
+            "updatedAt": "2026-10-22T13:33:07.429Z",
+            "deletedAt": null,
+            "id": "6ada109378842e4ec930e234"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Alta de segunda categoria",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/productos",
+        "body": {
+          "nombre": "Cuaderno",
+          "categoria": "libreria",
+          "precioCentavos": 20000
+        }
+      },
+      "esperado": {
+        "status": 201
+      },
+      "obtenido": {
+        "status": 201,
+        "body": {
+          "data": {
+            "nombre": "Cuaderno",
+            "categoria": "libreria",
+            "precioCentavos": 20000,
+            "descripcion": "",
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.433Z",
+            "updatedAt": "2026-10-22T13:33:07.433Z",
+            "deletedAt": null,
+            "id": "6ada109378842e4ec930e235"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Precio fraccionario rechazado",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/productos",
+        "body": {
+          "nombre": "Invalido",
+          "categoria": "hogar",
+          "precioCentavos": 1.5
+        }
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Valor invalido",
+            "campo": "precioCentavos"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Categoria fuera del contrato",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/productos",
+        "body": {
+          "nombre": "Invalido",
+          "categoria": "otra",
+          "precioCentavos": 100
+        }
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Valor invalido",
+            "campo": "categoria"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Filtro de categoria",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/productos?categoria=libreria"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "id": "6ada109378842e4ec930e235",
+              "nombre": "Cuaderno",
+              "categoria": "libreria",
+              "precioCentavos": 20000,
+              "descripcion": "",
+              "activo": true,
+              "createdAt": "2026-10-22T13:33:07.433Z",
+              "updatedAt": "2026-10-22T13:33:07.433Z",
+              "deletedAt": null
+            }
+          ],
+          "paginacion": {
+            "pagina": 1,
+            "limite": 10,
+            "total": 1
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Limite mayor que 100 rechazado",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/productos?limite=101"
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Valor invalido",
+            "campo": "limite"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Primera pagina y orden por id en empate de fecha",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/productos?pagina=1&limite=1"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "id": "6ada109378842e4ec930e235",
+              "nombre": "Cuaderno",
+              "categoria": "libreria",
+              "precioCentavos": 20000,
+              "descripcion": "",
+              "activo": true,
+              "createdAt": "2026-01-01T00:00:00.000Z",
+              "updatedAt": "2026-10-22T13:33:07.433Z",
+              "deletedAt": null
+            }
+          ],
+          "paginacion": {
+            "pagina": 1,
+            "limite": 1,
+            "total": 2
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Segunda pagina sin duplicados",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/productos?pagina=2&limite=1"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "id": "6ada109378842e4ec930e234",
+              "nombre": "Mouse",
+              "categoria": "tecnologia",
+              "precioCentavos": 150000,
+              "descripcion": "",
+              "activo": true,
+              "createdAt": "2026-01-01T00:00:00.000Z",
+              "updatedAt": "2026-10-22T13:33:07.429Z",
+              "deletedAt": null
+            }
+          ],
+          "paginacion": {
+            "pagina": 2,
+            "limite": 1,
+            "total": 2
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Total enviado por navegador rechazado",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/pedidos",
+        "body": {
+          "clienteId": "6ada109378842e4ec930e230",
+          "items": [
+            {
+              "productoId": "6ada109378842e4ec930e234",
+              "cantidad": 2
+            },
+            {
+              "productoId": "6ada109378842e4ec930e235",
+              "cantidad": 1
+            }
+          ],
+          "totalCentavos": 1
+        }
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Campo no permitido",
+            "campo": "body.totalCentavos"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Precio enviado por navegador rechazado",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/pedidos",
+        "body": {
+          "clienteId": "6ada109378842e4ec930e230",
+          "items": [
+            {
+              "productoId": "6ada109378842e4ec930e234",
+              "cantidad": 1,
+              "precioUnitarioCentavos": 1
+            }
+          ]
+        }
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Campo no permitido",
+            "campo": "items[0].precioUnitarioCentavos"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Producto repetido rechazado",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/pedidos",
+        "body": {
+          "clienteId": "6ada109378842e4ec930e230",
+          "items": [
+            {
+              "productoId": "6ada109378842e4ec930e234",
+              "cantidad": 2
+            },
+            {
+              "productoId": "6ada109378842e4ec930e234",
+              "cantidad": 2
+            }
+          ]
+        }
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Productos repetidos",
+            "campo": "items"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Cantidad fuera de rango rechazada",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/pedidos",
+        "body": {
+          "clienteId": "6ada109378842e4ec930e230",
+          "items": [
+            {
+              "productoId": "6ada109378842e4ec930e234",
+              "cantidad": 101
+            }
+          ]
+        }
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Valor invalido",
+            "campo": "items[0].cantidad"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Alta de pedido y total calculado por servidor",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/pedidos",
+        "body": {
+          "clienteId": "6ada109378842e4ec930e230",
+          "items": [
+            {
+              "productoId": "6ada109378842e4ec930e234",
+              "cantidad": 2
+            },
+            {
+              "productoId": "6ada109378842e4ec930e235",
+              "cantidad": 1
+            }
+          ]
+        }
+      },
+      "esperado": {
+        "status": 201
+      },
+      "obtenido": {
+        "status": 201,
+        "body": {
+          "data": {
+            "clienteId": "6ada109378842e4ec930e230",
+            "cliente": {
+              "nombre": "Ana editada",
+              "apellido": "Prueba",
+              "email": "ana@example.com"
+            },
+            "estado": "pendiente",
+            "items": [
+              {
+                "productoId": "6ada109378842e4ec930e234",
+                "cantidad": 2,
+                "nombre": "Mouse",
+                "categoria": "tecnologia",
+                "precioUnitarioCentavos": 150000,
+                "subtotalCentavos": 300000
+              },
+              {
+                "productoId": "6ada109378842e4ec930e235",
+                "cantidad": 1,
+                "nombre": "Cuaderno",
+                "categoria": "libreria",
+                "precioUnitarioCentavos": 20000,
+                "subtotalCentavos": 20000
+              }
+            ],
+            "totalCentavos": 320000,
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.489Z",
+            "updatedAt": "2026-10-22T13:33:07.489Z",
+            "deletedAt": null,
+            "id": "6ada109378842e4ec930e236"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Cambio del precio actual",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/productos/6ada109378842e4ec930e234",
+        "body": {
+          "precioCentavos": 190000
+        }
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e234",
+            "nombre": "Mouse",
+            "categoria": "tecnologia",
+            "precioCentavos": 190000,
+            "descripcion": "",
+            "activo": true,
+            "createdAt": "2026-01-01T00:00:00.000Z",
+            "updatedAt": "2026-10-22T13:33:07.495Z",
+            "deletedAt": null
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Cambio del nombre actual del cliente",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/clientes/6ada109378842e4ec930e230",
+        "body": {
+          "nombre": "Nombre posterior"
+        }
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e230",
+            "nombre": "Nombre posterior",
+            "apellido": "Prueba",
+            "email": "ana@example.com",
+            "contacto": {
+              "telefono": "222"
+            },
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.388Z",
+            "updatedAt": "2026-10-22T13:33:07.500Z",
+            "deletedAt": null
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Detalle conserva instantaneas y precios historicos",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e236",
+            "clienteId": "6ada109378842e4ec930e230",
+            "cliente": {
+              "nombre": "Ana editada",
+              "apellido": "Prueba",
+              "email": "ana@example.com"
+            },
+            "estado": "pendiente",
+            "items": [
+              {
+                "productoId": "6ada109378842e4ec930e234",
+                "cantidad": 2,
+                "nombre": "Mouse",
+                "categoria": "tecnologia",
+                "precioUnitarioCentavos": 150000,
+                "subtotalCentavos": 300000
+              },
+              {
+                "productoId": "6ada109378842e4ec930e235",
+                "cantidad": 1,
+                "nombre": "Cuaderno",
+                "categoria": "libreria",
+                "precioUnitarioCentavos": 20000,
+                "subtotalCentavos": 20000
+              }
+            ],
+            "totalCentavos": 320000,
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.489Z",
+            "updatedAt": "2026-10-22T13:33:07.489Z",
+            "deletedAt": null
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Pedido no permite editar items",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "body": {
+          "items": []
+        }
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Campo no permitido",
+            "campo": "body.items"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "No se puede saltar de pendiente a completado",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "body": {
+          "estado": "completado"
+        }
+      },
+      "esperado": {
+        "status": 409
+      },
+      "obtenido": {
+        "status": 409,
+        "body": {
+          "error": {
+            "codigo": "TRANSICION_INVALIDA",
+            "mensaje": "Transicion de estado invalida"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Transicion pendiente a confirmado",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "body": {
+          "estado": "confirmado"
+        }
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e236",
+            "clienteId": "6ada109378842e4ec930e230",
+            "cliente": {
+              "nombre": "Ana editada",
+              "apellido": "Prueba",
+              "email": "ana@example.com"
+            },
+            "estado": "confirmado",
+            "items": [
+              {
+                "productoId": "6ada109378842e4ec930e234",
+                "cantidad": 2,
+                "nombre": "Mouse",
+                "categoria": "tecnologia",
+                "precioUnitarioCentavos": 150000,
+                "subtotalCentavos": 300000
+              },
+              {
+                "productoId": "6ada109378842e4ec930e235",
+                "cantidad": 1,
+                "nombre": "Cuaderno",
+                "categoria": "libreria",
+                "precioUnitarioCentavos": 20000,
+                "subtotalCentavos": 20000
+              }
+            ],
+            "totalCentavos": 320000,
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.489Z",
+            "updatedAt": "2026-10-22T13:33:07.524Z",
+            "deletedAt": null
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Repetir estado da conflicto",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "body": {
+          "estado": "confirmado"
+        }
+      },
+      "esperado": {
+        "status": 409
+      },
+      "obtenido": {
+        "status": 409,
+        "body": {
+          "error": {
+            "codigo": "TRANSICION_INVALIDA",
+            "mensaje": "Transicion de estado invalida"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Transicion confirmado a completado",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "body": {
+          "estado": "completado"
+        }
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e236",
+            "clienteId": "6ada109378842e4ec930e230",
+            "cliente": {
+              "nombre": "Ana editada",
+              "apellido": "Prueba",
+              "email": "ana@example.com"
+            },
+            "estado": "completado",
+            "items": [
+              {
+                "productoId": "6ada109378842e4ec930e234",
+                "cantidad": 2,
+                "nombre": "Mouse",
+                "categoria": "tecnologia",
+                "precioUnitarioCentavos": 150000,
+                "subtotalCentavos": 300000
+              },
+              {
+                "productoId": "6ada109378842e4ec930e235",
+                "cantidad": 1,
+                "nombre": "Cuaderno",
+                "categoria": "libreria",
+                "precioUnitarioCentavos": 20000,
+                "subtotalCentavos": 20000
+              }
+            ],
+            "totalCentavos": 320000,
+            "activo": true,
+            "createdAt": "2026-10-22T13:33:07.489Z",
+            "updatedAt": "2026-10-22T13:33:07.538Z",
+            "deletedAt": null
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Estado terminal no admite cancelacion",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "body": {
+          "estado": "cancelado"
+        }
+      },
+      "esperado": {
+        "status": 409
+      },
+      "obtenido": {
+        "status": 409,
+        "body": {
+          "error": {
+            "codigo": "TRANSICION_INVALIDA",
+            "mensaje": "Transicion de estado invalida"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Reporte no duplica total al separar items",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/reportes/ventas-por-categoria"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "unidadesVendidas": 1,
+              "importeCentavos": 20000,
+              "categoria": "libreria"
+            },
+            {
+              "unidadesVendidas": 2,
+              "importeCentavos": 300000,
+              "categoria": "tecnologia"
+            }
+          ]
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Desde incluye el instante limite",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/reportes/ventas-por-categoria?desde=2026-01-15T12:00:00Z"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "unidadesVendidas": 1,
+              "importeCentavos": 20000,
+              "categoria": "libreria"
+            },
+            {
+              "unidadesVendidas": 2,
+              "importeCentavos": 300000,
+              "categoria": "tecnologia"
+            }
+          ]
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Hasta excluye el instante limite",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/reportes/ventas-por-categoria?hasta=2026-01-15T12:00:00Z"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": []
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Intervalo invertido rechazado",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/reportes/ventas-por-categoria?desde=2026-02-01T00:00:00Z&hasta=2026-01-01T00:00:00Z"
+      },
+      "esperado": {
+        "status": 400
+      },
+      "obtenido": {
+        "status": 400,
+        "body": {
+          "error": {
+            "codigo": "VALIDACION",
+            "mensaje": "Intervalo invalido",
+            "campo": "hasta"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Filtro combinado cliente estado y fecha",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/pedidos?clienteId=6ada109378842e4ec930e230&estado=completado&desde=2026-01-15T00:00:00Z&hasta=2026-01-16T00:00:00Z"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "id": "6ada109378842e4ec930e236",
+              "clienteId": "6ada109378842e4ec930e230",
+              "cliente": {
+                "nombre": "Ana editada",
+                "apellido": "Prueba",
+                "email": "ana@example.com"
+              },
+              "estado": "completado",
+              "items": [
+                {
+                  "productoId": "6ada109378842e4ec930e234",
+                  "cantidad": 2,
+                  "nombre": "Mouse",
+                  "categoria": "tecnologia",
+                  "precioUnitarioCentavos": 150000,
+                  "subtotalCentavos": 300000
+                },
+                {
+                  "productoId": "6ada109378842e4ec930e235",
+                  "cantidad": 1,
+                  "nombre": "Cuaderno",
+                  "categoria": "libreria",
+                  "precioUnitarioCentavos": 20000,
+                  "subtotalCentavos": 20000
+                }
+              ],
+              "totalCentavos": 320000,
+              "activo": true,
+              "createdAt": "2026-01-15T12:00:00.000Z",
+              "updatedAt": "2026-10-22T13:33:07.538Z",
+              "deletedAt": null
+            }
+          ],
+          "paginacion": {
+            "pagina": 1,
+            "limite": 10,
+            "total": 1
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Baja logica de producto",
+      "solicitud": {
+        "metodo": "DELETE",
+        "ruta": "/api/productos/6ada109378842e4ec930e234"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e234",
+            "activo": false
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Producto inactivo no se lee por detalle",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/productos/6ada109378842e4ec930e234"
+      },
+      "esperado": {
+        "status": 404
+      },
+      "obtenido": {
+        "status": 404,
+        "body": {
+          "error": {
+            "codigo": "NO_ENCONTRADO",
+            "mensaje": "Recurso no encontrado"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Producto inactivo no se edita",
+      "solicitud": {
+        "metodo": "PATCH",
+        "ruta": "/api/productos/6ada109378842e4ec930e234",
+        "body": {
+          "nombre": "No permitido"
+        }
+      },
+      "esperado": {
+        "status": 404
+      },
+      "obtenido": {
+        "status": 404,
+        "body": {
+          "error": {
+            "codigo": "NO_ENCONTRADO",
+            "mensaje": "Recurso no encontrado"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Pedido con producto inactivo rechazado",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/pedidos",
+        "body": {
+          "clienteId": "6ada109378842e4ec930e230",
+          "items": [
+            {
+              "productoId": "6ada109378842e4ec930e234",
+              "cantidad": 1
+            }
+          ]
+        }
+      },
+      "esperado": {
+        "status": 404
+      },
+      "obtenido": {
+        "status": 404,
+        "body": {
+          "error": {
+            "codigo": "NO_ENCONTRADO",
+            "mensaje": "Recurso no encontrado"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Baja logica de cliente",
+      "solicitud": {
+        "metodo": "DELETE",
+        "ruta": "/api/clientes/6ada109378842e4ec930e230"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e230",
+            "activo": false
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Cliente inactivo oculto del listado",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/clientes"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "id": "6ada109378842e4ec930e231",
+              "nombre": "Bruno",
+              "apellido": "Prueba",
+              "email": "bruno@example.com",
+              "contacto": {},
+              "activo": true,
+              "createdAt": "2026-10-22T13:33:07.396Z",
+              "updatedAt": "2026-10-22T13:33:07.396Z",
+              "deletedAt": null
+            }
+          ],
+          "paginacion": {
+            "pagina": 1,
+            "limite": 10,
+            "total": 1
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Email de inactivo no se reutiliza",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/clientes",
+        "body": {
+          "nombre": "Repetido",
+          "apellido": "Prueba",
+          "email": "ana@example.com"
+        }
+      },
+      "esperado": {
+        "status": 409
+      },
+      "obtenido": {
+        "status": 409,
+        "body": {
+          "error": {
+            "codigo": "EMAIL_DUPLICADO",
+            "mensaje": "Email ya registrado",
+            "campo": "email"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Pedido con cliente inactivo rechazado",
+      "solicitud": {
+        "metodo": "POST",
+        "ruta": "/api/pedidos",
+        "body": {
+          "clienteId": "6ada109378842e4ec930e230",
+          "items": [
+            {
+              "productoId": "6ada109378842e4ec930e235",
+              "cantidad": 1
+            }
+          ]
+        }
+      },
+      "esperado": {
+        "status": 404
+      },
+      "obtenido": {
+        "status": 404,
+        "body": {
+          "error": {
+            "codigo": "NO_ENCONTRADO",
+            "mensaje": "Recurso no encontrado"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Historial sigue disponible tras bajas de referencias",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e236",
+            "clienteId": "6ada109378842e4ec930e230",
+            "cliente": {
+              "nombre": "Ana editada",
+              "apellido": "Prueba",
+              "email": "ana@example.com"
+            },
+            "estado": "completado",
+            "items": [
+              {
+                "productoId": "6ada109378842e4ec930e234",
+                "cantidad": 2,
+                "nombre": "Mouse",
+                "categoria": "tecnologia",
+                "precioUnitarioCentavos": 150000,
+                "subtotalCentavos": 300000
+              },
+              {
+                "productoId": "6ada109378842e4ec930e235",
+                "cantidad": 1,
+                "nombre": "Cuaderno",
+                "categoria": "libreria",
+                "precioUnitarioCentavos": 20000,
+                "subtotalCentavos": 20000
+              }
+            ],
+            "totalCentavos": 320000,
+            "activo": true,
+            "createdAt": "2026-01-15T12:00:00.000Z",
+            "updatedAt": "2026-10-22T13:33:07.538Z",
+            "deletedAt": null
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Baja logica de pedido",
+      "solicitud": {
+        "metodo": "DELETE",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "6ada109378842e4ec930e236",
+            "activo": false
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Pedido inactivo oculto por detalle",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/pedidos/6ada109378842e4ec930e236"
+      },
+      "esperado": {
+        "status": 404
+      },
+      "obtenido": {
+        "status": 404,
+        "body": {
+          "error": {
+            "codigo": "NO_ENCONTRADO",
+            "mensaje": "Recurso no encontrado"
+          }
+        }
+      },
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Reporte excluye pedidos dados de baja",
+      "solicitud": {
+        "metodo": "GET",
+        "ruta": "/api/reportes/ventas-por-categoria"
+      },
+      "esperado": {
+        "status": 200
+      },
+      "obtenido": {
+        "status": 200,
+        "body": {
+          "data": []
+        }
+      },
+      "resultado": "APROBADO"
+    }
+  ],
+  "comprobacionesMongo": [
+    {
+      "caso": "Altas invalidas no insertaron pedidos",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Referencias inactivas no insertaron pedidos extra",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Bajas conservan documentos y fechas BSON",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "MongoDB rechaza escritura que incumple jsonSchema",
+      "resultado": "APROBADO"
+    }
+  ]
+}
