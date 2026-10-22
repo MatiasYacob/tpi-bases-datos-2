@@ -21,7 +21,7 @@ Actualizado el 22 de octubre de 2026. Rama de trabajo: matias/evidencia-indices.
 ## Proximos pasos
 - Revisar y publicar la nueva evidencia de indices cuando Matias lo indique.
 - Coordinar con Brenda los pendientes registrados en docs/respaldo.md.
-- Completar docs/pruebas-integracion.md con solicitudes/respuestas reales.
+- Revision cruzada de las pruebas documentadas en docs/pruebas-integracion.md.
 - Completar evidencia y documentacion de entrega.
 
 ## Evidencia de indices - 22/10/2026
@@ -36,4 +36,16 @@ Actualizado el 22 de octubre de 2026. Rama de trabajo: matias/evidencia-indices.
 - Email duplicado rechazado por indice unique.
 - Planes y resultados reales en docs/evidencias/indices/explain.json y README.md.
 - Este ensayo no mide Atlas ni modifica sus datos/indices.
-- Cambios locales sin commit ni push; scripts de Brenda sin modificar.
+- Evidencia de indices publicada en commit 0985195, rama matias/evidencia-indices.
+- Scripts de Brenda sin modificar.
+
+## Pruebas de integracion - 22/10/2026
+- Comando: npm run evidence:integration desde backend.
+- 48 solicitudes HTTP y 4 comprobaciones directas MongoDB aprobadas.
+- Express y MongoDB 7.0.24 reales sobre base temporal aislada; sin Atlas ni .env.
+- Cubiertos CRUD, email duplicado, campos prohibidos, referencias inactivas,
+  total calculado, historial, transiciones, fechas inclusivas/exclusivas,
+  reporte multi-item, filtros, paginacion y conservacion fisica tras baja.
+- Solicitudes/respuestas: docs/evidencias/integracion/http.json.
+- Guia y resultados: docs/pruebas-integracion.md.
+- Evidencia de integracion preparada para publicar en matias/evidencia-indices.

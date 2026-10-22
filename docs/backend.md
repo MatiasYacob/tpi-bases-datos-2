@@ -9,4 +9,5 @@ Decisiones: driver oficial, baja logica, centavos enteros, historial embebido,
 actualizacion de estado condicionada al estado previo.
 Defensa: explicar embedding/linking, unicidad permanente, calculo del total y unwind.
 Atlas y frontend integrados. Evidencia explain local: evidencias/indices/README.md.
-Pendiente: completar ficha de pruebas reales, revision cruzada e informe final.
+Pruebas locales documentadas: pruebas-integracion.md y evidencias/integracion/http.json.
+Pendiente: revision cruzada e informe final.

@@ -64,3 +64,11 @@ Requiere dependencias de desarrollo (npm ci sin omitir devDependencies).
 Las comprobaciones del ensayo verifican igualdad de resultados/orden, uso de indices
 y reduccion de documentos examinados en tres consultas concretas.
 Incluye un cuarto caso de control sin categoria que aun necesita ordenar.
+
+## Pruebas de integracion documentadas
+Desde backend: npm run evidence:integration.
+Ejecuta 48 solicitudes HTTP a Express y 4 comprobaciones directas contra MongoDB
+temporal local con validadores e indices. No lee .env ni conecta a Atlas.
+Si todos los casos pasan, genera ../docs/pruebas-integracion.md y
+../docs/evidencias/integracion/http.json con solicitudes y respuestas reales.
+Para concurrencia, errores de JSON y seed repetible: npm test.
