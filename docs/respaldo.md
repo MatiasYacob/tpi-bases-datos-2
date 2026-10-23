@@ -484,3 +484,28 @@ omitidas; no es una garantia incondicional.
 
 Referencia:
 https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html
+
+## Restauracion de copia con conteos automaticos y tiempo medido
+El 23 de octubre de 2026 se restauro la copia de Atlas generada
+a las 11:25, con conteos-esperados.json obtenido de sus BSON.
+Destino: MongoDB local, tpi_tienda_restore_test.
+El destino anterior se elimino con autorizacion explicita.
+
+Se recuperaron 22 documentos sin fallos y se restauraron indices.
+Los conteos coincidieron: clientes 4, productos 11 y pedidos 7.
+Activos/inactivos: clientes 2/2, productos 9/2 y pedidos 5/2.
+Los siete pedidos superaron las validaciones de datos historicos,
+cantidades, precios, subtotales y totales.
+
+Reporte recuperado:
+- hogar: 3 unidades y 90000 centavos.
+- libreria: 5 unidades y 250000 centavos.
+Coincide con el resultado del origen consultado anteriormente.
+
+Inicio UTC: 2026-10-23T15:34:38Z.
+Fin UTC: 2026-10-23T15:34:40Z.
+Tiempo medido: 2 segundos, incluyendo restauracion, comparacion
+de conteos, validaciones de pedidos y consulta del reporte.
+Esta medicion corresponde a recuperacion local de datos;
+no incluye levantar la aplicacion ni recuperar el servicio completo.
+No se realizo comparacion campo por campo con Atlas.
