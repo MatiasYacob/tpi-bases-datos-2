@@ -116,6 +116,14 @@ if ! validar_copia "$TEMPORAL"; then
   exit 1
 fi
 
+if ! /bin/bash "$RAIZ/scripts/generar-conteos.sh" \
+  "$TEMPORAL/$BASE" > "$TEMPORAL/conteos-esperados.json"; then
+  informar "ERROR: no se pudieron generar los conteos del respaldo."
+  exit 1
+fi
+
+informar "Conteos generados desde los BSON de la nueva copia."
+
 rm -f "$TEMPORAL/herramienta.log"
 date '+%Y-%m-%dT%H:%M:%S%z' > "$TEMPORAL/.completo"
 

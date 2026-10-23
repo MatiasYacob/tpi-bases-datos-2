@@ -418,3 +418,39 @@ de la raiz y requieren gestion separada.
 
 Los nombres anteriores son una lista prevista.
 Solo se consideran adjuntas las evidencias efectivamente publicadas.
+
+## Conteos automaticos desde BSON - 23 de octubre de 2026
+Se incorporo scripts/generar-conteos.sh al respaldo y al instalador
+de macOS. Requiere bsondump, incluido en MongoDB Database Tools.
+
+El auxiliar procesa los BSON de clientes, productos y pedidos con
+bsondump --objcheck y genera conteos-esperados.json dentro de la
+copia temporal, antes de publicar el respaldo y su marca .completo.
+Los conteos corresponden a los documentos del volcado, no a una
+consulta posterior del origen. No sustituyen una comparacion de
+contenido ni garantizan consistencia entre colecciones bajo
+escrituras concurrentes.
+
+Pruebas locales en una carpeta temporal:
+- Generacion automatica: conteos 1/1/1 y codigo 0.
+- Reemplazo con --forzar: valores ficticios 999/999/999 reemplazados
+  por los conteos reales 1/1/1.
+- Auxiliar ausente: codigo 1 y respaldo anterior intacto, comprobado
+  mediante comparacion SHA-256.
+
+Se actualizo la instalacion conservando la configuracion privada.
+La tarea se reactivo a las 02:00 y se verifico una sola instancia
+registrada.
+
+Prueba manual con Atlas: 11:25:05 a 11:25:10, codigo 0.
+La nueva copia genero automaticamente conteos 4/11/7.
+El verificador coincidio con la restauracion local anterior;
+esta nueva copia todavia no fue restaurada.
+
+La copia automatica de las 10:46 se conservo antes del reemplazo en:
+~/TPI-Tienda-Backup/resguardos_tpi/copias-previas/antes-conteos-auto-cchLp5/2026-10-23/
+
+Esta actualizacion resuelve la generacion de conteos para nuevas
+copias. Las copias antiguas no se modifican automaticamente.
+La ejecucion por horario de esta version actualizada aun no fue
+verificada.
