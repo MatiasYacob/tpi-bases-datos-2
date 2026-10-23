@@ -5,10 +5,18 @@ Brenda Florencia Romero.
 Revisor previsto: Matias Yacob.
 
 ## Alcance de esta entrega
-Scripts Bash para macOS, probados con MongoDB local.
+Scripts Bash para macOS probados con MongoDB local y respaldo remoto
+de Atlas. El 23/10/2026 se respaldo tpi_tienda desde el cluster del TPI
+y se restauro en tpi_tienda_restore_test de MongoDB local.
+
+Se recuperaron 22 documentos sin fallos. Se comprobaron conteos,
+registros inactivos, datos historicos de pedidos, calculos y reporte.
+La tarea launchd esta activa en la Mac de Brenda a las 02:00,
+hora local. Se verifico una ejecucion por horario contra Atlas.
+
 El campus admite scripts .sh para Linux/Mac.
-La adaptacion de la guia interna de PowerShell a Bash debe
-comunicarse al grupo antes de integrar.
+Las secciones fechadas anteriores describen pruebas historicas;
+el estado actual es el indicado aqui y en el cierre del 23/10/2026.
 
 ## Herramientas utilizadas
 - mongosh 2.9.2.
@@ -65,7 +73,8 @@ Mapeo: tpi_tienda.* -> tpi_tienda_restore_test.*
 
 El script valida los archivos y se detiene si el destino tiene
 colecciones. No reemplaza datos existentes ni restaura en tpi_tienda.
-Luego consulta conteos y un pedido activo con items.
+Luego compara conteos y consulta un pedido con items, activo o inactivo.
+Si no hay pedidos y el conteo esperado es cero, no exige un documento.
 
 Ambos scripts devuelven 0 al finalizar correctamente y un codigo
 distinto de 0 ante error.
@@ -91,23 +100,40 @@ Capturas guardadas por separado para incorporar a la entrega:
 - 03-restauracion-local-correcta.png
 
 ## RTO y RPO
-Tiempo medido en la prueba local: un segundo desde el inicio de la
-restauracion hasta finalizar las consultas del script.
-La muestra contiene tres documentos. Este tiempo no representa
-el RTO de Atlas ni la recuperacion completa del servicio.
+El 23/10/2026 el script midio 1 segundo desde el inicio de la
+restauracion hasta terminar sus consultas y comparacion de conteos.
+La copia provenia de Atlas y contenia 22 documentos.
+Las validaciones manuales posteriores de bajas logicas, historial
+y reporte no estan incluidas en ese tiempo.
+No se midio un RTO integral hasta finalizar todas esas validaciones.
 
-El respaldo actual es manual; no hay un RPO diario garantizado.
-Con una tarea diaria exitosa, el RPO objetivo seria de hasta unas
-24 horas. Aumentaria ante fallos o ejecuciones omitidas.
+La tarea diaria esta activa a las 02:00 y fue probada por horario.
+El RPO objetivo es de hasta unas 24 horas si las ejecuciones
+diarias se completan correctamente. No es una garantia: aumenta
+ante fallos, equipo apagado o ejecuciones omitidas.
 
 ## Pendientes
-- Verificar errores de acceso y red de Atlas.
-- Programacion diaria y verificacion en macOS.
-- Respaldo remoto de Atlas con configuracion protegida.
-- Configuracion de permisos de restauracion en Atlas.
-- Verificacion de datos reales, bajas logicas y reporte.
-- Medicion de recuperacion con datos del grupo.
-- Incorporacion de capturas y revision cruzada.
+- Coordinar con el grupo una pausa de escrituras para la prueba final.
+  El respaldo con el backend local detenido ya fue comprobado.
+- Completar el recorrido basico del frontend y registrar observaciones
+  cuando el grupo comparta la aplicacion disponible.
+- Registrar la revision del modulo por Matias y aportar los resultados
+  finales al informe del grupo.
+
+Resuelto el 23 de octubre de 2026:
+- Respaldo real desde Atlas con conteos automaticos desde los BSON.
+- Restauracion local de 22 documentos y validaciones en 2 segundos.
+- Ejecucion por horario de la version nueva, con backend local
+  detenido, y tarea unica restablecida a las 02:00.
+- Documentacion de suspension, apagado y horarios perdidos.
+- Ensayo con credenciales ficticias contra Atlas: codigo 1 y
+  respaldo anterior intacto, comprobado mediante SHA-256.
+- Evidencias 17 a 29 publicadas en docs/evidencias/respaldo/.
+
+La pausa global de escrituras no fue confirmada.
+No se afirma consistencia transaccional global ni igualdad completa
+campo por campo con el origen. El tiempo medido no incluye levantar
+la aplicacion.
 
 ## Requisitos para integrar con Atlas
 - Configuracion de conexion y permisos adecuados.
@@ -325,3 +351,203 @@ La modificacion no altera copias, Atlas ni bases locales existentes.
 Reinstalar la version corregida en la carpeta de ejecucion de macOS antes
 de repetir el ensayo. Mantener el archivo conteos-esperados.json asociado
 a su respaldo.
+
+## Cierre de pruebas con Atlas - 23 de octubre de 2026
+
+### Configuracion y origen
+Equipo: Mac de Brenda, macOS ARM64.
+Carpeta de ejecucion: ~/TPI-Tienda-Backup/.
+Origen: cluster tpi-tienda.h0wuken.mongodb.net, base tpi_tienda.
+La configuracion privada de ejecucion usa Atlas y permisos 600.
+Las credenciales y los volcados se mantienen fuera de Git.
+La configuracion privada del repositorio no fue actualizada en esta prueba.
+
+### Respaldo manual verificado
+Conteos previos consultados en Atlas a las 14:27:50 UTC:
+clientes 4, productos 11, pedidos 7.
+Respaldo iniciado a las 10:30:07 y finalizado a las 10:30:12,
+hora local de Toronto. Codigo de salida 0.
+Se verificaron los tres BSON, sus metadatos y la marca .completo.
+Se agrego conteos-esperados.json con los valores previos.
+
+Esta copia fue restaurada y luego preservada en:
+~/TPI-Tienda-Backup/resguardos_tpi/copias-previas/antes-horario-Rl88wQ/2026-10-23/
+
+La pausa de escrituras no se confirmo con el grupo.
+Las consultas posteriores coinciden, pero no prueban ausencia
+de modificaciones concurrentes durante el respaldo.
+
+### Restauracion y verificaciones
+Destino: MongoDB local, base tpi_tienda_restore_test.
+La base de prueba anterior se elimino con autorizacion explicita.
+No se elimino ni restauro sobre la base original de Atlas.
+La restauracion recupero 22 documentos sin fallos y restauro indices.
+El script termino con codigo 0 y midio 1 segundo hasta sus consultas.
+
+Conteos comprobados en origen y destino:
+- Clientes: 4 totales, 2 activos y 2 inactivos.
+- Productos: 11 totales, 9 activos y 2 inactivos.
+- Pedidos: 7 totales, 5 activos y 2 inactivos.
+
+Los siete pedidos superaron la comprobacion de presencia de datos
+historicos y coherencia de subtotales y totales.
+Esto no constituye una comparacion campo por campo con el origen.
+
+El reporte de pedidos activos y completados coincidio entre la
+base restaurada y Atlas consultado despues de la restauracion:
+- hogar: 3 unidades, 90000 centavos.
+- libreria: 5 unidades, 250000 centavos.
+
+### Ejecucion por horario
+TPI-Tienda-Backup se programo temporalmente a las 10:46.
+La ejecucion inicio a las 10:46:05 y termino a las 10:46:09.
+Genero una nueva copia desde Atlas; codigo final 0, sin errores
+en el registro consultado. No fue una simple omision.
+
+Despues se restablecio el horario diario a las 02:00.
+Se verifico una sola tarea cargada, rutas absolutas y PATH
+con /opt/homebrew/bin.
+
+La copia automatica nueva ocupa resguardos_tpi/2026-10-23/.
+No tiene conteos-esperados.json asociado y no fue restaurada.
+No debe confundirse con la copia manual preservada y verificada.
+Las carpetas de reserva quedan fuera de la retencion por fecha
+de la raiz y requieren gestion separada.
+
+### Evidencias previstas para incorporar
+- 17-atlas-colecciones-conteos.png
+- 18-atlas-conteos-previos.png
+- 19-backup-atlas-correcto.png
+- 20-restauracion-atlas-a-local.png
+- 21-restauracion-bajas-logicas.png
+- 22-reporte-datos-restaurados.png
+- 23-pedidos-historicos-verificados.png
+- 24-comparacion-origen-atlas.png
+- 25-backup-atlas-por-horario.png
+- 26-programacion-diaria-atlas.png
+
+Los nombres anteriores son una lista prevista.
+Solo se consideran adjuntas las evidencias efectivamente publicadas.
+
+## Conteos automaticos desde BSON - 23 de octubre de 2026
+Se incorporo scripts/generar-conteos.sh al respaldo y al instalador
+de macOS. Requiere bsondump, incluido en MongoDB Database Tools.
+
+El auxiliar procesa los BSON de clientes, productos y pedidos con
+bsondump --objcheck y genera conteos-esperados.json dentro de la
+copia temporal, antes de publicar el respaldo y su marca .completo.
+Los conteos corresponden a los documentos del volcado, no a una
+consulta posterior del origen. No sustituyen una comparacion de
+contenido ni garantizan consistencia entre colecciones bajo
+escrituras concurrentes.
+
+Pruebas locales en una carpeta temporal:
+- Generacion automatica: conteos 1/1/1 y codigo 0.
+- Reemplazo con --forzar: valores ficticios 999/999/999 reemplazados
+  por los conteos reales 1/1/1.
+- Auxiliar ausente: codigo 1 y respaldo anterior intacto, comprobado
+  mediante comparacion SHA-256.
+
+Se actualizo la instalacion conservando la configuracion privada.
+La tarea se reactivo a las 02:00 y se verifico una sola instancia
+registrada.
+
+Prueba manual con Atlas: 11:25:05 a 11:25:10, codigo 0.
+La nueva copia genero automaticamente conteos 4/11/7.
+El verificador coincidio con la restauracion local anterior;
+esta nueva copia todavia no fue restaurada.
+
+La copia automatica de las 10:46 se conservo antes del reemplazo en:
+~/TPI-Tienda-Backup/resguardos_tpi/copias-previas/antes-conteos-auto-cchLp5/2026-10-23/
+
+Esta actualizacion resuelve la generacion de conteos para nuevas
+copias. Las copias antiguas no se modifican automaticamente.
+La ejecucion por horario de esta version actualizada aun no fue
+verificada.
+
+## Suspension, apagado y horarios perdidos
+La tarea TPI-Tienda-Backup usa StartCalendarInterval a las 02:00,
+hora local, y RunAtLoad. Esta instalada como LaunchAgent del usuario.
+
+Comportamiento esperado segun la documentacion de Apple:
+- En suspension: una ejecucion pendiente por calendario se intenta
+  al despertar. Varios horarios perdidos se agrupan en un intento.
+- Con el equipo apagado: no se ejecuta el respaldo a la hora prevista.
+  No se recupera cada horario perdido.
+- Al iniciar sesion: RunAtLoad provoca un intento cuando se carga
+  el agente. Si ya existe una copia completa del dia, se omite.
+- Sin sesion del usuario iniciada, no se cuenta con este LaunchAgent
+  para realizar el respaldo.
+
+El intento requiere red, IP autorizada en Atlas, credenciales validas,
+herramientas disponibles y espacio en disco. La tarea no configura
+reintentos inmediatos ante fallos de conexion.
+
+Estas condiciones describen el comportamiento esperado.
+No se probaron suspension, apagado ni recuperacion de horarios
+perdidos en este equipo. La ejecucion por horario con el equipo
+disponible si fue comprobada.
+
+El RPO objetivo es de hasta unas 24 horas si las copias diarias
+terminan correctamente. Aumenta cuando hay fallos o ejecuciones
+omitidas; no es una garantia incondicional.
+
+Referencia:
+https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html
+
+## Restauracion de copia con conteos automaticos y tiempo medido
+El 23 de octubre de 2026 se restauro la copia de Atlas generada
+a las 11:25, con conteos-esperados.json obtenido de sus BSON.
+Destino: MongoDB local, tpi_tienda_restore_test.
+El destino anterior se elimino con autorizacion explicita.
+
+Se recuperaron 22 documentos sin fallos y se restauraron indices.
+Los conteos coincidieron: clientes 4, productos 11 y pedidos 7.
+Activos/inactivos: clientes 2/2, productos 9/2 y pedidos 5/2.
+Los siete pedidos superaron las validaciones de datos historicos,
+cantidades, precios, subtotales y totales.
+
+Reporte recuperado:
+- hogar: 3 unidades y 90000 centavos.
+- libreria: 5 unidades y 250000 centavos.
+Coincide con el resultado del origen consultado anteriormente.
+
+Inicio UTC: 2026-10-23T15:34:38Z.
+Fin UTC: 2026-10-23T15:34:40Z.
+Tiempo medido: 2 segundos, incluyendo restauracion, comparacion
+de conteos, validaciones de pedidos y consulta del reporte.
+Esta medicion corresponde a recuperacion local de datos;
+no incluye levantar la aplicacion ni recuperar el servicio completo.
+No se realizo comparacion campo por campo con Atlas.
+
+## Ejecucion por horario con conteos automaticos
+El 23/10/2026 la tarea inicio a las 11:52:05 y finalizo a las
+11:52:10, con codigo 0. Creo una nueva copia desde Atlas y genero
+conteos-esperados.json automaticamente: clientes 4, productos 11
+y pedidos 7. No fue una omision por copia existente.
+
+El backend local no respondia en 127.0.0.1:3000 antes y despues
+del ensayo. El respaldo funciono sin ese backend local.
+No se confirmo una pausa de escrituras de los otros integrantes.
+
+Se restablecio el horario diario a las 02:00 y se verifico una
+sola tarea cargada. La copia de las 11:52 no fue restaurada;
+la restauracion anterior verificada corresponde a la de las 11:25.
+
+Evidencia: evidencias/respaldo/28-backup-horario-conteos-app-detenida.png
+
+## Ensayo fallido contra Atlas sin perdida de copias
+El 23/10/2026, entre las 11:57:01 y las 11:57:02, se ejecuto
+backup.sh --forzar en una carpeta temporal con el host de Atlas
+del TPI y credenciales ficticias.
+
+mongodump fallo y el script devolvio codigo 1.
+La comparacion SHA-256 de todos los archivos del respaldo anterior
+no encontro diferencias. La configuracion real y la tarea diaria
+no se modificaron.
+
+El mensaje registrado es generico: no se verifico el diagnostico
+interno de autenticacion ni se simulo un corte de red de Atlas.
+La prueba local de conexion fallida esta documentada por separado.
+
+Evidencia: evidencias/respaldo/29-fallo-atlas-sin-perdida.png
