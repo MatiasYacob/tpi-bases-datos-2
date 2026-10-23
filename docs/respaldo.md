@@ -113,16 +113,23 @@ diarias se completan correctamente. No es una garantia: aumenta
 ante fallos, equipo apagado o ejecuciones omitidas.
 
 ## Pendientes
-- Asociar conteos propios a cada copia automatica nueva.
-- Documentar suspension, apagado y horarios perdidos.
-- Medir el tiempo integral de recuperacion con todas las validaciones.
-- Confirmar una pausa coordinada de escrituras en una prueba final.
-- Registrar expresamente si Express estaba detenido durante la prueba.
-- Completar evidencias sanitizadas y comandos de validacion reproducibles.
-- Registrar la revision del modulo por Matias y la revision del frontend.
+- Confirmar una pausa coordinada de escrituras para la prueba final
+  y registrar que Express este detenido.
+- Completar la revision del frontend y registrar observaciones.
+- Registrar la revision del modulo por Matias.
+- Incorporar los resultados finales y mantener reproducibles los
+  comandos de validacion.
+- Verificar por horario la version con conteos automaticos; la
+  ejecucion por horario anterior y la version nueva manual ya fueron probadas.
 
-La restauracion probada fue local; no requiere permisos de escritura
-o restauracion sobre Atlas. La pausa de escrituras no fue confirmada.
+Resuelto el 23 de octubre de 2026:
+- Conteos automaticos obtenidos de los BSON de cada nueva copia.
+- Documentacion de suspension, apagado y horarios perdidos.
+- Restauracion de la nueva copia: 22 documentos y validaciones
+  completadas en 2 segundos. No incluye levantar la aplicacion.
+
+La restauracion probada fue local y no requiere permisos de escritura
+sobre Atlas. La pausa de escrituras aun no fue confirmada.
 No se afirma que el respaldo sea una instantanea transaccional global.
 
 ## Requisitos para integrar con Atlas
