@@ -59,6 +59,9 @@ mongorestore --uri="$URI_LOCAL" \
   --nsTo='tpi_tienda_restore_test.*' \
   "$COPIA"
 
+# Comparar primero con los conteos de esta copia; set -e detiene cualquier diferencia.
+/bin/bash "$RAIZ/scripts/verificar-conteos.sh" "$FECHA"
+
 #============# Consultar los datos recuperados #============#
 mongosh "$URI_LOCAL/$DESTINO" --quiet --eval '
   const conteos = {
@@ -68,17 +71,20 @@ mongosh "$URI_LOCAL/$DESTINO" --quiet --eval '
   };
   printjson(conteos);
 
-  const pedido = db.pedidos.findOne({ activo: true });
-  if (!pedido || !Array.isArray(pedido.items) || !pedido.items.length) {
-    print("ERROR: no se encontro un pedido activo con items.");
-    quit(1);
+  // Cero pedidos es valido si coincide con los conteos esperados ya verificados.
+  if (conteos.pedidos === 0) {
+    print("OK: el respaldo no contiene pedidos; conteo esperado verificado.");
+  } else {
+    // La baja logica no invalida una copia: comprobar tambien pedidos inactivos.
+    const pedido = db.pedidos.findOne({});
+    if (!pedido || !Array.isArray(pedido.items) || !pedido.items.length) {
+      print("ERROR: el pedido recuperado no contiene items validos.");
+      quit(1);
+    }
+    print("Pedido recuperado (activo o inactivo):");
+    printjson(pedido);
   }
-  print("Pedido recuperado:");
-  printjson(pedido);
 '
-
-# Comparar conteos antes de informar exito.
-/bin/bash "$RAIZ/scripts/verificar-conteos.sh" "$FECHA"
 
 FIN="$(date +%s)"
 echo "OK: restauracion y consulta local completadas."

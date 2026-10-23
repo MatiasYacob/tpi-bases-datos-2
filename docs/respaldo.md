@@ -305,3 +305,23 @@ Quedan pendientes las validaciones de negocio y la prueba con Atlas.
 Evidencias previstas:
 - 15-conteos-coincidentes.png
 - 16-conteos-diferentes.png
+
+## Correccion de validacion de restauracion - 23 de octubre de 2026
+Se corrigio restaurar-prueba.sh para no exigir pedidos activos.
+La comparacion de conteos de la copia ocurre primero; si falla, set -e
+detiene el flujo. Si habia pedidos, se revisa uno sin filtrar activo.
+Si el conteo esperado y recuperado de pedidos es cero, se acepta sin
+buscar un documento inexistente. Un pedido encontrado sin items se rechaza.
+La proteccion del destino y el proceso mongorestore no se modificaron.
+
+Pruebas de regresion: desde backend, npm test. Se agregan seis casos que
+ejecutan las expresiones mongosh de los scripts con respuestas de DB simuladas:
+pedido activo, todos inactivos, cero pedidos, items vacios, orden de
+verificacion y discrepancia de conteos. Esto verifica la logica, no una
+restauracion real ni la ejecucion en macOS. La sintaxis Bash se comprueba
+por separado. Brenda debe repetir el flujo real con sus herramientas.
+
+La modificacion no altera copias, Atlas ni bases locales existentes.
+Reinstalar la version corregida en la carpeta de ejecucion de macOS antes
+de repetir el ensayo. Mantener el archivo conteos-esperados.json asociado
+a su respaldo.
