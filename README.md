@@ -37,3 +37,14 @@ No subir URI con credenciales, archivos .env reales ni respaldos.
 Las plantillas .env.example muestran variables sin secretos.
 La base acordada es tpi_tienda. La restauración se prueba en
 tpi_tienda_restore_test. Usar solo datos ficticios.
+
+## Documentacion de entrega
+- [Contrato API y ejemplos](docs/contrato-api.md)
+- [Pruebas de integracion](docs/pruebas-integracion.md)
+- [Ficha de revision de Javier](docs/revision-cruzada.md)
+- [Informe tecnico para revision](output/pdf/informe-tpi-bd2.pdf)
+- [Fuente editable del informe](docs/informe-tpi.md)
+
+Regenerar el informe: python docs/generar-informe.py, con reportlab instalado.
+El informe es de revision: falta la aprobacion independiente y el cierre de
+evidencia de respaldo Atlas de Brenda antes de presentarlo como final.

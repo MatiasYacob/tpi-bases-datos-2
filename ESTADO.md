@@ -1,51 +1,56 @@
 # Estado del proyecto
-Actualizado el 22 de octubre de 2026. Rama de trabajo: matias/evidencia-indices.
+Actualizado el 23 de octubre de 2026.
 
-## Implementado y verificado
-- Backend Express con driver oficial MongoDB: CRUD, baja logica, validaciones,
-  instantaneas historicas de pedidos, transiciones de estado y reporte.
-- Validadores BSON, indices y seed repetible sin borrar datos existentes.
-- Atlas: proyecto TPI-BD2, cluster gratuito TPI-Tienda, base tpi_tienda.
-  Usuario y acceso de red configurados; conexion real comprobada.
-- Frontend conectado a la API: formularios asincronos, manejo de errores,
-  persistencia al recargar y reporte consultado al servidor.
-- Backend: 4 pruebas de integracion aprobadas con MongoDB temporal.
-- Frontend: build aprobado y flujos reales verificados en navegador.
-- Verificados email duplicado, alta/edicion/baja, pedidos, reporte y recuperacion
-  despues de detener y reiniciar backend.
-- Datos ficticios de verificacion dados de baja logica.
-  Activos al finalizar: 2 clientes, 8 productos y 5 pedidos.
-- Compass conectado y visualizacion confirmada por Matias.
-- .env reales y dependencias excluidos de Git.
+## Integrado en main
+- Backend Express y driver oficial MongoDB: CRUD, baja logica, validaciones,
+  instantaneas historicas, transiciones de pedidos y reporte por categoria.
+- Atlas configurado: proyecto TPI-BD2, cluster TPI-Tienda y base tpi_tienda.
+  Conexion real y visualizacion en Compass comprobadas durante la implementacion.
+- Frontend React conectado a la API, con persistencia, espera y errores.
+- Validadores BSON, indices y seed repetible sin borrado de datos existentes.
+- Scripts Bash de respaldo/restauracion de Brenda: PR #3, merge 81857bc.
+- Evidencias de indices e integracion: PR #4, merge a6dd1cc.
+- Correccion del falso fallo de restauracion: PR #5, merge 621406f.
+  Ahora compara conteos primero, acepta pedidos inactivos y cero pedidos.
 
-## Proximos pasos
-- Revisar y publicar la nueva evidencia de indices cuando Matias lo indique.
-- Coordinar con Brenda los pendientes registrados en docs/respaldo.md.
-- Revision cruzada de las pruebas documentadas en docs/pruebas-integracion.md.
-- Completar evidencia y documentacion de entrega.
+## Validaciones realizadas
+- npm test: 10 pruebas aprobadas el 23/10/2026.
+  Cuatro pruebas API/MongoDB temporal y seis regresiones de restauracion
+  que ejecutan las expresiones mongosh con respuestas de DB simuladas.
+- Sintaxis Bash del restaurador corregido validada.
+- evidence:integration: 48 solicitudes HTTP y 4 comprobaciones MongoDB aprobadas.
+- evidence:indexes: MongoDB temporal 7.0.24, 100 clientes, 10000 productos
+  y 20000 pedidos ficticios. Tres consultas pasan de 10000/20000/20000
+  documentos examinados a 10/10/10, con mismos resultados y orden.
+- Control de productos sin categoria: recorre 9000 claves y mantiene SORT.
+- Frontend: compilacion aprobada y flujos reales comprobados anteriormente.
+- Estas evidencias locales no equivalen a benchmark de Atlas ni a restauracion real.
 
-## Evidencia de indices - 22/10/2026
-- Main actualizado con la integracion de Brenda antes de iniciar esta rama.
-- Script reproducible: backend/src/scripts/evidence-indexes.js.
-- Comando: npm run evidence:indexes desde backend, sin Atlas ni .env.
-- MongoDB temporal 7.0.24; 100 clientes, 10000 productos, 20000 pedidos ficticios.
-- Antes: solo _id_. Despues: indices del proyecto; sin hint.
-- Tres consultas: documentos examinados 10000/20000/20000 -> 10/10/10,
-  sin cambiar los ids devueltos ni el orden. Pasan de COLLSCAN/SORT a IXSCAN.
-- Control sin categoria: examina 9000 claves y mantiene SORT; documentado.
-- Email duplicado rechazado por indice unique.
-- Planes y resultados reales en docs/evidencias/indices/explain.json y README.md.
-- Este ensayo no mide Atlas ni modifica sus datos/indices.
-- Evidencia de indices publicada en commit 0985195, rama matias/evidencia-indices.
-- Scripts de Brenda sin modificar.
+## Documentacion de entrega
+- Contrato ampliado: docs/contrato-api.md, con entradas, filtros, errores
+  y ejemplos JSON reales de la ejecucion temporal.
+- Pruebas y respuestas: docs/pruebas-integracion.md y docs/evidencias/integracion/.
+- Planes y metricas: docs/evidencias/indices/.
+- Informe de revision: output/pdf/informe-tpi-bd2.pdf (7 paginas).
+- Fuente editable: docs/informe-tpi.md; generador: docs/generar-informe.py.
+- Guia independiente para Javier: docs/revision-cruzada.md.
+- Pendientes por integrante: output/pdf/pendientes-javier.pdf y pendientes-brenda.pdf.
+- Generador de pendientes: docs/generar-pendientes.py.
+- Los PDFs distinguen pruebas realizadas y pendientes; no son una entrega final aprobada.
 
-## Pruebas de integracion - 22/10/2026
-- Comando: npm run evidence:integration desde backend.
-- 48 solicitudes HTTP y 4 comprobaciones directas MongoDB aprobadas.
-- Express y MongoDB 7.0.24 reales sobre base temporal aislada; sin Atlas ni .env.
-- Cubiertos CRUD, email duplicado, campos prohibidos, referencias inactivas,
-  total calculado, historial, transiciones, fechas inclusivas/exclusivas,
-  reporte multi-item, filtros, paginacion y conservacion fisica tras baja.
-- Solicitudes/respuestas: docs/evidencias/integracion/http.json.
-- Guia y resultados: docs/pruebas-integracion.md.
-- Evidencia de integracion preparada para publicar en matias/evidencia-indices.
+## Pendiente de confirmacion y cierre
+1. Javier: ejecutar revision independiente, registrar observaciones y veredicto.
+2. Brenda: actualizar su copia de ejecucion con el restaurador corregido
+   y repetir la restauracion real en macOS.
+3. Brenda: publicar evidencia de respaldo desde Atlas, validaciones de negocio,
+   RTO y estado efectivo de la tarea diaria. Lo ultimo documentado la deja pausada.
+   Si ya se completo en su equipo, falta actualizar los resultados publicados.
+4. Asociar conteos-esperados.json correctos a cada respaldo; hoy se prepara manualmente.
+5. Incorporar evidencia final de Brenda y revision de Javier al informe.
+6. Preparar ZIP final sin secretos, dependencias ni respaldos y ensayar defensa.
+7. Limitacion conocida de baja prioridad: controlar desborde de enteros seguros
+   al agregar importes extraordinariamente grandes en el reporte.
+
+## Resguardo
+.env reales, configuracion privada y volcados excluidos de Git.
+La correccion del restaurador no ejecuto mongorestore ni modifico Atlas.
