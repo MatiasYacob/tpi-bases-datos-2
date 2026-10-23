@@ -516,3 +516,19 @@ de conteos, validaciones de pedidos y consulta del reporte.
 Esta medicion corresponde a recuperacion local de datos;
 no incluye levantar la aplicacion ni recuperar el servicio completo.
 No se realizo comparacion campo por campo con Atlas.
+
+## Ejecucion por horario con conteos automaticos
+El 23/10/2026 la tarea inicio a las 11:52:05 y finalizo a las
+11:52:10, con codigo 0. Creo una nueva copia desde Atlas y genero
+conteos-esperados.json automaticamente: clientes 4, productos 11
+y pedidos 7. No fue una omision por copia existente.
+
+El backend local no respondia en 127.0.0.1:3000 antes y despues
+del ensayo. El respaldo funciono sin ese backend local.
+No se confirmo una pausa de escrituras de los otros integrantes.
+
+Se restablecio el horario diario a las 02:00 y se verifico una
+sola tarea cargada. La copia de las 11:52 no fue restaurada;
+la restauracion anterior verificada corresponde a la de las 11:25.
+
+Evidencia: evidencias/respaldo/28-backup-horario-conteos-app-detenida.png
