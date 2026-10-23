@@ -454,3 +454,33 @@ Esta actualizacion resuelve la generacion de conteos para nuevas
 copias. Las copias antiguas no se modifican automaticamente.
 La ejecucion por horario de esta version actualizada aun no fue
 verificada.
+
+## Suspension, apagado y horarios perdidos
+La tarea TPI-Tienda-Backup usa StartCalendarInterval a las 02:00,
+hora local, y RunAtLoad. Esta instalada como LaunchAgent del usuario.
+
+Comportamiento esperado segun la documentacion de Apple:
+- En suspension: una ejecucion pendiente por calendario se intenta
+  al despertar. Varios horarios perdidos se agrupan en un intento.
+- Con el equipo apagado: no se ejecuta el respaldo a la hora prevista.
+  No se recupera cada horario perdido.
+- Al iniciar sesion: RunAtLoad provoca un intento cuando se carga
+  el agente. Si ya existe una copia completa del dia, se omite.
+- Sin sesion del usuario iniciada, no se cuenta con este LaunchAgent
+  para realizar el respaldo.
+
+El intento requiere red, IP autorizada en Atlas, credenciales validas,
+herramientas disponibles y espacio en disco. La tarea no configura
+reintentos inmediatos ante fallos de conexion.
+
+Estas condiciones describen el comportamiento esperado.
+No se probaron suspension, apagado ni recuperacion de horarios
+perdidos en este equipo. La ejecucion por horario con el equipo
+disponible si fue comprobada.
+
+El RPO objetivo es de hasta unas 24 horas si las copias diarias
+terminan correctamente. Aumenta cuando hay fallos o ejecuciones
+omitidas; no es una garantia incondicional.
+
+Referencia:
+https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html
