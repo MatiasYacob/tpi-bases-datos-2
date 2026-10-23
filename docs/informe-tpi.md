@@ -189,4 +189,3 @@ Antes de presentar: cerrar la evidencia de Brenda, incorporar capturas reales sa
 Contrato: docs/contrato-api.md. Pruebas: docs/pruebas-integracion.md.
 Índices: docs/evidencias/indices/. Respaldo: docs/respaldo.md.
 MongoDB explain: mongodb.com/docs/v7.0/reference/explain-results/.
-
