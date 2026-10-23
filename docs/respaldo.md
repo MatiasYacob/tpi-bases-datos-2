@@ -113,24 +113,27 @@ diarias se completan correctamente. No es una garantia: aumenta
 ante fallos, equipo apagado o ejecuciones omitidas.
 
 ## Pendientes
-- Confirmar una pausa coordinada de escrituras para la prueba final
-  y registrar que Express este detenido.
-- Completar la revision del frontend y registrar observaciones.
-- Registrar la revision del modulo por Matias.
-- Incorporar los resultados finales y mantener reproducibles los
-  comandos de validacion.
-- Verificar por horario la version con conteos automaticos; la
-  ejecucion por horario anterior y la version nueva manual ya fueron probadas.
+- Coordinar con el grupo una pausa de escrituras para la prueba final.
+  El respaldo con el backend local detenido ya fue comprobado.
+- Completar el recorrido basico del frontend y registrar observaciones
+  cuando el grupo comparta la aplicacion disponible.
+- Registrar la revision del modulo por Matias y aportar los resultados
+  finales al informe del grupo.
 
 Resuelto el 23 de octubre de 2026:
-- Conteos automaticos obtenidos de los BSON de cada nueva copia.
+- Respaldo real desde Atlas con conteos automaticos desde los BSON.
+- Restauracion local de 22 documentos y validaciones en 2 segundos.
+- Ejecucion por horario de la version nueva, con backend local
+  detenido, y tarea unica restablecida a las 02:00.
 - Documentacion de suspension, apagado y horarios perdidos.
-- Restauracion de la nueva copia: 22 documentos y validaciones
-  completadas en 2 segundos. No incluye levantar la aplicacion.
+- Ensayo con credenciales ficticias contra Atlas: codigo 1 y
+  respaldo anterior intacto, comprobado mediante SHA-256.
+- Evidencias 17 a 29 publicadas en docs/evidencias/respaldo/.
 
-La restauracion probada fue local y no requiere permisos de escritura
-sobre Atlas. La pausa de escrituras aun no fue confirmada.
-No se afirma que el respaldo sea una instantanea transaccional global.
+La pausa global de escrituras no fue confirmada.
+No se afirma consistencia transaccional global ni igualdad completa
+campo por campo con el origen. El tiempo medido no incluye levantar
+la aplicacion.
 
 ## Requisitos para integrar con Atlas
 - Configuracion de conexion y permisos adecuados.

@@ -25,3 +25,11 @@ manuales posteriores ni representa el RTO integral del servicio.
 
 La copia automatica nueva es distinta de la copia manual restaurada.
 Consultar docs/respaldo.md para las rutas, resultados y pendientes.
+
+## Evidencias adicionales
+- 27-restauracion-conteos-automaticos-rto.png: restauracion de la
+  copia con conteos automaticos y validaciones en 2 segundos.
+- 28-backup-horario-conteos-app-detenida.png: creacion por horario
+  con conteos automaticos y backend local sin responder.
+- 29-fallo-atlas-sin-perdida.png: fallo con credenciales ficticias
+  y archivos anteriores conservados, verificados mediante SHA-256.
