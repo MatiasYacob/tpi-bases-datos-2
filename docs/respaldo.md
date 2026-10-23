@@ -532,3 +532,19 @@ sola tarea cargada. La copia de las 11:52 no fue restaurada;
 la restauracion anterior verificada corresponde a la de las 11:25.
 
 Evidencia: evidencias/respaldo/28-backup-horario-conteos-app-detenida.png
+
+## Ensayo fallido contra Atlas sin perdida de copias
+El 23/10/2026, entre las 11:57:01 y las 11:57:02, se ejecuto
+backup.sh --forzar en una carpeta temporal con el host de Atlas
+del TPI y credenciales ficticias.
+
+mongodump fallo y el script devolvio codigo 1.
+La comparacion SHA-256 de todos los archivos del respaldo anterior
+no encontro diferencias. La configuracion real y la tarea diaria
+no se modificaron.
+
+El mensaje registrado es generico: no se verifico el diagnostico
+interno de autenticacion ni se simulo un corte de red de Atlas.
+La prueba local de conexion fallida esta documentada por separado.
+
+Evidencia: evidencias/respaldo/29-fallo-atlas-sin-perdida.png
