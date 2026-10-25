@@ -4,7 +4,7 @@ Responsable: Matias. Revisor previsto: Javier.
 
 ## Resultado real
 
-Ejecucion UTC: 2026-10-22T13:33:07.639Z. Node v24.13.1; MongoDB 7.0.24.
+Ejecucion UTC: 2026-10-25T13:29:56.310Z. Node v24.13.1; MongoDB 7.0.24.
 Peticiones HTTP verificadas: 48. Comprobaciones adicionales MongoDB: 4. Todas aprobadas.
 
 ## Alcance y reproducibilidad

@@ -1,5 +1,5 @@
 {
-  "generadoUtc": "2026-10-22T13:25:23.442Z",
+  "generadoUtc": "2026-10-25T13:30:10.458Z",
   "entorno": "MongoDB temporal local, sin Atlas ni .env",
   "node": "v24.13.1",
   "mongodb": "7.0.24",
@@ -115,7 +115,7 @@
           "devueltos": 10,
           "documentosExaminados": 10000,
           "clavesExaminadas": 0,
-          "tiempoMs": 14
+          "tiempoMs": 7
         },
         "queryPlanner": {
           "namespace": "tpi_evidencia_indices.productos",
@@ -136,7 +136,7 @@
           },
           "queryHash": "E1548DF1",
           "planCacheKey": "E1548DF1",
-          "optimizationTimeMillis": 1,
+          "optimizationTimeMillis": 0,
           "maxIndexedOrSolutionsReached": false,
           "maxIndexedAndSolutionsReached": false,
           "maxScansToExplodeReached": false,
@@ -173,7 +173,7 @@
         "executionStats": {
           "executionSuccess": true,
           "nReturned": 10,
-          "executionTimeMillis": 14,
+          "executionTimeMillis": 7,
           "totalKeysExamined": 0,
           "totalDocsExamined": 10000,
           "executionStages": {
@@ -267,7 +267,7 @@
           "devueltos": 10,
           "documentosExaminados": 10,
           "clavesExaminadas": 10,
-          "tiempoMs": 2
+          "tiempoMs": 0
         },
         "queryPlanner": {
           "namespace": "tpi_evidencia_indices.productos",
@@ -340,7 +340,7 @@
         "executionStats": {
           "executionSuccess": true,
           "nReturned": 10,
-          "executionTimeMillis": 2,
+          "executionTimeMillis": 0,
           "totalKeysExamined": 10,
           "totalDocsExamined": 10,
           "executionStages": {
@@ -458,7 +458,7 @@
           "devueltos": 10,
           "documentosExaminados": 20000,
           "clavesExaminadas": 0,
-          "tiempoMs": 24
+          "tiempoMs": 17
         },
         "queryPlanner": {
           "namespace": "tpi_evidencia_indices.pedidos",
@@ -498,13 +498,13 @@
         "executionStats": {
           "executionSuccess": true,
           "nReturned": 10,
-          "executionTimeMillis": 24,
+          "executionTimeMillis": 17,
           "totalKeysExamined": 0,
           "totalDocsExamined": 20000,
           "executionStages": {
             "stage": "SORT",
             "nReturned": 10,
-            "executionTimeMillisEstimate": 4,
+            "executionTimeMillisEstimate": 0,
             "works": 20012,
             "advanced": 10,
             "needTime": 20001,
@@ -531,7 +531,7 @@
                 }
               },
               "nReturned": 18181,
-              "executionTimeMillisEstimate": 3,
+              "executionTimeMillisEstimate": 0,
               "works": 20001,
               "advanced": 18181,
               "needTime": 1819,
@@ -760,7 +760,7 @@
           "devueltos": 10,
           "documentosExaminados": 20000,
           "clavesExaminadas": 0,
-          "tiempoMs": 17
+          "tiempoMs": 10
         },
         "queryPlanner": {
           "namespace": "tpi_evidencia_indices.pedidos",
@@ -848,13 +848,13 @@
         "executionStats": {
           "executionSuccess": true,
           "nReturned": 10,
-          "executionTimeMillis": 17,
+          "executionTimeMillis": 10,
           "totalKeysExamined": 0,
           "totalDocsExamined": 20000,
           "executionStages": {
             "stage": "SORT",
             "nReturned": 10,
-            "executionTimeMillisEstimate": 1,
+            "executionTimeMillisEstimate": 0,
             "works": 20012,
             "advanced": 10,
             "needTime": 20001,
@@ -905,7 +905,7 @@
                 ]
               },
               "nReturned": 30,
-              "executionTimeMillisEstimate": 1,
+              "executionTimeMillisEstimate": 0,
               "works": 20001,
               "advanced": 30,
               "needTime": 19970,
@@ -1231,7 +1231,7 @@
           "devueltos": 10,
           "documentosExaminados": 10000,
           "clavesExaminadas": 0,
-          "tiempoMs": 12
+          "tiempoMs": 8
         },
         "queryPlanner": {
           "namespace": "tpi_evidencia_indices.productos",
@@ -1271,13 +1271,13 @@
         "executionStats": {
           "executionSuccess": true,
           "nReturned": 10,
-          "executionTimeMillis": 12,
+          "executionTimeMillis": 8,
           "totalKeysExamined": 0,
           "totalDocsExamined": 10000,
           "executionStages": {
             "stage": "SORT",
             "nReturned": 10,
-            "executionTimeMillisEstimate": 1,
+            "executionTimeMillisEstimate": 0,
             "works": 10012,
             "advanced": 10,
             "needTime": 10001,
@@ -1355,7 +1355,7 @@
           "devueltos": 10,
           "documentosExaminados": 10,
           "clavesExaminadas": 9000,
-          "tiempoMs": 15
+          "tiempoMs": 10
         },
         "queryPlanner": {
           "namespace": "tpi_evidencia_indices.productos",
@@ -1425,7 +1425,7 @@
         "executionStats": {
           "executionSuccess": true,
           "nReturned": 10,
-          "executionTimeMillis": 15,
+          "executionTimeMillis": 10,
           "totalKeysExamined": 9000,
           "totalDocsExamined": 10,
           "executionStages": {

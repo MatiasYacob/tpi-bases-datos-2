@@ -1,6 +1,6 @@
 # Evidencia de indices: explain executionStats
 
-Ejecucion UTC: 2026-10-22T13:25:23.442Z. Node v24.13.1; MongoDB 7.0.24.
+Ejecucion UTC: 2026-10-25T13:30:10.458Z. Node v24.13.1; MongoDB 7.0.24.
 
 ## Alcance
 
@@ -16,14 +16,14 @@ descarga todos los listados; estos casos corresponden a los endpoints del backen
 
 | Consulta | Fase | Etapas | Docs examinados | Claves examinadas | Devueltos | ms |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| Productos activos por categoria | antes | SORT / COLLSCAN | 10000 | 0 | 10 | 14 |
-| Productos activos por categoria | despues | LIMIT / FETCH / IXSCAN | 10 | 10 | 10 | 2 |
-| Pedidos activos generales | antes | SORT / COLLSCAN | 20000 | 0 | 10 | 24 |
+| Productos activos por categoria | antes | SORT / COLLSCAN | 10000 | 0 | 10 | 7 |
+| Productos activos por categoria | despues | LIMIT / FETCH / IXSCAN | 10 | 10 | 10 | 0 |
+| Pedidos activos generales | antes | SORT / COLLSCAN | 20000 | 0 | 10 | 17 |
 | Pedidos activos generales | despues | LIMIT / FETCH / IXSCAN | 10 | 10 | 10 | 1 |
-| Pedidos de un cliente por estado y fecha | antes | SORT / COLLSCAN | 20000 | 0 | 10 | 17 |
+| Pedidos de un cliente por estado y fecha | antes | SORT / COLLSCAN | 20000 | 0 | 10 | 10 |
 | Pedidos de un cliente por estado y fecha | despues | LIMIT / FETCH / IXSCAN | 10 | 10 | 10 | 1 |
-| Control: productos sin filtro de categoria | antes | SORT / COLLSCAN | 10000 | 0 | 10 | 12 |
-| Control: productos sin filtro de categoria | despues | FETCH / SORT / IXSCAN | 10 | 9000 | 10 | 15 |
+| Control: productos sin filtro de categoria | antes | SORT / COLLSCAN | 10000 | 0 | 10 | 8 |
+| Control: productos sin filtro de categoria | despues | FETCH / SORT / IXSCAN | 10 | 9000 | 10 | 10 |
 
 ## Interpretacion para la defensa
 

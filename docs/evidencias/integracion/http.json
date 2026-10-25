@@ -1,5 +1,5 @@
 {
-  "generadoUtc": "2026-10-22T13:33:07.639Z",
+  "generadoUtc": "2026-10-25T13:29:56.310Z",
   "node": "v24.13.1",
   "mongodb": "7.0.24",
   "entorno": "Express + driver MongoDB + MongoDB temporal local; no Atlas ni navegador",
@@ -78,10 +78,10 @@
               "direccion": "Calle ficticia"
             },
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.388Z",
-            "updatedAt": "2026-10-22T13:33:07.388Z",
+            "createdAt": "2026-10-25T13:29:56.168Z",
+            "updatedAt": "2026-10-25T13:29:56.168Z",
             "deletedAt": null,
-            "id": "6ada109378842e4ec930e230"
+            "id": "6ade04549419fe414c6c500d"
           }
         }
       },
@@ -110,10 +110,10 @@
             "email": "bruno@example.com",
             "contacto": {},
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.396Z",
-            "updatedAt": "2026-10-22T13:33:07.396Z",
+            "createdAt": "2026-10-25T13:29:56.173Z",
+            "updatedAt": "2026-10-25T13:29:56.173Z",
             "deletedAt": null,
-            "id": "6ada109378842e4ec930e231"
+            "id": "6ade04549419fe414c6c500e"
           }
         }
       },
@@ -149,7 +149,7 @@
       "caso": "Edicion de cliente y reemplazo de contacto",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/clientes/6ada109378842e4ec930e230",
+        "ruta": "/api/clientes/6ade04549419fe414c6c500d",
         "body": {
           "nombre": "Ana editada",
           "contacto": {
@@ -164,7 +164,7 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e230",
+            "id": "6ade04549419fe414c6c500d",
             "nombre": "Ana editada",
             "apellido": "Prueba",
             "email": "ana@example.com",
@@ -172,8 +172,8 @@
               "telefono": "222"
             },
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.388Z",
-            "updatedAt": "2026-10-22T13:33:07.409Z",
+            "createdAt": "2026-10-25T13:29:56.168Z",
+            "updatedAt": "2026-10-25T13:29:56.180Z",
             "deletedAt": null
           }
         }
@@ -184,7 +184,7 @@
       "caso": "Campo reservado rechazado",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/clientes/6ada109378842e4ec930e230",
+        "ruta": "/api/clientes/6ade04549419fe414c6c500d",
         "body": {
           "activo": false
         }
@@ -229,7 +229,7 @@
       "caso": "Identificador inexistente",
       "solicitud": {
         "metodo": "GET",
-        "ruta": "/api/clientes/6ada109378842e4ec930e233"
+        "ruta": "/api/clientes/6ade04549419fe414c6c5010"
       },
       "esperado": {
         "status": 404
@@ -268,10 +268,10 @@
             "precioCentavos": 150000,
             "descripcion": "",
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.429Z",
-            "updatedAt": "2026-10-22T13:33:07.429Z",
+            "createdAt": "2026-10-25T13:29:56.193Z",
+            "updatedAt": "2026-10-25T13:29:56.193Z",
             "deletedAt": null,
-            "id": "6ada109378842e4ec930e234"
+            "id": "6ade04549419fe414c6c5011"
           }
         }
       },
@@ -300,10 +300,10 @@
             "precioCentavos": 20000,
             "descripcion": "",
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.433Z",
-            "updatedAt": "2026-10-22T13:33:07.433Z",
+            "createdAt": "2026-10-25T13:29:56.196Z",
+            "updatedAt": "2026-10-25T13:29:56.196Z",
             "deletedAt": null,
-            "id": "6ada109378842e4ec930e235"
+            "id": "6ade04549419fe414c6c5012"
           }
         }
       },
@@ -375,14 +375,14 @@
         "body": {
           "data": [
             {
-              "id": "6ada109378842e4ec930e235",
+              "id": "6ade04549419fe414c6c5012",
               "nombre": "Cuaderno",
               "categoria": "libreria",
               "precioCentavos": 20000,
               "descripcion": "",
               "activo": true,
-              "createdAt": "2026-10-22T13:33:07.433Z",
-              "updatedAt": "2026-10-22T13:33:07.433Z",
+              "createdAt": "2026-10-25T13:29:56.196Z",
+              "updatedAt": "2026-10-25T13:29:56.196Z",
               "deletedAt": null
             }
           ],
@@ -430,14 +430,14 @@
         "body": {
           "data": [
             {
-              "id": "6ada109378842e4ec930e235",
+              "id": "6ade04549419fe414c6c5012",
               "nombre": "Cuaderno",
               "categoria": "libreria",
               "precioCentavos": 20000,
               "descripcion": "",
               "activo": true,
               "createdAt": "2026-01-01T00:00:00.000Z",
-              "updatedAt": "2026-10-22T13:33:07.433Z",
+              "updatedAt": "2026-10-25T13:29:56.196Z",
               "deletedAt": null
             }
           ],
@@ -464,14 +464,14 @@
         "body": {
           "data": [
             {
-              "id": "6ada109378842e4ec930e234",
+              "id": "6ade04549419fe414c6c5011",
               "nombre": "Mouse",
               "categoria": "tecnologia",
               "precioCentavos": 150000,
               "descripcion": "",
               "activo": true,
               "createdAt": "2026-01-01T00:00:00.000Z",
-              "updatedAt": "2026-10-22T13:33:07.429Z",
+              "updatedAt": "2026-10-25T13:29:56.193Z",
               "deletedAt": null
             }
           ],
@@ -490,14 +490,14 @@
         "metodo": "POST",
         "ruta": "/api/pedidos",
         "body": {
-          "clienteId": "6ada109378842e4ec930e230",
+          "clienteId": "6ade04549419fe414c6c500d",
           "items": [
             {
-              "productoId": "6ada109378842e4ec930e234",
+              "productoId": "6ade04549419fe414c6c5011",
               "cantidad": 2
             },
             {
-              "productoId": "6ada109378842e4ec930e235",
+              "productoId": "6ade04549419fe414c6c5012",
               "cantidad": 1
             }
           ],
@@ -525,10 +525,10 @@
         "metodo": "POST",
         "ruta": "/api/pedidos",
         "body": {
-          "clienteId": "6ada109378842e4ec930e230",
+          "clienteId": "6ade04549419fe414c6c500d",
           "items": [
             {
-              "productoId": "6ada109378842e4ec930e234",
+              "productoId": "6ade04549419fe414c6c5011",
               "cantidad": 1,
               "precioUnitarioCentavos": 1
             }
@@ -556,14 +556,14 @@
         "metodo": "POST",
         "ruta": "/api/pedidos",
         "body": {
-          "clienteId": "6ada109378842e4ec930e230",
+          "clienteId": "6ade04549419fe414c6c500d",
           "items": [
             {
-              "productoId": "6ada109378842e4ec930e234",
+              "productoId": "6ade04549419fe414c6c5011",
               "cantidad": 2
             },
             {
-              "productoId": "6ada109378842e4ec930e234",
+              "productoId": "6ade04549419fe414c6c5011",
               "cantidad": 2
             }
           ]
@@ -590,10 +590,10 @@
         "metodo": "POST",
         "ruta": "/api/pedidos",
         "body": {
-          "clienteId": "6ada109378842e4ec930e230",
+          "clienteId": "6ade04549419fe414c6c500d",
           "items": [
             {
-              "productoId": "6ada109378842e4ec930e234",
+              "productoId": "6ade04549419fe414c6c5011",
               "cantidad": 101
             }
           ]
@@ -620,14 +620,14 @@
         "metodo": "POST",
         "ruta": "/api/pedidos",
         "body": {
-          "clienteId": "6ada109378842e4ec930e230",
+          "clienteId": "6ade04549419fe414c6c500d",
           "items": [
             {
-              "productoId": "6ada109378842e4ec930e234",
+              "productoId": "6ade04549419fe414c6c5011",
               "cantidad": 2
             },
             {
-              "productoId": "6ada109378842e4ec930e235",
+              "productoId": "6ade04549419fe414c6c5012",
               "cantidad": 1
             }
           ]
@@ -640,7 +640,7 @@
         "status": 201,
         "body": {
           "data": {
-            "clienteId": "6ada109378842e4ec930e230",
+            "clienteId": "6ade04549419fe414c6c500d",
             "cliente": {
               "nombre": "Ana editada",
               "apellido": "Prueba",
@@ -649,7 +649,7 @@
             "estado": "pendiente",
             "items": [
               {
-                "productoId": "6ada109378842e4ec930e234",
+                "productoId": "6ade04549419fe414c6c5011",
                 "cantidad": 2,
                 "nombre": "Mouse",
                 "categoria": "tecnologia",
@@ -657,7 +657,7 @@
                 "subtotalCentavos": 300000
               },
               {
-                "productoId": "6ada109378842e4ec930e235",
+                "productoId": "6ade04549419fe414c6c5012",
                 "cantidad": 1,
                 "nombre": "Cuaderno",
                 "categoria": "libreria",
@@ -667,10 +667,10 @@
             ],
             "totalCentavos": 320000,
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.489Z",
-            "updatedAt": "2026-10-22T13:33:07.489Z",
+            "createdAt": "2026-10-25T13:29:56.227Z",
+            "updatedAt": "2026-10-25T13:29:56.227Z",
             "deletedAt": null,
-            "id": "6ada109378842e4ec930e236"
+            "id": "6ade04549419fe414c6c5013"
           }
         }
       },
@@ -680,7 +680,7 @@
       "caso": "Cambio del precio actual",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/productos/6ada109378842e4ec930e234",
+        "ruta": "/api/productos/6ade04549419fe414c6c5011",
         "body": {
           "precioCentavos": 190000
         }
@@ -692,14 +692,14 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e234",
+            "id": "6ade04549419fe414c6c5011",
             "nombre": "Mouse",
             "categoria": "tecnologia",
             "precioCentavos": 190000,
             "descripcion": "",
             "activo": true,
             "createdAt": "2026-01-01T00:00:00.000Z",
-            "updatedAt": "2026-10-22T13:33:07.495Z",
+            "updatedAt": "2026-10-25T13:29:56.230Z",
             "deletedAt": null
           }
         }
@@ -710,7 +710,7 @@
       "caso": "Cambio del nombre actual del cliente",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/clientes/6ada109378842e4ec930e230",
+        "ruta": "/api/clientes/6ade04549419fe414c6c500d",
         "body": {
           "nombre": "Nombre posterior"
         }
@@ -722,7 +722,7 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e230",
+            "id": "6ade04549419fe414c6c500d",
             "nombre": "Nombre posterior",
             "apellido": "Prueba",
             "email": "ana@example.com",
@@ -730,8 +730,8 @@
               "telefono": "222"
             },
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.388Z",
-            "updatedAt": "2026-10-22T13:33:07.500Z",
+            "createdAt": "2026-10-25T13:29:56.168Z",
+            "updatedAt": "2026-10-25T13:29:56.234Z",
             "deletedAt": null
           }
         }
@@ -742,7 +742,7 @@
       "caso": "Detalle conserva instantaneas y precios historicos",
       "solicitud": {
         "metodo": "GET",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236"
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013"
       },
       "esperado": {
         "status": 200
@@ -751,8 +751,8 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e236",
-            "clienteId": "6ada109378842e4ec930e230",
+            "id": "6ade04549419fe414c6c5013",
+            "clienteId": "6ade04549419fe414c6c500d",
             "cliente": {
               "nombre": "Ana editada",
               "apellido": "Prueba",
@@ -761,7 +761,7 @@
             "estado": "pendiente",
             "items": [
               {
-                "productoId": "6ada109378842e4ec930e234",
+                "productoId": "6ade04549419fe414c6c5011",
                 "cantidad": 2,
                 "nombre": "Mouse",
                 "categoria": "tecnologia",
@@ -769,7 +769,7 @@
                 "subtotalCentavos": 300000
               },
               {
-                "productoId": "6ada109378842e4ec930e235",
+                "productoId": "6ade04549419fe414c6c5012",
                 "cantidad": 1,
                 "nombre": "Cuaderno",
                 "categoria": "libreria",
@@ -779,8 +779,8 @@
             ],
             "totalCentavos": 320000,
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.489Z",
-            "updatedAt": "2026-10-22T13:33:07.489Z",
+            "createdAt": "2026-10-25T13:29:56.227Z",
+            "updatedAt": "2026-10-25T13:29:56.227Z",
             "deletedAt": null
           }
         }
@@ -791,7 +791,7 @@
       "caso": "Pedido no permite editar items",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013",
         "body": {
           "items": []
         }
@@ -815,7 +815,7 @@
       "caso": "No se puede saltar de pendiente a completado",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013",
         "body": {
           "estado": "completado"
         }
@@ -838,7 +838,7 @@
       "caso": "Transicion pendiente a confirmado",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013",
         "body": {
           "estado": "confirmado"
         }
@@ -850,8 +850,8 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e236",
-            "clienteId": "6ada109378842e4ec930e230",
+            "id": "6ade04549419fe414c6c5013",
+            "clienteId": "6ade04549419fe414c6c500d",
             "cliente": {
               "nombre": "Ana editada",
               "apellido": "Prueba",
@@ -860,7 +860,7 @@
             "estado": "confirmado",
             "items": [
               {
-                "productoId": "6ada109378842e4ec930e234",
+                "productoId": "6ade04549419fe414c6c5011",
                 "cantidad": 2,
                 "nombre": "Mouse",
                 "categoria": "tecnologia",
@@ -868,7 +868,7 @@
                 "subtotalCentavos": 300000
               },
               {
-                "productoId": "6ada109378842e4ec930e235",
+                "productoId": "6ade04549419fe414c6c5012",
                 "cantidad": 1,
                 "nombre": "Cuaderno",
                 "categoria": "libreria",
@@ -878,8 +878,8 @@
             ],
             "totalCentavos": 320000,
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.489Z",
-            "updatedAt": "2026-10-22T13:33:07.524Z",
+            "createdAt": "2026-10-25T13:29:56.227Z",
+            "updatedAt": "2026-10-25T13:29:56.247Z",
             "deletedAt": null
           }
         }
@@ -890,7 +890,7 @@
       "caso": "Repetir estado da conflicto",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013",
         "body": {
           "estado": "confirmado"
         }
@@ -913,7 +913,7 @@
       "caso": "Transicion confirmado a completado",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013",
         "body": {
           "estado": "completado"
         }
@@ -925,8 +925,8 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e236",
-            "clienteId": "6ada109378842e4ec930e230",
+            "id": "6ade04549419fe414c6c5013",
+            "clienteId": "6ade04549419fe414c6c500d",
             "cliente": {
               "nombre": "Ana editada",
               "apellido": "Prueba",
@@ -935,7 +935,7 @@
             "estado": "completado",
             "items": [
               {
-                "productoId": "6ada109378842e4ec930e234",
+                "productoId": "6ade04549419fe414c6c5011",
                 "cantidad": 2,
                 "nombre": "Mouse",
                 "categoria": "tecnologia",
@@ -943,7 +943,7 @@
                 "subtotalCentavos": 300000
               },
               {
-                "productoId": "6ada109378842e4ec930e235",
+                "productoId": "6ade04549419fe414c6c5012",
                 "cantidad": 1,
                 "nombre": "Cuaderno",
                 "categoria": "libreria",
@@ -953,8 +953,8 @@
             ],
             "totalCentavos": 320000,
             "activo": true,
-            "createdAt": "2026-10-22T13:33:07.489Z",
-            "updatedAt": "2026-10-22T13:33:07.538Z",
+            "createdAt": "2026-10-25T13:29:56.227Z",
+            "updatedAt": "2026-10-25T13:29:56.253Z",
             "deletedAt": null
           }
         }
@@ -965,7 +965,7 @@
       "caso": "Estado terminal no admite cancelacion",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236",
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013",
         "body": {
           "estado": "cancelado"
         }
@@ -1082,7 +1082,7 @@
       "caso": "Filtro combinado cliente estado y fecha",
       "solicitud": {
         "metodo": "GET",
-        "ruta": "/api/pedidos?clienteId=6ada109378842e4ec930e230&estado=completado&desde=2026-01-15T00:00:00Z&hasta=2026-01-16T00:00:00Z"
+        "ruta": "/api/pedidos?clienteId=6ade04549419fe414c6c500d&estado=completado&desde=2026-01-15T00:00:00Z&hasta=2026-01-16T00:00:00Z"
       },
       "esperado": {
         "status": 200
@@ -1092,8 +1092,8 @@
         "body": {
           "data": [
             {
-              "id": "6ada109378842e4ec930e236",
-              "clienteId": "6ada109378842e4ec930e230",
+              "id": "6ade04549419fe414c6c5013",
+              "clienteId": "6ade04549419fe414c6c500d",
               "cliente": {
                 "nombre": "Ana editada",
                 "apellido": "Prueba",
@@ -1102,7 +1102,7 @@
               "estado": "completado",
               "items": [
                 {
-                  "productoId": "6ada109378842e4ec930e234",
+                  "productoId": "6ade04549419fe414c6c5011",
                   "cantidad": 2,
                   "nombre": "Mouse",
                   "categoria": "tecnologia",
@@ -1110,7 +1110,7 @@
                   "subtotalCentavos": 300000
                 },
                 {
-                  "productoId": "6ada109378842e4ec930e235",
+                  "productoId": "6ade04549419fe414c6c5012",
                   "cantidad": 1,
                   "nombre": "Cuaderno",
                   "categoria": "libreria",
@@ -1121,7 +1121,7 @@
               "totalCentavos": 320000,
               "activo": true,
               "createdAt": "2026-01-15T12:00:00.000Z",
-              "updatedAt": "2026-10-22T13:33:07.538Z",
+              "updatedAt": "2026-10-25T13:29:56.253Z",
               "deletedAt": null
             }
           ],
@@ -1138,7 +1138,7 @@
       "caso": "Baja logica de producto",
       "solicitud": {
         "metodo": "DELETE",
-        "ruta": "/api/productos/6ada109378842e4ec930e234"
+        "ruta": "/api/productos/6ade04549419fe414c6c5011"
       },
       "esperado": {
         "status": 200
@@ -1147,7 +1147,7 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e234",
+            "id": "6ade04549419fe414c6c5011",
             "activo": false
           }
         }
@@ -1158,7 +1158,7 @@
       "caso": "Producto inactivo no se lee por detalle",
       "solicitud": {
         "metodo": "GET",
-        "ruta": "/api/productos/6ada109378842e4ec930e234"
+        "ruta": "/api/productos/6ade04549419fe414c6c5011"
       },
       "esperado": {
         "status": 404
@@ -1178,7 +1178,7 @@
       "caso": "Producto inactivo no se edita",
       "solicitud": {
         "metodo": "PATCH",
-        "ruta": "/api/productos/6ada109378842e4ec930e234",
+        "ruta": "/api/productos/6ade04549419fe414c6c5011",
         "body": {
           "nombre": "No permitido"
         }
@@ -1203,10 +1203,10 @@
         "metodo": "POST",
         "ruta": "/api/pedidos",
         "body": {
-          "clienteId": "6ada109378842e4ec930e230",
+          "clienteId": "6ade04549419fe414c6c500d",
           "items": [
             {
-              "productoId": "6ada109378842e4ec930e234",
+              "productoId": "6ade04549419fe414c6c5011",
               "cantidad": 1
             }
           ]
@@ -1230,7 +1230,7 @@
       "caso": "Baja logica de cliente",
       "solicitud": {
         "metodo": "DELETE",
-        "ruta": "/api/clientes/6ada109378842e4ec930e230"
+        "ruta": "/api/clientes/6ade04549419fe414c6c500d"
       },
       "esperado": {
         "status": 200
@@ -1239,7 +1239,7 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e230",
+            "id": "6ade04549419fe414c6c500d",
             "activo": false
           }
         }
@@ -1260,14 +1260,14 @@
         "body": {
           "data": [
             {
-              "id": "6ada109378842e4ec930e231",
+              "id": "6ade04549419fe414c6c500e",
               "nombre": "Bruno",
               "apellido": "Prueba",
               "email": "bruno@example.com",
               "contacto": {},
               "activo": true,
-              "createdAt": "2026-10-22T13:33:07.396Z",
-              "updatedAt": "2026-10-22T13:33:07.396Z",
+              "createdAt": "2026-10-25T13:29:56.173Z",
+              "updatedAt": "2026-10-25T13:29:56.173Z",
               "deletedAt": null
             }
           ],
@@ -1312,10 +1312,10 @@
         "metodo": "POST",
         "ruta": "/api/pedidos",
         "body": {
-          "clienteId": "6ada109378842e4ec930e230",
+          "clienteId": "6ade04549419fe414c6c500d",
           "items": [
             {
-              "productoId": "6ada109378842e4ec930e235",
+              "productoId": "6ade04549419fe414c6c5012",
               "cantidad": 1
             }
           ]
@@ -1339,7 +1339,7 @@
       "caso": "Historial sigue disponible tras bajas de referencias",
       "solicitud": {
         "metodo": "GET",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236"
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013"
       },
       "esperado": {
         "status": 200
@@ -1348,8 +1348,8 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e236",
-            "clienteId": "6ada109378842e4ec930e230",
+            "id": "6ade04549419fe414c6c5013",
+            "clienteId": "6ade04549419fe414c6c500d",
             "cliente": {
               "nombre": "Ana editada",
               "apellido": "Prueba",
@@ -1358,7 +1358,7 @@
             "estado": "completado",
             "items": [
               {
-                "productoId": "6ada109378842e4ec930e234",
+                "productoId": "6ade04549419fe414c6c5011",
                 "cantidad": 2,
                 "nombre": "Mouse",
                 "categoria": "tecnologia",
@@ -1366,7 +1366,7 @@
                 "subtotalCentavos": 300000
               },
               {
-                "productoId": "6ada109378842e4ec930e235",
+                "productoId": "6ade04549419fe414c6c5012",
                 "cantidad": 1,
                 "nombre": "Cuaderno",
                 "categoria": "libreria",
@@ -1377,7 +1377,7 @@
             "totalCentavos": 320000,
             "activo": true,
             "createdAt": "2026-01-15T12:00:00.000Z",
-            "updatedAt": "2026-10-22T13:33:07.538Z",
+            "updatedAt": "2026-10-25T13:29:56.253Z",
             "deletedAt": null
           }
         }
@@ -1388,7 +1388,7 @@
       "caso": "Baja logica de pedido",
       "solicitud": {
         "metodo": "DELETE",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236"
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013"
       },
       "esperado": {
         "status": 200
@@ -1397,7 +1397,7 @@
         "status": 200,
         "body": {
           "data": {
-            "id": "6ada109378842e4ec930e236",
+            "id": "6ade04549419fe414c6c5013",
             "activo": false
           }
         }
@@ -1408,7 +1408,7 @@
       "caso": "Pedido inactivo oculto por detalle",
       "solicitud": {
         "metodo": "GET",
-        "ruta": "/api/pedidos/6ada109378842e4ec930e236"
+        "ruta": "/api/pedidos/6ade04549419fe414c6c5013"
       },
       "esperado": {
         "status": 404
