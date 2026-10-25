@@ -13,7 +13,9 @@
     "seed": "node src/scripts/seed.js",
     "test": "node --test",
     "evidence:indexes": "node src/scripts/evidence-indexes.js",
-    "evidence:integration": "node src/scripts/evidence-integration.js"
+    "evidence:integration": "node src/scripts/evidence-integration.js",
+    "evidence:windows": "node src/scripts/evidence-windows.js",
+    "evidence:windows:atlas": "node src/scripts/evidence-windows-atlas.js"
   },
   "dependencies": {
     "express": "^5.1.0",

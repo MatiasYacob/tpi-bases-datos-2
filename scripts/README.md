@@ -1,11 +1,9 @@
-# Respaldos - Brenda
+# Respaldos del TPI
 
-Implementar backup.ps1, programar-backup.ps1 y restaurar-prueba.ps1.
-Entradas: configuración protegida y parámetros documentados en la guía.
-Salidas: respaldo fechado, registros sin secretos y códigos de salida.
-Modifica resguardos_tpi, tarea Windows y solo tpi_tienda_restore_test al restaurar.
-No restaura sobre tpi_tienda. Confirmar antes de reemplazar una base de prueba existente.
-Validación: backup, fallo, retención de cinco, tarea diaria y restauración medida.
+Scripts Bash de Brenda para macOS: `backup.sh`, `programar-backup.sh`, `restaurar-prueba.sh` y `verificar-conteos.sh`.
 
-Los scripts aún no existen. Usar rutas relativas a la raíz desde $PSScriptRoot.
-No versionar la configuración real ni los volcados.
+Para Windows hay equivalentes PowerShell: `backup.ps1`, `programar-backup.ps1`, `restaurar-prueba.ps1` y `verificar-conteos.ps1`.
+
+Consultar [la guía de Windows](../docs/respaldos-windows.md) para requisitos, comandos y pruebas. La configuración privada y los volcados están excluidos de Git.
+
+Las herramientas CLI deben instalarse aparte. Nunca versionar backup.config.yml, .env ni resguardos_tpi/. Las tareas diarias se activan explícitamente; clonar el repositorio no las registra.

@@ -10,4 +10,4 @@ actualizacion de estado condicionada al estado previo.
 Defensa: explicar embedding/linking, unicidad permanente, calculo del total y unwind.
 Atlas y frontend integrados. Evidencia explain local: evidencias/indices/README.md.
 Pruebas locales documentadas: pruebas-integracion.md y evidencias/integracion/http.json.
-Pendiente: revision cruzada e informe final.
+Revisión cruzada completada; ver revision-cruzada.md.

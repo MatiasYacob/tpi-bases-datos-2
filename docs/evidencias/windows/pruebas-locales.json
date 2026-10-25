@@ -1,0 +1,186 @@
+{
+  "fechaUtc": "2026-10-25T22:20:30.839Z",
+  "entorno": "Windows PowerShell 5.1, MongoDB temporal 7.0.24, Database Tools 100.19.1",
+  "atlas": false,
+  "tareaRegistrada": false,
+  "carpetaPrueba": "C:\\Users\\matia\\OneDrive\\Desktop\\tpi-bases-datos-2\\backend\\node_modules\\.cache\\tpi-windows-1792966800023",
+  "resultados": [
+    {
+      "caso": "Respaldo manual real con conteos desde BSON",
+      "resultado": "APROBADO",
+      "detalle": "3 clientes, 9 productos y 6 pedidos; MongoDB temporal"
+    },
+    {
+      "caso": "Copia existente se omite sin alterarla",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Reemplazo forzado publica una copia valida",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Restauracion real con historial, bajas y reporte",
+      "resultado": "APROBADO",
+      "detalle": "OK: destino local vacio.\n[2026-10-25 19:20:10] Inicio restauracion en tpi_tienda_restore_test LOCAL.\nclientes: esperado=3, recuperado=3, activos=2, inactivos=1 OK\nproductos: esperado=9, recuperado=9, activos=8, inactivos=1 OK\npedidos: esperado=6, recuperado=6, activos=5, inactivos=1 OK\nHistorial y calculos verificados en 6 pedidos (incluidos inactivos).\nReporte sobre datos recuperados: [{\"_id\":\"hogar\",\"unidadesVendidas\":3,\"importeCentavos\":90000},{\"_id\":\"libreria\",\"unidadesVendidas\":5,\"importeCentavos\":250000}]\nOK: conteos e integridad de pedidos coinciden. El reporte se consulta, no se compara automaticamente con Atlas.\n[2026-10-25 19:20:12] OK: recuperacion local validada en 2.092 segundos.\n[2026-10-25 19:20:12] Este tiempo no incluye levantar la aplicacion.\n"
+    },
+    {
+      "caso": "Destino ocupado se rechaza sin borrarlo",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Fallo de conexion conserva copia anterior (SHA-256)",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Retencion conserva cinco copias y no toca archivos ajenos",
+      "resultado": "APROBADO",
+      "detalle": "Seis fechas anteriores simuladas copiadas de un respaldo de prueba; no copias historicas reales"
+    },
+    {
+      "caso": "Restauracion real con todos los pedidos inactivos",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Restauracion real con cero pedidos",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Conteos incorrectos se rechazan",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Programacion Windows: XML generado y validado sin registrar tarea",
+      "resultado": "APROBADO"
+    }
+  ],
+  "transcripciones": [
+    {
+      "script": "backup.ps1",
+      "args": [],
+      "code": 0,
+      "output": "[2026-10-25 19:20:03] Inicio de mongodump: tpi_tienda.\n[2026-10-25 19:20:06] OK: respaldo publicado. Conteos: {\"clientes\":3,\"productos\":9,\"pedidos\":6}\n[2026-10-25 19:20:06] Fin. Se conservan hasta cinco fechas completas.\n"
+    },
+    {
+      "script": "backup.ps1",
+      "args": [],
+      "code": 0,
+      "output": "[2026-10-25 19:20:07] OMITIDO: copia completa del dia ya existente.\n"
+    },
+    {
+      "script": "backup.ps1",
+      "args": [
+        "-Forzar"
+      ],
+      "code": 0,
+      "output": "[2026-10-25 19:20:08] Inicio de mongodump: tpi_tienda.\n[2026-10-25 19:20:08] OK: respaldo publicado. Conteos: {\"clientes\":3,\"productos\":9,\"pedidos\":6}\n[2026-10-25 19:20:08] Fin. Se conservan hasta cinco fechas completas.\n"
+    },
+    {
+      "script": "restaurar-prueba.ps1",
+      "args": [
+        "-Fecha",
+        "2026-10-25",
+        "-UriLocal",
+        "mongodb://127.0.0.1:62565"
+      ],
+      "code": 0,
+      "output": "OK: destino local vacio.\n[2026-10-25 19:20:10] Inicio restauracion en tpi_tienda_restore_test LOCAL.\nclientes: esperado=3, recuperado=3, activos=2, inactivos=1 OK\nproductos: esperado=9, recuperado=9, activos=8, inactivos=1 OK\npedidos: esperado=6, recuperado=6, activos=5, inactivos=1 OK\nHistorial y calculos verificados en 6 pedidos (incluidos inactivos).\nReporte sobre datos recuperados: [{\"_id\":\"hogar\",\"unidadesVendidas\":3,\"importeCentavos\":90000},{\"_id\":\"libreria\",\"unidadesVendidas\":5,\"importeCentavos\":250000}]\nOK: conteos e integridad de pedidos coinciden. El reporte se consulta, no se compara automaticamente con Atlas.\n[2026-10-25 19:20:12] OK: recuperacion local validada en 2.092 segundos.\n[2026-10-25 19:20:12] Este tiempo no incluye levantar la aplicacion.\n"
+    },
+    {
+      "script": "verificar-conteos.ps1",
+      "args": [
+        "-Fecha",
+        "2026-10-25",
+        "-UriLocal",
+        "mongodb://127.0.0.1:62565"
+      ],
+      "code": 0,
+      "output": "clientes: esperado=3, recuperado=3, activos=2, inactivos=1 OK\nproductos: esperado=9, recuperado=9, activos=8, inactivos=1 OK\npedidos: esperado=6, recuperado=6, activos=5, inactivos=1 OK\nHistorial y calculos verificados en 6 pedidos (incluidos inactivos).\nReporte sobre datos recuperados: [{\"_id\":\"hogar\",\"unidadesVendidas\":3,\"importeCentavos\":90000},{\"_id\":\"libreria\",\"unidadesVendidas\":5,\"importeCentavos\":250000}]\nOK: conteos e integridad de pedidos coinciden. El reporte se consulta, no se compara automaticamente con Atlas.\n"
+    },
+    {
+      "script": "restaurar-prueba.ps1",
+      "args": [
+        "-Fecha",
+        "2026-10-25",
+        "-UriLocal",
+        "mongodb://127.0.0.1:62565"
+      ],
+      "code": 1,
+      "output": "ERROR: verificacion local fallida (conexion, destino ocupado, conteos o integridad).\n[2026-10-25 19:20:14] ERROR: Destino no disponible o contiene colecciones; no se reemplaza.\n"
+    },
+    {
+      "script": "backup.ps1",
+      "args": [
+        "-Forzar"
+      ],
+      "code": 1,
+      "output": "[2026-10-25 19:20:15] Inicio de mongodump: tpi_tienda.\n[2026-10-25 19:20:16] ERROR: mongodump fallo; copias anteriores conservadas.\n"
+    },
+    {
+      "script": "backup.ps1",
+      "args": [
+        "-Forzar"
+      ],
+      "code": 0,
+      "output": "[2026-10-25 19:20:17] Inicio de mongodump: tpi_tienda.\n[2026-10-25 19:20:18] OK: respaldo publicado. Conteos: {\"clientes\":3,\"productos\":9,\"pedidos\":6}\n[2026-10-25 19:20:19] Retencion: retirada copia 2026-10-20\n[2026-10-25 19:20:19] Retencion: retirada copia 2026-10-19\n[2026-10-25 19:20:19] Fin. Se conservan hasta cinco fechas completas.\n"
+    },
+    {
+      "script": "backup.ps1",
+      "args": [
+        "-Forzar"
+      ],
+      "code": 0,
+      "output": "[2026-10-25 19:20:20] Inicio de mongodump: tpi_tienda.\n[2026-10-25 19:20:21] OK: respaldo publicado. Conteos: {\"clientes\":3,\"productos\":9,\"pedidos\":6}\n[2026-10-25 19:20:22] Fin. Se conservan hasta cinco fechas completas.\n"
+    },
+    {
+      "script": "restaurar-prueba.ps1",
+      "args": [
+        "-Fecha",
+        "2026-10-25",
+        "-UriLocal",
+        "mongodb://127.0.0.1:62565"
+      ],
+      "code": 0,
+      "output": "OK: destino local vacio.\n[2026-10-25 19:20:23] Inicio restauracion en tpi_tienda_restore_test LOCAL.\nclientes: esperado=3, recuperado=3, activos=2, inactivos=1 OK\nproductos: esperado=9, recuperado=9, activos=8, inactivos=1 OK\npedidos: esperado=6, recuperado=6, activos=0, inactivos=6 OK\nHistorial y calculos verificados en 6 pedidos (incluidos inactivos).\nReporte sobre datos recuperados: []\nOK: conteos e integridad de pedidos coinciden. El reporte se consulta, no se compara automaticamente con Atlas.\n[2026-10-25 19:20:23] OK: recuperacion local validada en 0.543 segundos.\n[2026-10-25 19:20:23] Este tiempo no incluye levantar la aplicacion.\n"
+    },
+    {
+      "script": "backup.ps1",
+      "args": [
+        "-Forzar"
+      ],
+      "code": 0,
+      "output": "[2026-10-25 19:20:24] Inicio de mongodump: tpi_tienda.\n[2026-10-25 19:20:25] OK: respaldo publicado. Conteos: {\"clientes\":3,\"productos\":9,\"pedidos\":0}\n[2026-10-25 19:20:25] Fin. Se conservan hasta cinco fechas completas.\n"
+    },
+    {
+      "script": "restaurar-prueba.ps1",
+      "args": [
+        "-Fecha",
+        "2026-10-25",
+        "-UriLocal",
+        "mongodb://127.0.0.1:62565"
+      ],
+      "code": 0,
+      "output": "OK: destino local vacio.\n[2026-10-25 19:20:27] Inicio restauracion en tpi_tienda_restore_test LOCAL.\nclientes: esperado=3, recuperado=3, activos=2, inactivos=1 OK\nproductos: esperado=9, recuperado=9, activos=8, inactivos=1 OK\npedidos: esperado=0, recuperado=0, activos=0, inactivos=0 OK\nHistorial y calculos verificados en 0 pedidos (incluidos inactivos).\nReporte sobre datos recuperados: []\nOK: conteos e integridad de pedidos coinciden. El reporte se consulta, no se compara automaticamente con Atlas.\n[2026-10-25 19:20:27] OK: recuperacion local validada en 0.792 segundos.\n[2026-10-25 19:20:27] Este tiempo no incluye levantar la aplicacion.\n"
+    },
+    {
+      "script": "verificar-conteos.ps1",
+      "args": [
+        "-Fecha",
+        "2026-10-25",
+        "-UriLocal",
+        "mongodb://127.0.0.1:62565"
+      ],
+      "code": 1,
+      "output": "clientes: esperado=3, recuperado=3, activos=2, inactivos=1 OK\nproductos: esperado=9, recuperado=9, activos=8, inactivos=1 OK\nERROR: verificacion local fallida (conexion, destino ocupado, conteos o integridad).\n"
+    },
+    {
+      "script": "programar-backup.ps1",
+      "args": [
+        "-Hora",
+        "02:00",
+        "-SoloExportar"
+      ],
+      "code": 0,
+      "output": "XML preparado sin registrar: C:\\Users\\matia\\OneDrive\\Desktop\\tpi-bases-datos-2\\backend\\node_modules\\.cache\\tpi-windows-1792966800023\\resguardos_tpi\\tarea-windows.xml\n"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "fechaUtc": "2026-10-25T22:21:03.196Z",
+  "origen": "Atlas, tpi_tienda (lectura)",
+  "destino": "tpi_tienda_restore_test en MongoDB temporal 7.0.24 propio",
+  "conteos": {
+    "clientes": 6,
+    "productos": 12,
+    "pedidos": 9
+  },
+  "estado": {
+    "clientes": {
+      "activos": 3,
+      "inactivos": 3
+    },
+    "productos": {
+      "activos": 9,
+      "inactivos": 3
+    },
+    "pedidos": {
+      "activos": 6,
+      "inactivos": 3
+    }
+  },
+  "reporte": [
+    {
+      "_id": "hogar",
+      "unidades": 3,
+      "centavos": 90000
+    },
+    {
+      "_id": "libreria",
+      "unidades": 5,
+      "centavos": 250000
+    }
+  ],
+  "comparacionPosteriorOrigen": {
+    "conteos": {
+      "clientes": 6,
+      "productos": 12,
+      "pedidos": 9
+    },
+    "reporte": [
+      {
+        "_id": "hogar",
+        "unidades": 3,
+        "centavos": 90000
+      },
+      {
+        "_id": "libreria",
+        "unidades": 5,
+        "centavos": 250000
+      }
+    ],
+    "coincide": true
+  },
+  "codigo": 0,
+  "transcripcion": "OK: destino local vacio.\n[2026-10-25 19:21:01] Inicio restauracion en tpi_tienda_restore_test LOCAL.\nclientes: esperado=6, recuperado=6, activos=3, inactivos=3 OK\nproductos: esperado=12, recuperado=12, activos=9, inactivos=3 OK\npedidos: esperado=9, recuperado=9, activos=6, inactivos=3 OK\nHistorial y calculos verificados en 9 pedidos (incluidos inactivos).\nReporte sobre datos recuperados: [{\"_id\":\"hogar\",\"unidadesVendidas\":3,\"importeCentavos\":90000},{\"_id\":\"libreria\",\"unidadesVendidas\":5,\"importeCentavos\":250000}]\nOK: conteos e integridad de pedidos coinciden. El reporte se consulta, no se compara automaticamente con Atlas.\n[2026-10-25 19:21:02] OK: recuperacion local validada en 0.668 segundos.\n[2026-10-25 19:21:02] Este tiempo no incluye levantar la aplicacion.\n",
+  "escriturasPausadas": false,
+  "limite": "Comparacion de conteos y reporte, no igualdad campo por campo; no snapshot transaccional ni RTO del servicio completo."
+}
