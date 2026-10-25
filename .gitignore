@@ -15,3 +15,11 @@ backup.config.yml
 backup.config.yaml
 *.pem
 *.key
+
+# Herramientas portatiles locales (no versionar binarios)
+.tools/
+
+# Archivos de revision y empaquetado locales
+tmp/
+Entrega-TPI-BD2*/
+Entrega-TPI-BD2*.zip
