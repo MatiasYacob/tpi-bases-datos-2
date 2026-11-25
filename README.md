@@ -1,67 +1,82 @@
-# TPI - Bases de Datos 2
+# TPI · Bases de Datos 2
 
-Tienda con clientes, productos y pedidos. Frontend React, API Express y persistencia en MongoDB Atlas.
+Aplicación de gestión de una tienda desarrollada como Trabajo Práctico Integrador de Bases de Datos 2. Permite administrar clientes y productos, registrar pedidos y consultar ventas por categoría.
 
-| Integrante | Responsabilidad |
+**React + TypeScript** · **Node.js + Express** · **MongoDB Atlas**
+
+## Qué hace la aplicación
+
+- **Clientes y productos.** Alta, consulta, edición y baja lógica.
+- **Pedidos.** Registro, cambios de estado y conservación de los datos históricos de cada pedido.
+- **Ventas.** Reporte por categoría de producto.
+- **Base de datos.** Validadores BSON e índices para las consultas documentadas.
+- **Respaldos.** Copias con `mongodump`, retención de hasta cinco fechas completas y restauración de prueba local.
+
+[Recorrido de la aplicación](frontend/USO.md) · [Estado y límites conocidos](ESTADO.md)
+
+## Inicio rápido
+
+Necesitás **Node.js 24**, npm y acceso a MongoDB local o Atlas. Copiá `backend/.env.example` como `backend/.env` y configurá `MONGODB_URI` para la base `tpi_tienda`. Copiá también `frontend/.env.example` como `frontend/.env`. El frontend solo necesita la URL de la API en `VITE_API_URL`.
+
+Instalá y arrancá el backend desde la raíz del repositorio:
+
+```sh
+cd backend
+npm ci
+npm start
+```
+
+Si usás una base nueva, ejecutá `npm run db:init` y `npm run seed` desde `backend/` antes de `npm start`. La base compartida ya preparada permite omitir ese paso.
+
+En otra terminal, desde la raíz del repositorio:
+
+```sh
+cd frontend
+npm ci
+npm run dev
+```
+
+Abrí <http://localhost:5173>. La configuración de ejemplo del frontend apunta a <http://localhost:3000/api>.
+
+## Dónde está cada cosa
+
+| Carpeta | Contenido |
 | --- | --- |
-| Matías Yacob | Modelo, Atlas, backend, validaciones, índices, reporte y scripts Windows |
-| Javier Rodríguez | Frontend e integración con la API; revisión cruzada |
-| Brenda Florencia Romero | Respaldo, programación y restauración en macOS |
+| [`backend/`](backend/) | API Express, validadores, acceso a MongoDB y pruebas |
+| [`frontend/`](frontend/) | Interfaz React y cliente de la API |
+| [`scripts/`](scripts/) | Respaldo, programación y restauración para Windows y macOS |
+| [`docs/`](docs/) | Diseño, procedimientos y evidencias |
+| [`output/pdf/`](output/pdf/) | Informe y otros documentos de entrega en PDF |
 
-## Inicio
+## Pruebas y evidencias
 
-Requisitos: Node.js 24, npm y acceso a MongoDB. Instalar con npm ci dentro de backend y frontend. Las pruebas pueden descargar un ejecutable oficial de MongoDB temporal la primera vez.
+Desde `backend/`:
 
-1. En backend, copiar .env.example a .env y configurar MONGODB_URI. La base admitida es tpi_tienda.
-2. Para una base nueva, ejecutar npm run db:init y npm run seed desde backend. En la base compartida ya preparada no es necesario repetirlos.
-3. Ejecutar npm start dentro de backend.
-4. En otra consola, copiar frontend/.env.example a frontend/.env y ejecutar npm run dev desde frontend.
-5. Abrir http://localhost:5173. La API atiende en http://127.0.0.1:3000/api.
-
-El ejemplo de URI del backend apunta a MongoDB local. Configurar la conexión privada a Atlas para utilizar el clúster del grupo. El frontend solo recibe VITE_API_URL; nunca la URI de MongoDB.
-
-- [Backend: configuración y comandos](backend/README.md)
-- [Frontend: instalación](frontend/README.md)
-- [Recorrido de la aplicación](frontend/USO.md)
-
-## Funcionalidad
-
-CRUD con baja lógica, validadores BSON, índices, pedidos con datos históricos, cambios de estado y reporte de ventas por categoría. El respaldo usa mongodump de forma independiente del servidor Express.
-
-## Pruebas
-
-Desde backend:
-
-```text
+```sh
 npm test
 npm run evidence:integration
 npm run evidence:indexes
 ```
 
-Los ensayos utilizan MongoDB temporal y no leen las credenciales de Atlas. Desde frontend, npm run build verifica TypeScript y compila la aplicación.
+Estas pruebas usan una instancia temporal de MongoDB y pueden descargar el ejecutable oficial en la primera ejecución. Desde `frontend/`, `npm run build` verifica TypeScript y compila la aplicación.
 
-En Windows, npm run evidence:windows comprueba once escenarios de respaldo/restauración con herramientas CLI reales sobre MongoDB temporal. Requiere Windows PowerShell 5.1 y MongoDB Database Tools disponibles mediante TPI_TOOLS_BIN, PATH o .tools/.
+En Windows, `npm run evidence:windows` desde `backend/` comprueba once escenarios de respaldo y restauración con Windows PowerShell 5.1 y MongoDB Database Tools. Las herramientas se pueden indicar con `TPI_TOOLS_BIN`, incluir en `PATH` o ubicar en `.tools/`.
 
-## Respaldos
+| Tema | Referencias |
+| --- | --- |
+| Datos e índices | [Modelo](docs/modelo.md) · [Evidencias de índices](docs/evidencias/indices/) |
+| API e integración | [Contrato de la API](docs/contrato-api.md) · [Pruebas de integración](docs/pruebas-integracion.md) · [Revisión cruzada](docs/revision-cruzada.md) |
+| Aplicación | [Guía del backend](backend/README.md) · [Guía del frontend](frontend/README.md) |
+| Respaldos | [Scripts y configuración](scripts/README.md) · [macOS](docs/respaldo.md) · [Windows](docs/respaldos-windows.md) · [Evidencias](docs/evidencias/respaldo/) |
 
-- [Scripts de macOS y Windows](scripts/README.md)
-- [Procedimiento y pruebas macOS](docs/respaldo.md)
-- [Procedimiento y pruebas Windows](docs/respaldos-windows.md)
+Los respaldos se guardan por fecha en `resguardos_tpi`. Las restauraciones de prueba usan la base local `tpi_tienda_restore_test`. Mantené las credenciales de Atlas, los archivos de configuración privados y los volcados fuera de Git.
 
-Se generan copias fechadas en resguardos_tpi y se conservan hasta cinco fechas completas. Las restauraciones de prueba utilizan exclusivamente tpi_tienda_restore_test en MongoDB local; los scripts no restauran sobre Atlas.
+## Equipo
 
-## Documentación técnica
+| Integrante | Responsabilidad |
+| --- | --- |
+| Matías Yacob | Modelo, Atlas, backend, validaciones, índices, reporte y scripts Windows |
+| Javier Rodríguez | Frontend, integración con la API y revisión cruzada |
+| Brenda Florencia Romero | Respaldo, programación y restauración en macOS |
 
-- [Modelo e índices](docs/modelo.md)
-- [Contrato API](docs/contrato-api.md)
-- [Pruebas de integración](docs/pruebas-integracion.md)
-- [Revisión cruzada](docs/revision-cruzada.md)
-- [Estado y límites conocidos](ESTADO.md)
-
-El informe y los documentos de entrega se preparan por separado. Esta actualización se centra en los scripts, la documentación técnica y sus evidencias.
-
-## Configuración privada
-
-El repositorio incluye únicamente plantillas .env.example y scripts/backup.config.example.yml. No publicar contraseñas, cadenas de conexión autenticadas, archivos .env reales, backup.config.yml, volcados, herramientas binarias ni paquetes de entrega con credenciales.
-
-Cada integrante configura su entorno y el acceso de red a Atlas. Los cambios se integran mediante pull requests revisados por el grupo.
+Los cambios se integran mediante pull requests revisados por el grupo.
